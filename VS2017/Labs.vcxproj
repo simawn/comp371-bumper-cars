@@ -10,6 +10,41 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\Animation.h" />
+    <ClInclude Include="..\Source\BSpline.h" />
+    <ClInclude Include="..\Source\BSplineCamera.h" />
+    <ClInclude Include="..\Source\Camera.h" />
+    <ClInclude Include="..\Source\Car.h" />
+    <ClInclude Include="..\Source\CubeModel.h" />
+    <ClInclude Include="..\Source\EventManager.h" />
+    <ClInclude Include="..\Source\FirstPersonCamera.h" />
+    <ClInclude Include="..\Source\Model.h" />
+    <ClInclude Include="..\Source\ParsingHelper.h" />
+    <ClInclude Include="..\Source\Renderer.h" />
+    <ClInclude Include="..\Source\SphereModel.h" />
+    <ClInclude Include="..\Source\StaticCamera.h" />
+    <ClInclude Include="..\Source\World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Assets\Textures\brick.jpg" />
+    <Image Include="..\Assets\Textures\cement.jpg" />
+    <Image Include="..\Assets\Textures\grass512.jpg" />
+    <Image Include="..\Assets\Textures\red.jpg" />
+    <Image Include="..\Assets\Textures\tires.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Source\colorFrag.glsl" />
+    <None Include="..\Source\colorVert.glsl" />
+    <None Include="..\Source\shadowFrag.glsl" />
+    <None Include="..\Source\shadowVert.glsl" />
+    <None Include="..\Source\textureFrag.glsl" />
+    <None Include="..\Source\textureVert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\a1.cpp" />
+    <ClCompile Include="..\Source\Car.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{277EAE68-9EED-4EFF-BAD3-2A70787A3E8D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -99,15 +134,6 @@
       </Path>
     </BuildLog>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Source\EventManager.cpp" />
-    <ClCompile Include="..\Source\main.cpp" />
-    <ClCompile Include="..\Source\Renderer.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Source\EventManager.h" />
-    <ClInclude Include="..\Source\Renderer.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

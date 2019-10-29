@@ -6,11 +6,23 @@
 #include <glm/common.hpp>
 #include <FreeImageIO.h>
 
+#include "EventManager.h"
+#include "Renderer.h"
+
 using namespace glm;
 using namespace std;
 
-#include "EventManager.h"
-
 int main() {
+	EventManager::Initialize();
+	Renderer::Initialize();
+
+	while (EventManager::ExitRequested() == false) {
+		EventManager::Update();
+		float dt = EventManager::GetFrameTime();
+	}
+
+	Renderer::Shutdown();
+	EventManager::Shutdown();
+
 	return 0;
 }

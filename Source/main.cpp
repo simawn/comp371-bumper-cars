@@ -13,6 +13,8 @@
 
 //Custom classes
 #include "Car.h"
+#include "Global.h"
+#include "Shaders.h"
 
 #define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
@@ -28,104 +30,6 @@
 
 using namespace glm;
 using namespace std;
-
-// Global variables
-std::vector<GLuint> textureArray;
-int colorShaderProgram;
-int texturedShaderProgram;
-int shadowShaderProgram;
-float dt;
-GLint mainColorUniformLocation;
-GLuint worldMatrixLocation;
-bool enableTexture = true;
-bool enableShadow = true;
-Car car1;
-unsigned int depthMap;
-
-string readFile(string filePath) {
-	string output;
-	ifstream vertexSource(filePath);
-	string line;
-	while (getline(vertexSource, line)) {
-		output += line;
-		output += "\r\n";
-	}
-	return output;
-}
-
-const string getVertexShaderSource() {
-	return readFile("../Source/colorVert.glsl");
-}
-
-const string getFragmentShaderSource() {
-	return readFile("../Source/colorFrag.glsl");
-}
-
-const string getTexturedVertexShaderSource() {
-	return readFile("../Source/textureVert.glsl");
-}
-
-const string getTexturedFragmentShaderSource() {
-	return readFile("../Source/textureFrag.glsl");
-}
-
-const string getShadowVertexShaderSource() {
-	return readFile("../Source/shadowVert.glsl");
-}
-
-const string getShadowFragmentShaderSource() {
-	return readFile("../Source/shadowFrag.glsl");
-}
-
-int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource) {
-	// compile and link shader program
-	// return shader program id
-	// ------------------------------------
-
-	// vertex shader
-	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	// check for shader compile errors
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cerr << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	// fragment shader
-	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	// check for shader compile errors
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cerr << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	// link shaders
-	int shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	// check for linking errors
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
-	return shaderProgram;
-}
 
 std::vector<vec3> getVertexArray() {
 	// Cube model
@@ -574,20 +478,7 @@ int main(int argc, char*argv[])
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     
     // Compile and link shaders here ...
-	string tempVert = getVertexShaderSource();
-	string tempFrag = getFragmentShaderSource();
-	colorShaderProgram = compileAndLinkShaders(tempVert.c_str(), tempFrag.c_str());
-
-	tempVert = getTexturedVertexShaderSource();
-	tempFrag = getTexturedFragmentShaderSource();
-	texturedShaderProgram = compileAndLinkShaders(tempVert.c_str(), tempFrag.c_str());
-
-	tempVert = getShadowVertexShaderSource();
-	tempFrag = getShadowFragmentShaderSource();
-	shadowShaderProgram = compileAndLinkShaders(tempVert.c_str(), tempFrag.c_str());
-
-    // We can set the shader once, since we have only one
-    //glUseProgram(colorShaderProgram);
+	Shaders shaders = Shaders::getInstance();
 
     
     

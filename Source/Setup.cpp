@@ -54,4 +54,12 @@ Setup::Setup(int width, int height, string title) {
 
 	//Disable mouse cursor
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	// Initialize GLEW
+	glewExperimental = true; // Needed for core profile
+	if (glewInit() != GLEW_OK) {
+		std::cerr << "Failed to create GLEW" << std::endl;
+		glfwTerminate();
+		//return -1;
+	}
 }

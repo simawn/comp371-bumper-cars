@@ -16,6 +16,7 @@
 #include "Global.h"
 #include "Shaders.h"
 #include "Setup.h"
+#include "IO.h"
 
 #define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
@@ -400,10 +401,11 @@ void renderScene(int shaderProgram) {
 int main(int argc, char*argv[])
 {
 	Setup setup = Setup::getInstance(1920, 1080, "Final");
+	IO IO = IO::getInstance();
 
 	//Mouse
-	double lastMousePosX, lastMousePosY;
-	glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
+	//double lastMousePosX, lastMousePosY;
+	//glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
 
 	//Keeps track of keys
 	int lastSpaceState = GLFW_RELEASE;
@@ -412,13 +414,7 @@ int main(int argc, char*argv[])
 	int lastXState = GLFW_RELEASE;
 	int lastBState = GLFW_RELEASE;
 
-    // Initialize GLEW
-    glewExperimental = true; // Needed for core profile
-    if (glewInit() != GLEW_OK) {
-        std::cerr << "Failed to create GLEW" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
+   
 
 	// Load Textures
 #if defined(PLATFORM_OSX)
@@ -552,6 +548,8 @@ int main(int argc, char*argv[])
     // Entering Main Loop
     while(!glfwWindowShouldClose(window))
     {
+		IO.updateMousePosition();
+
 		//Enable shadows
 		glUseProgram(texturedShaderProgram);
 		glUniform1i(glGetUniformLocation(texturedShaderProgram, "enableShadow"), enableShadow == true? 1 : 0);
@@ -562,7 +560,7 @@ int main(int argc, char*argv[])
 		
 
 		//Fixes mouse cursor position problems
-		glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
+		//glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
 
         // Frame time calculation
 		dt = glfwGetTime() - lastFrameTime;
@@ -606,11 +604,9 @@ int main(int argc, char*argv[])
 		
 
         glfwSwapBuffers(window);
-        glfwPollEvents();
-        
+
         // Handle inputs
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(window, true);
+		IO.processInputs();
         
 		//Random position
 		if (lastSpaceState == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
@@ -704,10 +700,11 @@ int main(int argc, char*argv[])
 
 		//Zoom in out
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-			double mousePosX, mousePosY;
-			glfwGetCursorPos(window, &mousePosX, &mousePosY);
+			//double mousePosX, mousePosY;
+			//glfwGetCursorPos(window, &mousePosX, &mousePosY);
 
-			double dy = mousePosY - lastMousePosY;
+			//double dy = mousePosY - lastMousePosY;
+			double dy = IO.getMouseMoveDifference().second;
 
 			viewMatrix *= scale(mat4(1.0f), vec3(1.0f + (dy * dt)));
 
@@ -720,10 +717,11 @@ int main(int argc, char*argv[])
 
 		//Pan
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-			double mousePosX, mousePosY;
-			glfwGetCursorPos(window, &mousePosX, &mousePosY);
+			//double mousePosX, mousePosY;
+			//glfwGetCursorPos(window, &mousePosX, &mousePosY);
 
-			float dx = mousePosX - lastMousePosX;
+			//float dx = mousePosX - lastMousePosX;
+			float dx = IO.getMouseMoveDifference().first;
 
 			cameraLookAt.x += dx * dt * CAM_SPEED;
 
@@ -733,11 +731,12 @@ int main(int argc, char*argv[])
 
 		//Tilt
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
-			double mousePosX, mousePosY;
-			glfwGetCursorPos(window, &mousePosX, &mousePosY);
+			//double mousePosX, mousePosY;
+			//glfwGetCursorPos(window, &mousePosX, &mousePosY);
 
-			double dy = mousePosY - lastMousePosY;
+			//double dy = mousePosY - lastMousePosY;
 
+			double dy = IO.getMouseMoveDifference().second;
 			cameraLookAt.y -= dy * dt * CAM_SPEED;
 
 			viewMatrix = lookAt(cameraPosition, cameraLookAt, cameraUp);

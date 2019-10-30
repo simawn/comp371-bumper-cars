@@ -32,6 +32,9 @@
     <ClInclude Include="..\Source\Global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Setup.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Assets\Textures\red.jpg">
@@ -78,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Shaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Setup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

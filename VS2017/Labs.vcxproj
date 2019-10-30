@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="..\Source\Car.h" />
     <ClInclude Include="..\Source\Global.h" />
+    <ClInclude Include="..\Source\Setup.h" />
     <ClInclude Include="..\Source\Shaders.h" />
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ClCompile Include="..\Source\Car.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
+    <ClCompile Include="..\Source\Setup.cpp" />
     <ClCompile Include="..\Source\Shaders.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

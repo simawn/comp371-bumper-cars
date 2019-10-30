@@ -13,8 +13,8 @@ using namespace std;
 Shaders* Shaders::instance = 0; 
 
 Shaders& Shaders::getInstance() {
-	if (instance == 0) Shaders::instance = new Shaders();
-	return *Shaders::instance;
+	if (instance == 0) instance = new Shaders();
+	return *instance;
 }
 
 Shaders::Shaders() {

@@ -20,3 +20,6 @@ bool enableTexture = true;
 bool enableShadow = true;
 Car car1;
 unsigned int depthMap;
+GLFWwindow* window;
+int SCREEN_WIDTH;
+int SCREEN_HEIGHT;

@@ -15,6 +15,7 @@
 #include "Car.h"
 #include "Global.h"
 #include "Shaders.h"
+#include "Setup.h"
 
 #define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
@@ -398,41 +399,8 @@ void renderScene(int shaderProgram) {
 
 int main(int argc, char*argv[])
 {
-    // Initialize GLFW and OpenGL version
-    glfwInit();
-    
-#if defined(PLATFORM_OSX)
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#else
-    // On windows, we set OpenGL version to 2.1, to support more hardware
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-#endif
+	Setup setup = Setup::getInstance(1920, 1080, "Final");
 
-	int SCREEN_WIDTH = 1600;
-	int SCREEN_HEIGHT = 900;
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Comp371 - Assignment", NULL, NULL);
-
-    if (window == NULL)
-    {
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-
-	//Modify point size
-	glPointSize(10);
-
-	//Modify line thickness
-	glLineWidth(3);
-
-    //Disable mouse cursor
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); //TODO
-    
 	//Mouse
 	double lastMousePosX, lastMousePosY;
 	glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
@@ -584,12 +552,6 @@ int main(int argc, char*argv[])
     // Entering Main Loop
     while(!glfwWindowShouldClose(window))
     {
-		//For window resize
-		glfwGetWindowSize(window, &SCREEN_WIDTH, &SCREEN_HEIGHT);
-		projectionMatrix = perspective(FOV, (float) SCREEN_WIDTH / (float) SCREEN_HEIGHT, NEAR, FAR);
-		setProjectionMatrix(colorShaderProgram, projectionMatrix);
-		setProjectionMatrix(texturedShaderProgram, projectionMatrix);
-
 		//Enable shadows
 		glUseProgram(texturedShaderProgram);
 		glUniform1i(glGetUniformLocation(texturedShaderProgram, "enableShadow"), enableShadow == true? 1 : 0);

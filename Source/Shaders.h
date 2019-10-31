@@ -2,13 +2,12 @@
 #include <string>
 using namespace std;
 
-extern int colorShaderProgram;
-extern int texturedShaderProgram;
-extern int shadowShaderProgram;
-
 class Shaders {
 public:
 	static Shaders& getInstance();
+	static int colorShaderProgram;
+	static int texturedShaderProgram;
+	static int shadowShaderProgram;
 private:
 	Shaders();
 	static Shaders* instance;

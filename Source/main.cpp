@@ -17,6 +17,7 @@
 #include "Shaders.h"
 #include "Setup.h"
 #include "IO.h"
+#include "Renderer.h"
 
 #define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
@@ -253,93 +254,17 @@ int createVertexBufferObject()
     return vertexBufferObject;
 }
 
-void setProjectionMatrix(int shaderProgram, mat4 projectionMatrix) {
-	glUseProgram(shaderProgram);
-	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
-	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
-}
-
-void setViewMatrix(int shaderProgram, mat4 viewMatrix) {
-	glUseProgram(shaderProgram);
-	GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
-	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-}
-
-void setWorldMatrix(int shaderProgram, mat4 worldMatrix) {
-	glUseProgram(shaderProgram);
-	GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
-	glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
-}
-
-void setColor(vec3 mainColor, GLuint location, int useColor) {
-	mainColorUniformLocation = glGetUniformLocation(location, "mainColor");
-	glUniform3fv(mainColorUniformLocation, 1, &mainColor[0]);
-
-	GLuint useColorUniformLocation = glGetUniformLocation(location, "useColor");
-	glUniform1i(useColorUniformLocation, useColor);
-}
-
-void matProperties(float specStrength, float specHighlight, vec3 matSpecColor) {
-	GLuint specStrengthUniformLocation = glGetUniformLocation(texturedShaderProgram, "specStrength");
-	glUniform1f(specStrengthUniformLocation, specStrength);
-
-	GLuint specHighlightUniformLocation = glGetUniformLocation(texturedShaderProgram, "specHighlight");
-	glUniform1f(specHighlightUniformLocation, specHighlight);
-
-	GLuint specColorUniformLocation = glGetUniformLocation(texturedShaderProgram, "matSpecColor");
-	glUniform3fv(specColorUniformLocation, 1, &matSpecColor[0]);
-}
-
-void useTexture(GLuint textureID) {
-	glUseProgram(texturedShaderProgram);
-	glActiveTexture(GL_TEXTURE0); //TODO
-	GLuint textureLocation = glGetUniformLocation(texturedShaderProgram, "textureSampler");
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glUniform1i(textureLocation, 0);
-}
-
-int loadTexture(char* imagepath) {
-	// Load image using the Free Image library
-	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(imagepath, 0);
-	FIBITMAP* image = FreeImage_Load(format, imagepath);
-	FIBITMAP* image32bits = FreeImage_ConvertTo32Bits(image);
-	// Get an available texture index from OpenGL
-	GLuint texture = 0;
-	glGenTextures(1, &texture);
-	assert(texture != 0);
-
-	// Set OpenGL filtering properties (bi-linear interpolation)
-	//Model not necessarily 1024x1024. Texture needs to either scale up or down depending on zoom level
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	// Retrieve width and hight
-	int width = FreeImage_GetWidth(image32bits);
-	int height = FreeImage_GetHeight(image32bits);
-
-	// This will upload the texture to the GPU memory
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height,
-		0, GL_BGRA, GL_UNSIGNED_BYTE, (void*)FreeImage_GetBits(image32bits));
-
-	// Free images. removes img
-	FreeImage_Unload(image);
-	FreeImage_Unload(image32bits);
-
-	return texture;
-}
-
 void renderScene(int shaderProgram) {
 
-	if(shaderProgram == shadowShaderProgram) {
+	if(shaderProgram == Shaders::Shaders::shadowShaderProgram) {
 		mat4 plane = translate(mat4(1.0f), vec3(0.0f, -0.1f, 0.0f)) * scale(mat4(1.0f), vec3(100.0f, 0.1f, 100.0f));
-		setWorldMatrix(shaderProgram, plane);
+		Renderer::setWorldMatrix(shaderProgram, plane);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 
-	if (shaderProgram == texturedShaderProgram) {
-		useTexture(textureArray[3]);
-		matProperties(0.0f, 1.0f, vec3(0.0f, 0.0f, 0.0f));
+	if (shaderProgram == Shaders::Shaders::texturedShaderProgram) {
+		Renderer::useTexture(Renderer::textureMap["GRASS"]);
+		Renderer::matProperties(0.0f, 1.0f, vec3(0.0f, 0.0f, 0.0f));
 		/*
 		mat4 plane = translate(mat4(1.0f), vec3(0.0f, -0.1f, 0.0f)) * scale(mat4(1.0f), vec3(100.0f, 0.1f, 100.0f));
 		setWorldMatrix(shaderProgram, plane);
@@ -348,9 +273,9 @@ void renderScene(int shaderProgram) {
 		
 		for (int i = -50; i < 50; i += 5) {
 			for (int j = -50; j < 50; j += 5) {
-				matProperties(0.0f, 1.0f, vec3(0.0f, 0.0f, 0.0f));
+				Renderer::matProperties(0.0f, 1.0f, vec3(0.0f, 0.0f, 0.0f));
 				mat4 grassTiles = translate(mat4(1.0f), vec3(i, -0.1f, j)) * scale(mat4(1.0f), vec3(5.0f, 0.1f, 5.0f));
-				setWorldMatrix(shaderProgram, grassTiles);
+				Renderer::setWorldMatrix(shaderProgram, grassTiles);
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
 		}
@@ -358,18 +283,18 @@ void renderScene(int shaderProgram) {
 		
 	}
 
-	if (shaderProgram == colorShaderProgram) {
-		glUseProgram(colorShaderProgram);
+	if (shaderProgram == Shaders::Shaders::colorShaderProgram) {
+		glUseProgram(Shaders::colorShaderProgram);
 
-		setColor(vec3(1.0f, 1.0f, 1.0f), colorShaderProgram, 1);
+		Renderer::setColor(vec3(1.0f, 1.0f, 1.0f), Shaders::colorShaderProgram, 1);
 
 		for (int i = -50; i <= 50; i++) {
 			mat4 linesZ = translate(mat4(1.0f), vec3(0.0f, 0.0f, i)) * scale(mat4(1.0f), vec3(100.0f, 0.00f, 0.1f));
-			setWorldMatrix(colorShaderProgram, linesZ);
+			Renderer::setWorldMatrix(Shaders::colorShaderProgram, linesZ);
 			glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
 
 			mat4 linesX = translate(mat4(1.0f), vec3(i, 0.0f, 0.0f)) * scale(mat4(1.0f), vec3(0.1f, 0.00f, 100.0f));
-			setWorldMatrix(colorShaderProgram, linesX);
+			Renderer::setWorldMatrix(Shaders::colorShaderProgram, linesX);
 			glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
 		}
 	}
@@ -380,28 +305,30 @@ void renderScene(int shaderProgram) {
 	//Update car draw
 	car1.draw(shaderProgram);
 
-	glUseProgram(colorShaderProgram);
+	glUseProgram(Shaders::colorShaderProgram);
 	//Coord arrows
-	setColor(vec3(1.0f, 0.0f, 0.0f), colorShaderProgram, 1);
+	Renderer::setColor(vec3(1.0f, 0.0f, 0.0f), Shaders::colorShaderProgram, 1);
 	mat4 arrowX = translate(mat4(1.0f), vec3(2.5f, 0.0f, 0.0f)) * scale(mat4(1.0f), vec3(5.0f, 0.1f, 0.1f));
-	setWorldMatrix(colorShaderProgram, arrowX);
+	Renderer::setWorldMatrix(Shaders::colorShaderProgram, arrowX);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
-	setColor(vec3(0.0f, 1.0f, 0.0f), colorShaderProgram, 1);
+	Renderer::setColor(vec3(0.0f, 1.0f, 0.0f), Shaders::colorShaderProgram, 1);
 	mat4 arrowY = translate(mat4(1.0f), vec3(0.0f, 2.5f, 0.0f)) * scale(mat4(1.0f), vec3(0.1f, 5.0f, 0.1f));
-	setWorldMatrix(colorShaderProgram, arrowY);
+	Renderer::setWorldMatrix(Shaders::colorShaderProgram, arrowY);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
-	setColor(vec3(0.0f, 0.0f, 1.0f), colorShaderProgram, 1);
+	Renderer::setColor(vec3(0.0f, 0.0f, 1.0f), Shaders::colorShaderProgram, 1);
 	mat4 arrowZ = translate(mat4(1.0f), vec3(0.0f, 0.0f, 2.5f)) * scale(mat4(1.0f), vec3(0.1f, 0.1f, 5.0f));
-	setWorldMatrix(colorShaderProgram, arrowZ);
+	Renderer::setWorldMatrix(Shaders::colorShaderProgram, arrowZ);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 int main(int argc, char*argv[])
 {
-	Setup setup = Setup::getInstance(1920, 1080, "Final");
+	Setup setup = Setup::getInstance(1600, 800, "Final");
 	IO IO = IO::getInstance();
+	Shaders shaders = Shaders::getInstance();
+	Renderer renderer = Renderer::getInstance();
 
 	//Mouse
 	//double lastMousePosX, lastMousePosY;
@@ -413,41 +340,6 @@ int main(int argc, char*argv[])
 	int lastDState = GLFW_RELEASE;
 	int lastXState = GLFW_RELEASE;
 	int lastBState = GLFW_RELEASE;
-
-   
-
-	// Load Textures
-#if defined(PLATFORM_OSX)
-	GLuint brickTextureID = loadTexture("Textures/brick.jpg");
-	GLuint cementTextureID = loadTexture("Textures/cement.jpg");
-	GLuint tiresTextureID = loadTexture("Textures/tires.jpg");
-	GLuint grassTextureID = loadTexture("Textures/grass512.jpg");
-	GLuint redTextureID = loadTexture("Textures/red.jpg");
-#else
-	GLuint brickTextureID = loadTexture("../Assets/Textures/brick.jpg");
-	GLuint cementTextureID = loadTexture("../Assets/Textures/cement.jpg");
-	GLuint tiresTextureID = loadTexture("../Assets/Textures/tires.jpg");
-	GLuint grassTextureID = loadTexture("../Assets/Textures/grass512.jpg");
-	GLuint redTextureID = loadTexture("../Assets/Textures/red.jpg");
-#endif
-
-	//Use enums instead?
-	textureArray.push_back(brickTextureID);
-	textureArray.push_back(cementTextureID);
-	textureArray.push_back(tiresTextureID);
-	textureArray.push_back(grassTextureID);
-	textureArray.push_back(redTextureID);
-
-    // Black background
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    
-    // Compile and link shaders here ...
-	Shaders shaders = Shaders::getInstance();
-
-    
-    
-    //GLuint projectionMatrixLocation = glGetUniformLocation(colorShaderProgram, "projectionMatrix");
-    //glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 	// Camera parameters for view transform
 	const vec3 START_CAM_POS(0.0f,10.0f,10.0f);
@@ -463,10 +355,7 @@ int main(int argc, char*argv[])
     // Set initial view matrix
 	mat4 viewMatrix = lookAt(cameraPosition, cameraLookAt, cameraUp);
     
-	// Set View and Projection matrices on both shaders
-	//setViewMatrix(colorShaderProgram, viewMatrix);
-	//setViewMatrix(texturedShaderProgram, viewMatrix);
-// Set projection matrix for shader, this won't change
+	// Set projection matrix for shader, this won't change
 	const float FOV = 70.0f;
 	const float NEAR = 0.01f;
 	const float FAR = 1000.0f;
@@ -474,8 +363,8 @@ int main(int argc, char*argv[])
     mat4 projectionMatrix = perspective(FOV,            // field of view in degrees
                                         (float) SCREEN_WIDTH / (float) SCREEN_HEIGHT,  // aspect ratio
                                         NEAR, FAR);   // near and far (near > 0)
-	setProjectionMatrix(colorShaderProgram, projectionMatrix);
-	setProjectionMatrix(texturedShaderProgram, projectionMatrix);
+	renderer.setProjectionMatrix(Shaders::colorShaderProgram, projectionMatrix);
+	renderer.setProjectionMatrix(Shaders::texturedShaderProgram, projectionMatrix);
 
 	// Define and upload geometry to the GPU here ...
 	int texturedCubeVBO = createVertexBufferObject();
@@ -490,60 +379,8 @@ int main(int argc, char*argv[])
 
 	//Create light
 	vec3 lightPosWorld = vec3(0.0f, 30.0f, 0.0f);
-	GLuint lightUniformLocation = glGetUniformLocation(texturedShaderProgram, "lightPosWorld");
+	GLuint lightUniformLocation = glGetUniformLocation(Shaders::texturedShaderProgram, "lightPosWorld");
 	glUniform3fv(lightUniformLocation, 1, &lightPosWorld[0]);
-
-	//Depth map. Modified code from: https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
-	//Create frame buffer to store texture
-	unsigned int depthMapFBO;
-	glGenFramebuffers(1, &depthMapFBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-
-	//Actual depth map texture
-	const unsigned int SHADOW_WIDTH = 2048, SHADOW_HEIGHT = 2048;
-	//unsigned int depthMap;
-	glGenTextures(1, &depthMap);
-
-	//Texture operations will affect this
-	glBindTexture(GL_TEXTURE_2D, depthMap);
-
-	//Give empty img to opengl
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	
-	//Params
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) return 0;
-
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	
-	//Used to overwrite the initial colors that are set in the vertex array
-	//vec3 mainColor(1.0f, 1.0f, 1.0f); //Default to white
-	//mainColorUniformLocation = glGetUniformLocation(colorShaderProgram, "mainColor");
-
-	// Draw geometry
-	//glBindBuffer(GL_ARRAY_BUFFER, texturedCubeVBO);
-
-	//worldMatrixLocation = glGetUniformLocation(colorShaderProgram, "worldMatrix");
-
-	// Other OpenGL states to set once
-	// Enable Backface culling
-	glEnable(GL_CULL_FACE);
-
-	// Enable Depth Test
-	glEnable(GL_DEPTH_TEST);
-
-	glDepthFunc(GL_LESS);
 
     // Entering Main Loop
     while(!glfwWindowShouldClose(window))
@@ -551,12 +388,12 @@ int main(int argc, char*argv[])
 		IO.updateMousePosition();
 
 		//Enable shadows
-		glUseProgram(texturedShaderProgram);
-		glUniform1i(glGetUniformLocation(texturedShaderProgram, "enableShadow"), enableShadow == true? 1 : 0);
+		glUseProgram(Shaders::texturedShaderProgram);
+		glUniform1i(glGetUniformLocation(Shaders::texturedShaderProgram, "enableShadow"), enableShadow == true? 1 : 0);
 
 		//Update view matrix
-		setViewMatrix(colorShaderProgram, viewMatrix);
-		setViewMatrix(texturedShaderProgram, viewMatrix);
+		Renderer::setViewMatrix(Shaders::colorShaderProgram, viewMatrix);
+		Renderer::setViewMatrix(Shaders::texturedShaderProgram, viewMatrix);
 		
 
 		//Fixes mouse cursor position problems
@@ -566,41 +403,44 @@ int main(int argc, char*argv[])
 		dt = glfwGetTime() - lastFrameTime;
         lastFrameTime += dt;
 
+		const unsigned int SHADOW_WIDTH = renderer.SHADOW_WIDTH;
+		const unsigned int SHADOW_HEIGHT = renderer.SHADOW_HEIGHT;
+
 		// 1. first render to depth map
 		glCullFace(GL_FRONT);
-		glUseProgram(shadowShaderProgram);
+		glUseProgram(Shaders::shadowShaderProgram);
 		float near_plane = 1.0f, far_plane = 100.0f;
 		mat4 lightProjection = perspective(90.0f, (float) SHADOW_WIDTH / (float) SHADOW_HEIGHT, near_plane, far_plane);
 		mat4 lightView = lookAt(vec3(lightPosWorld.x + 0.1, lightPosWorld.y, lightPosWorld.z + 0.1), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 		mat4 lightSpaceMatrix = lightProjection * lightView;
 
-		GLuint lightSpaceMatrixLocation = glGetUniformLocation(shadowShaderProgram, "lightSpaceMatrix");
+		GLuint lightSpaceMatrixLocation = glGetUniformLocation(Shaders::shadowShaderProgram, "lightSpaceMatrix");
 		glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, &lightSpaceMatrix[0][0]);
 
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, renderer.depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		renderScene(shadowShaderProgram);
+		renderScene(Shaders::shadowShaderProgram);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		glCullFace(GL_BACK);
 		// 2. then render scene as normal with shadow mapping (using depth map)
 		
-		glUseProgram(texturedShaderProgram);
+		glUseProgram(Shaders::texturedShaderProgram);
 		glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Shadow texture in texture unit 3
 		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
-		glUniform1i(glGetUniformLocation(texturedShaderProgram, "shadowMap"), 3);
+		glBindTexture(GL_TEXTURE_2D, renderer.depthMap);
+		glUniform1i(glGetUniformLocation(Shaders::texturedShaderProgram, "shadowMap"), 3);
 
-		GLuint lightSpaceMatrixLocationText = glGetUniformLocation(texturedShaderProgram, "lightSpaceMatrix");
+		GLuint lightSpaceMatrixLocationText = glGetUniformLocation(Shaders::texturedShaderProgram, "lightSpaceMatrix");
 		glUniformMatrix4fv(lightSpaceMatrixLocationText, 1, GL_FALSE, &lightSpaceMatrix[0][0]);
 
-		renderScene(enableTexture == true ? texturedShaderProgram : colorShaderProgram);
+		renderScene(enableTexture == true ? Shaders::texturedShaderProgram : Shaders::colorShaderProgram);
 		
 
         glfwSwapBuffers(window);

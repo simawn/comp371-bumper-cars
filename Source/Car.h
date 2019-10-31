@@ -16,19 +16,19 @@ using namespace glm;
 
 //Global vars from a1.cpp
 extern std::vector<GLuint> textureArray;
-extern int colorShaderProgram;
-extern int texturedShaderProgram;
+//extern int colorShaderProgram;
+//extern int texturedShaderProgram;
 extern float dt;
-extern GLint mainColorUniformLocation;
-extern GLuint worldMatrixLocation;
+//extern GLint mainColorUniformLocation;
+//extern GLuint worldMatrixLocation;
 extern bool enableTexture;
 extern bool enableShadow;
 
-extern void setViewMatrix(int, mat4);
-extern void setWorldMatrix(int, mat4);
-extern void setColor(vec3, GLuint, int);
-extern void useTexture(GLuint);
-extern void matProperties(float, float, vec3);
+//extern void setViewMatrix(int, mat4);
+//extern void setWorldMatrix(int, mat4);
+//extern void setColor(vec3, GLuint, int);
+//extern void useTexture(GLuint);
+//extern void matProperties(float, float, vec3);
 
 class Car {
 public:

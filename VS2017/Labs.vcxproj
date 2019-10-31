@@ -14,6 +14,8 @@
     <ClInclude Include="..\Source\Car.h" />
     <ClInclude Include="..\Source\Global.h" />
     <ClInclude Include="..\Source\IO.h" />
+    <ClInclude Include="..\Source\Renderer.h" />
+    <ClInclude Include="..\Source\Scene.h" />
     <ClInclude Include="..\Source\Setup.h" />
     <ClInclude Include="..\Source\Shaders.h" />
   </ItemGroup>
@@ -36,6 +38,8 @@
     <ClCompile Include="..\Source\Car.cpp" />
     <ClCompile Include="..\Source\IO.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
+    <ClCompile Include="..\Source\Renderer.cpp" />
+    <ClCompile Include="..\Source\Scene.cpp" />
     <ClCompile Include="..\Source\Setup.cpp" />
     <ClCompile Include="..\Source\Shaders.cpp" />
   </ItemGroup>

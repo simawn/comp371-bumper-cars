@@ -9,17 +9,17 @@
 #include <glm/common.hpp>
 #include "Car.h"
 
-std::vector<GLuint> textureArray;
-int colorShaderProgram;
-int texturedShaderProgram;
-int shadowShaderProgram;
+//std::vector<GLuint> textureArray;
+//int colorShaderProgram;
+//int texturedShaderProgram;
+//int shadowShaderProgram;
 float dt;
-GLint mainColorUniformLocation;
-GLuint worldMatrixLocation;
+//GLint mainColorUniformLocation;
+//GLuint worldMatrixLocation;
 bool enableTexture = true;
 bool enableShadow = true;
 Car car1;
-unsigned int depthMap;
+//unsigned int depthMap;
 GLFWwindow* window;
 int SCREEN_WIDTH;
 int SCREEN_HEIGHT;

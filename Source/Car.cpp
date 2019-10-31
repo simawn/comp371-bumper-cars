@@ -1,4 +1,6 @@
 #include "Car.h"
+#include "Renderer.h"
+#include "Shaders.h"
 #include <iostream>
 
 Car::Car() {
@@ -23,47 +25,47 @@ void Car::draw(int shaderProgram) {
 		
 	}
 	*/
-	if (shaderProgram == texturedShaderProgram) {
-		useTexture(textureArray[4]);
-		matProperties(3.0f, 128.0f, vec3(0.39f, 0.27f, 0.36f));
+	if (shaderProgram == Shaders::texturedShaderProgram) {
+		Renderer::useTexture(Renderer::textureMap["RED"]);
+		Renderer::matProperties(3.0f, 128.0f, vec3(0.39f, 0.27f, 0.36f));
 	}
-	if (shaderProgram == colorShaderProgram) {
-		setColor(vec3(0.9f, 0.0f, 0.0f), colorShaderProgram, 1);
+	if (shaderProgram == Shaders::colorShaderProgram) {
+		Renderer::setColor(vec3(0.9f, 0.0f, 0.0f), Shaders::colorShaderProgram, 1);
 	}
 	//Car Body
 	mat4 carBody = translate(mat4(1.0f), posCarBody) * rotate(mat4(1.0f), radians(rotCarBody), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), scaleCarBody);
-	setWorldMatrix(shaderProgram, carBody);
+	Renderer::setWorldMatrix(shaderProgram, carBody);
 	glDrawArrays(mode, 0, 36);
 
 
 	//mainColor = vec3(0.8f, 0.0f, 0.0f);
 	//glUniform3fv(mainColorUniformLocation, 1, &mainColor[0]);
-	if (shaderProgram == colorShaderProgram) {
-		setColor(vec3(0.8f, 0.0f, 0.0f), colorShaderProgram, 1);
+	if (shaderProgram == Shaders::colorShaderProgram) {
+		Renderer::setColor(vec3(0.8f, 0.0f, 0.0f), Shaders::colorShaderProgram, 1);
 	}
-	useTexture(textureArray[4]);
+	Renderer::useTexture(Renderer::textureMap["RED"]);
 	//Car bumper front (Bonnet)
 	mat4 carBumperFront = translate(mat4(1.0f), posCarBumperFront) * rotate(mat4(1.0f), radians(rotCarBumperFront), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), scaleCarBumperFront);
 	//glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &carBumperFront[0][0]);
-	setWorldMatrix(shaderProgram, carBumperFront);
+	Renderer::setWorldMatrix(shaderProgram, carBumperFront);
 	glDrawArrays(mode, 0, 36);
 
 	//Car bumper back (Trunk)
 	mat4 carBumperBack = translate(mat4(1.0f), posCarBumperBack) * rotate(mat4(1.0f), radians(rotCarBumperBack), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), scaleCarBumperBack);
 	//glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &carBumperBack[0][0]);
-	setWorldMatrix(shaderProgram, carBumperBack);
+	Renderer::setWorldMatrix(shaderProgram, carBumperBack);
 	glDrawArrays(mode, 0, 36);
 
 	//mainColor = vec3(0.95f, 0.0f, 0.0f);
 	//glUniform3fv(mainColorUniformLocation, 1, &mainColor[0]);
-	if (shaderProgram == colorShaderProgram) {
-		setColor(vec3(0.95f, 0.0f, 0.0f), colorShaderProgram, 1);
+	if (shaderProgram == Shaders::colorShaderProgram) {
+		Renderer::setColor(vec3(0.95f, 0.0f, 0.0f), Shaders::colorShaderProgram, 1);
 	}
-	useTexture(textureArray[4]);
+	Renderer::useTexture(Renderer::textureMap["RED"]);
 	//Car roof
 	mat4 carRoof = translate(mat4(1.0f), posCarRoof) * rotate(mat4(1.0f), radians(rotCarRoof), vec3(0.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), scaleCarRoof);
 	//glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &carRoof[0][0]);
-	setWorldMatrix(shaderProgram, carRoof);
+	Renderer::setWorldMatrix(shaderProgram, carRoof);
 	glDrawArrays(mode, 0, 36);
 
 	//Might be needed for a fix.
@@ -284,29 +286,29 @@ void Car::drawWheel(mat4 transformations, int shaderProgram) {
 		setColor(vec3(0.4f, 0.4f, 0.4f), colorShaderProgram, 1);
 	}
 	*/
-	if (shaderProgram == colorShaderProgram) {
-		setColor(vec3(0.4f, 0.4f, 0.4f), colorShaderProgram, 1);
+	if (shaderProgram == Shaders::colorShaderProgram) {
+		Renderer::setColor(vec3(0.4f, 0.4f, 0.4f), Shaders::colorShaderProgram, 1);
 	}
 
-	if (shaderProgram == texturedShaderProgram) {
-		useTexture(textureArray[2]);
-		matProperties(0.3f, 1.0f, vec3(0.4f, 0.4f, 0.4f));
+	if (shaderProgram == Shaders::texturedShaderProgram) {
+		Renderer::useTexture(Renderer::textureMap["TIRE"]);
+		Renderer::matProperties(0.3f, 1.0f, vec3(0.4f, 0.4f, 0.4f));
 	}
 
 	mat4 wheelControlPoint = transformations;
 	
 	mat4 wheelFront = wheelControlPoint;
 	//glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &wheelFront[0][0]);
-	setWorldMatrix(shaderProgram, wheelFront);
+	Renderer::setWorldMatrix(shaderProgram, wheelFront);
 	glDrawArrays(mode == GL_TRIANGLES ? GL_TRIANGLE_FAN : mode == GL_LINES ? GL_LINE_LOOP : mode, 36, 16);
 
 	mat4 wheelBack = wheelControlPoint;
 	//glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &wheelBack[0][0]);
-	setWorldMatrix(shaderProgram, wheelBack);
+	Renderer::setWorldMatrix(shaderProgram, wheelBack);
 	glDrawArrays(mode == GL_TRIANGLES ? GL_TRIANGLE_FAN : mode == GL_LINES ? GL_LINE_LOOP : mode, 52, 16);
 
 	mat4 wheelSide = wheelControlPoint;
 	//glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &wheelSide[0][0]);
-	setWorldMatrix(shaderProgram, wheelSide);
+	Renderer::setWorldMatrix(shaderProgram, wheelSide);
 	glDrawArrays(mode == GL_TRIANGLES ? GL_TRIANGLE_STRIP : mode, 68, 34);
 }

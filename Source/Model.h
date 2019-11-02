@@ -1,6 +1,4 @@
 #pragma once
-#include "Model.h"
-#include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -9,13 +7,12 @@
 
 using namespace std;
 using namespace glm;
-
-class Scene {
+class Model {
 public:
-	Scene& getInstance();
+	Model();
 	void draw();
 private:
-	Scene();
-	static Scene* instance;
-	vector<Model> models;
+	vec3 position;
+	vec3 scale;
+	vec3 rotation;
 };

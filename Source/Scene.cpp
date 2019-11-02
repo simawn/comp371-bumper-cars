@@ -12,4 +12,7 @@ Scene::Scene() {
 }
 
 void Scene::draw() {
+	for (Model model : models) {
+		model.draw();
+	}
 }

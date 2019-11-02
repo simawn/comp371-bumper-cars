@@ -1,5 +1,7 @@
 #include "IO.h"
 #include "Setup.h"
+#include "CameraThird.h"
+#include "Renderer.h"
 #include <tuple>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -42,8 +44,85 @@ void IO::processInputs() {
 
 	if (glfwGetKey(Setup::window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(Setup::window, true);
+
+	if (glfwGetKey(Setup::window, GLFW_KEY_UP) == GLFW_PRESS) {
+		updateCameraPosition(0);
+	}
+
+	if (glfwGetKey(Setup::window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		updateCameraPosition(1);
+	}
+
+	if (glfwGetKey(Setup::window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		updateCameraPosition(2);
+	}
+
+	if (glfwGetKey(Setup::window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		updateCameraPosition(3);
+	}
+
+	if (glfwGetKey(Setup::window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+		updateCameraPosition(4);
+	}
+
+	if (glfwGetKey(Setup::window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
+		updateCameraPosition(5);
+	}
+
+	if (glfwGetKey(Setup::window, GLFW_KEY_HOME) == GLFW_PRESS) {
+	}
+
+	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+	}
+
+	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+	}
+
+	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
+	}
 }
 
-IO::IO() {
+void IO::updateCameraPosition(int dir) {
+	int eastWest = 0;
+	int northSouth = 0;
+	int upDown = 0;
 
+	switch (dir) {
+	case 0:
+		northSouth = -1;
+		break;
+	case 1:
+		northSouth = 1;
+		break;
+	case 2:
+		eastWest = -1;
+		break;
+	case 3:
+		eastWest = 1;
+		break;
+	case 4:
+		upDown = 1;
+		break;
+	case 5:
+		upDown = -1;
+		break;
+	}
+	vec3 cPos = CameraThird::getPosition();
+	vec3 cLookAt = CameraThird::getLookAt();
+	vec3 cUp = CameraThird::getUpVector();
+	float tick = Renderer::tick;
+	float moveSpeed = tick * CAM_SPEED;
+
+	vec3 newCPos = vec3(cPos.x + eastWest * (moveSpeed), 
+						cPos.y + upDown * (moveSpeed), 
+						cPos.z + northSouth * (moveSpeed));
+
+	vec3 newCLookAt = vec3(cLookAt.x + eastWest * (moveSpeed), 
+						   cLookAt.y + upDown * (moveSpeed), 
+						   cLookAt.z + northSouth * (moveSpeed));
+	vec3 newCUp = cUp;
+
+	CameraThird::updatePosition(newCPos, newCLookAt, newCUp);
 }
+
+IO::IO() {}

@@ -10,8 +10,6 @@
 using namespace std;
 using namespace glm;
 
-extern GLFWwindow* window;
-
 class IO {
 public:
 	static IO& getInstance();
@@ -27,4 +25,6 @@ private:
 	double currentMousePosY = 0;
 	double lastMousePosX = 0;
 	double lastMousePosY = 0;
+	const float CAM_SPEED = 20;
+	void updateCameraPosition(int dir);
 };

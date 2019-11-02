@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Source\CameraThird.h" />
     <ClInclude Include="..\Source\IO.h" />
     <ClInclude Include="..\Source\Model.h" />
     <ClInclude Include="..\Source\ModelCube.h" />
@@ -35,6 +36,7 @@
     <None Include="..\Source\textureVert.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\CameraThird.cpp" />
     <ClCompile Include="..\Source\IO.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Model.cpp" />

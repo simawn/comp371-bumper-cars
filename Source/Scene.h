@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 #include <vector>
+#define GLEW_STATIC 1 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -12,10 +13,10 @@ using namespace glm;
 
 class Scene {
 public:
-	Scene& getInstance();
-	void draw();
+	static Scene& getInstance();
+	static void draw();
 private:
 	Scene();
 	static Scene* instance;
-	vector<Model> models;
+	static vector<Model*> models;
 };

@@ -11,10 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\Car.h" />
+    <ClInclude Include="..\Source\Car.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Source\Global.h" />
     <ClInclude Include="..\Source\IO.h" />
     <ClInclude Include="..\Source\Model.h" />
+    <ClInclude Include="..\Source\ModelCube.h" />
     <ClInclude Include="..\Source\Renderer.h" />
     <ClInclude Include="..\Source\Scene.h" />
     <ClInclude Include="..\Source\Setup.h" />
@@ -36,10 +40,14 @@
     <None Include="..\Source\textureVert.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\Car.cpp" />
+    <ClCompile Include="..\Source\Car.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Source\IO.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Model.cpp" />
+    <ClCompile Include="..\Source\ModelCube.cpp" />
     <ClCompile Include="..\Source\Renderer.cpp" />
     <ClCompile Include="..\Source\Scene.cpp" />
     <ClCompile Include="..\Source\Setup.cpp" />

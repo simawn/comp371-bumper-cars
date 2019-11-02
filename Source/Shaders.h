@@ -5,12 +5,14 @@ using namespace std;
 class Shaders {
 public:
 	static Shaders& getInstance();
-	static int colorShaderProgram;
-	static int texturedShaderProgram;
-	static int shadowShaderProgram;
+	static int currentShaderProgram;
+	
 private:
 	Shaders();
 	static Shaders* instance;
 	string readFile(string filePath);
 	int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource);
+	int colorShaderProgram;
+	int texturedShaderProgram;
+	int shadowShaderProgram;
 };

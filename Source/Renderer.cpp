@@ -1,6 +1,6 @@
 #include "Renderer.h"
 #include "Shaders.h"
-
+#include "Scene.h"
 #include <string>
 #include <vector>
 #include <GL/glew.h>
@@ -25,16 +25,18 @@ Renderer& Renderer::getInstance() {
 }
 
 Renderer::Renderer() {
-	createDepthMap();
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	//createDepthMap(); messes initial render
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	setTexture();
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+	//Generate Scene
+	Scene::getInstance();
 }
 
 void Renderer::renderScene() {
-
+	Scene::draw();
 }
 
 void Renderer::createDepthMap() {
@@ -140,9 +142,9 @@ void Renderer::setWorldMatrix(int shaderProgram, mat4 worldMatrix) {
 }
 
 void Renderer::useTexture(GLuint textureID) {
-	glUseProgram(Shaders::texturedShaderProgram);
+	glUseProgram(Shaders::currentShaderProgram);
 	glActiveTexture(GL_TEXTURE0);
-	GLuint textureLocation = glGetUniformLocation(Shaders::texturedShaderProgram, "textureSampler");
+	GLuint textureLocation = glGetUniformLocation(Shaders::currentShaderProgram, "textureSampler");
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glUniform1i(textureLocation, 0);
 }
@@ -156,12 +158,12 @@ void Renderer::setColor(vec3 mainColor, GLuint location, int useColor) {
 }
 
 void Renderer::matProperties(float specStrength, float specHighlight, vec3 matSpecColor) {
-	GLuint specStrengthUniformLocation = glGetUniformLocation(Shaders::texturedShaderProgram, "specStrength");
+	GLuint specStrengthUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "specStrength");
 	glUniform1f(specStrengthUniformLocation, specStrength);
 
-	GLuint specHighlightUniformLocation = glGetUniformLocation(Shaders::texturedShaderProgram, "specHighlight");
+	GLuint specHighlightUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "specHighlight");
 	glUniform1f(specHighlightUniformLocation, specHighlight);
 
-	GLuint specColorUniformLocation = glGetUniformLocation(Shaders::texturedShaderProgram, "matSpecColor");
+	GLuint specColorUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "matSpecColor");
 	glUniform3fv(specColorUniformLocation, 1, &matSpecColor[0]);
 }

@@ -11,9 +11,7 @@
 using namespace std;
 
 Shaders* Shaders::instance = 0; 
-int Shaders::colorShaderProgram = 0;
-int Shaders::texturedShaderProgram = 0;
-int Shaders::shadowShaderProgram = 0;
+int Shaders::currentShaderProgram = 0;
 
 Shaders& Shaders::getInstance() {
 	if (instance == 0) instance = new Shaders();
@@ -28,6 +26,8 @@ Shaders::Shaders() {
 	colorShaderProgram = compileAndLinkShaders(tempVert[0].c_str(), tempFrag[0].c_str());
 	texturedShaderProgram = compileAndLinkShaders(tempVert[1].c_str(), tempFrag[1].c_str());
 	shadowShaderProgram = compileAndLinkShaders(tempVert[2].c_str(), tempFrag[2].c_str());
+
+	currentShaderProgram = colorShaderProgram;
 }
 
 string Shaders::readFile(string filePath) {

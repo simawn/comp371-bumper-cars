@@ -7,7 +7,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
-#include "Car.h"
 
 //std::vector<GLuint> textureArray;
 //int colorShaderProgram;
@@ -18,7 +17,6 @@ float dt;
 //GLuint worldMatrixLocation;
 bool enableTexture = true;
 bool enableShadow = true;
-Car car1;
 //unsigned int depthMap;
 GLFWwindow* window;
 int SCREEN_WIDTH;

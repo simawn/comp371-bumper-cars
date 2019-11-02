@@ -35,17 +35,17 @@ Renderer::Renderer() {
 	glDepthFunc(GL_LESS);
 	//Generate Scene
 	Scene::getInstance();
+	lastFrameTime = glfwGetTime();
 }
 
 void Renderer::updateTick() {
-	lastFrameTime = glfwGetTime();
 	tick = glfwGetTime() - lastFrameTime;
 	lastFrameTime += tick;
 }
 
 void Renderer::renderScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	Scene::draw();
+	Scene::draw(tick);
 	glfwSwapBuffers(Setup::window);
 }
 

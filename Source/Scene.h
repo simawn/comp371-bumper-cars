@@ -15,11 +15,11 @@ using namespace glm;
 class Scene {
 public:
 	static Scene& getInstance();
-	static void draw();
+	static void draw(float tick);
 	
 private:
 	Scene();
 	static Scene* instance;
-	static void update();
+	static void update(float tick);
 	static map<string, Model*> models;
 };

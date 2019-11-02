@@ -32,13 +32,15 @@ Scene::Scene() {
 	models["Cube2"] = cube2;
 }
 
-void Scene::update() {
-
+void Scene::update(float tick) {
+	cout << tick << endl;
+	Model* cube1 = models["Cube1"];
+	cube1->SetPosition(cube1->GetPosition() + vec3(tick));
 }
 
-void Scene::draw() {
+void Scene::draw(float tick) {
 
-	update();
+	update(tick);
 
 	for (auto const& model : models) {
 		model.second->Draw();

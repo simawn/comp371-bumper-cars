@@ -12,7 +12,6 @@
 #include <vector>
 
 //Custom classes
-#include "Global.h"
 #include "Shaders.h"
 #include "Setup.h"
 #include "IO.h"
@@ -62,16 +61,23 @@ int main(int argc, char*argv[])
 	renderer.setProjectionMatrix(Shaders::currentShaderProgram, projectionMatrix);
 	renderer.setViewMatrix(Shaders::currentShaderProgram, viewMatrix);
 
+	const double MAX_FPS = 60.0;
+	const double MAX_PERIOD = 1.0 / MAX_FPS;
+	double lastTime = 0.0;
+
     // Entering Main Loop
-    while(!glfwWindowShouldClose(Setup::window))
-    {
-		IO.updateMousePosition();
-		renderer.updateTick();
+    while(!glfwWindowShouldClose(Setup::window)) {
+		double t = glfwGetTime();
+		double dt = t - lastTime;
 
-		renderer.renderScene();
-        
+		if (dt >= MAX_PERIOD) {
+			lastTime = t;
 
-		IO.processInputs();
+			IO.updateMousePosition();
+			renderer.updateTick();
+			renderer.renderScene();
+			IO.processInputs();
+		}
     }
 
     // Shutdown GLFW

@@ -9,13 +9,12 @@
 using namespace std;
 using namespace glm;
 
-extern GLFWwindow* window;
-extern int SCREEN_WIDTH;
-extern int SCREEN_HEIGHT;
-
 class Setup {
 public:
 	static Setup& getInstance(int width, int height, string title);
+	static GLFWwindow* window;
+	static int SCREEN_WIDTH;
+	static int SCREEN_HEIGHT;
 private:
 	Setup(int width, int height, string title);
 	static Setup* instance;

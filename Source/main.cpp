@@ -57,19 +57,19 @@ int main(int argc, char*argv[])
 	const float NEAR = 0.01f;
 	const float FAR = 1000.0f;
 
-    mat4 projectionMatrix = perspective(FOV, (float) SCREEN_WIDTH / (float) SCREEN_HEIGHT, NEAR, FAR);
+    mat4 projectionMatrix = perspective(FOV, (float) setup.SCREEN_WIDTH / (float) setup.SCREEN_HEIGHT, NEAR, FAR);
 
 	renderer.setProjectionMatrix(Shaders::currentShaderProgram, projectionMatrix);
 	renderer.setViewMatrix(Shaders::currentShaderProgram, viewMatrix);
 
     // Entering Main Loop
-    while(!glfwWindowShouldClose(window))
+    while(!glfwWindowShouldClose(Setup::window))
     {
 		IO.updateMousePosition();
+		renderer.updateTick();
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		renderer.renderScene();
-        glfwSwapBuffers(window);
+        
 
 		IO.processInputs();
     }

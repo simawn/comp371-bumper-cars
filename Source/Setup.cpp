@@ -13,6 +13,9 @@ using namespace std;
 using namespace glm;
 
 Setup* Setup::instance = 0;
+GLFWwindow* Setup::window = 0;
+int Setup::SCREEN_WIDTH = 0;
+int Setup::SCREEN_HEIGHT = 0;
 
 Setup& Setup::getInstance(int width, int height, string title) {
 	if (instance == 0) instance = new Setup(width, height, title);

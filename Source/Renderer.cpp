@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Shaders.h"
 #include "Scene.h"
+#include "Setup.h"
 #include <string>
 #include <vector>
 #include <GL/glew.h>
@@ -18,6 +19,7 @@ Renderer* Renderer::instance = 0;
 map<string, GLuint> Renderer::textureMap = {};
 unsigned int Renderer::depthMap = 0;
 unsigned int Renderer::depthMapFBO = 0;
+float Renderer::tick = 0;
 
 Renderer& Renderer::getInstance() {
 	if (instance == 0) instance = new Renderer();
@@ -35,8 +37,16 @@ Renderer::Renderer() {
 	Scene::getInstance();
 }
 
+void Renderer::updateTick() {
+	lastFrameTime = glfwGetTime();
+	tick = glfwGetTime() - lastFrameTime;
+	lastFrameTime += tick;
+}
+
 void Renderer::renderScene() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	Scene::draw();
+	glfwSwapBuffers(Setup::window);
 }
 
 void Renderer::createDepthMap() {

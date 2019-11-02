@@ -2,6 +2,8 @@
 #include "Model.h"
 #include "ModelCube.h"
 #include <iostream>
+#include <string>
+#include <map>
 #define GLEW_STATIC 1 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -13,7 +15,7 @@ using namespace std;
 using namespace glm;
 
 Scene* Scene::instance = 0;
-vector<Model*> Scene::models = {};
+map<string, Model*> Scene::models = {};
 
 Scene& Scene::getInstance() {
 	if(instance == 0) instance = new Scene();
@@ -21,12 +23,26 @@ Scene& Scene::getInstance() {
 }
 
 Scene::Scene() {
-	Model* cube = new ModelCube(vec3(1.0f, 1.0f, 1.0f));
-	models.push_back(cube);
+	Model* cube1 = new ModelCube(vec3(1.0f, 1.0f, 1.0f));
+	Model* cube2 = new ModelCube(vec3(2.0f, 2.0f, 2.0f));
+
+	cube1->SetPosition(vec3(5.0f, 0.0f, 5.0f));
+
+	models["Cube1"] = cube1;
+	models["Cube2"] = cube2;
+}
+
+void Scene::update() {
+
 }
 
 void Scene::draw() {
-	for (Model* model : models) {
-		model->Draw();
+
+	update();
+
+	for (auto const& model : models) {
+		model.second->Draw();
 	}
 }
+
+

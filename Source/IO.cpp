@@ -1,4 +1,5 @@
 #include "IO.h"
+#include "Setup.h"
 #include <tuple>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -23,7 +24,7 @@ void IO::updateMousePosition() {
 pair<double, double> IO::getCurrentMousePosition() {
 	lastMousePosX = currentMousePosX;
 	lastMousePosY = currentMousePosY;
-	glfwGetCursorPos(window, &currentMousePosX, &currentMousePosY);
+	glfwGetCursorPos(Setup::window, &currentMousePosX, &currentMousePosY);
 	return make_pair(currentMousePosX, currentMousePosY);
 }
 
@@ -39,8 +40,8 @@ void IO::processInputs() {
 
 	glfwPollEvents();
 
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(Setup::window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(Setup::window, true);
 }
 
 IO::IO() {

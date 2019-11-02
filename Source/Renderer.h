@@ -32,6 +32,8 @@ public:
 
 	static void matProperties(float specStrength, float specHighlight, vec3 matSpecColor);
 
+	static float tick;
+	void updateTick();
 	void renderScene();
 private:
 	static Renderer* instance;
@@ -39,4 +41,5 @@ private:
 	void createDepthMap();
 	void setTexture();
 	int loadTexture(char * imagepath);
+	float lastFrameTime;
 };

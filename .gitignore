@@ -3,6 +3,8 @@
 Build/
 *.log
 .vs/
+*.blend
+*.blend1
 
 # Prerequisites
 *.d
@@ -11,7 +13,7 @@ Build/
 *.slo
 *.lo
 *.o
-*.obj
+#*.obj
 
 # Precompiled Headers
 *.gch

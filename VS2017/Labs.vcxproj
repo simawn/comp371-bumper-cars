@@ -14,7 +14,9 @@
     <ClInclude Include="..\Source\CameraThird.h" />
     <ClInclude Include="..\Source\IO.h" />
     <ClInclude Include="..\Source\Model.h" />
+    <ClInclude Include="..\Source\ModelBumperCar.h" />
     <ClInclude Include="..\Source\ModelCube.h" />
+    <ClInclude Include="..\Source\OBJloaderV2.h" />
     <ClInclude Include="..\Source\Renderer.h" />
     <ClInclude Include="..\Source\Scene.h" />
     <ClInclude Include="..\Source\Setup.h" />
@@ -40,7 +42,9 @@
     <ClCompile Include="..\Source\IO.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Model.cpp" />
+    <ClCompile Include="..\Source\ModelBumperCar.cpp" />
     <ClCompile Include="..\Source\ModelCube.cpp" />
+    <ClCompile Include="..\Source\OBJloaderV2.cpp" />
     <ClCompile Include="..\Source\Renderer.cpp" />
     <ClCompile Include="..\Source\Scene.cpp" />
     <ClCompile Include="..\Source\Setup.cpp" />

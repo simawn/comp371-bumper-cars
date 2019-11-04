@@ -2,7 +2,7 @@
 #include "Model.h"
 #include <map>
 #include <string>
-#define GLEW_STATIC 1 
+//#define GLEW_STATIC 1 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -22,4 +22,5 @@ private:
 	static Scene* instance;
 	static void update(float tick);
 	static map<string, Model*> models;
+	static float acc;
 };

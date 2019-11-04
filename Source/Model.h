@@ -8,10 +8,18 @@
 //
 
 #pragma once
-
+#define GLEW_STATIC 1
+#include "OBJloaderV2.h"
 #include <vector>
-
+#include <string>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/common.hpp>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+
+using namespace glm;
+using namespace std;
 
 class Model
 {
@@ -32,10 +40,14 @@ public:
 	glm::vec3 GetScaling() const		{ return mScaling; }
 	glm::vec3 GetRotationAxis() const	{ return mRotationAxis; }
 	float     GetRotationAngle() const	{ return mRotationAngleInDegrees; }
-
+	GLuint setupModelEBO(string path, int& vertexCount);
 protected:
 	glm::vec3 mPosition;
 	glm::vec3 mScaling;
 	glm::vec3 mRotationAxis;
 	float     mRotationAngleInDegrees;
+	vector<int> vertIndices;
+	vector<vec3> verts;
+	vector<vec2> uvs;
+	vector<vec3> norms;
 };

@@ -73,6 +73,14 @@ void IO::processInputs() {
 	}
 
 	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+		float moveDiffY = getMouseMoveDifference().second;
+		vec3 cPos = CameraThird::getPosition();
+		vec3 cLookAt = CameraThird::getLookAt();
+		vec3 cUp = CameraThird::getUpVector();
+		float tick = Renderer::tick;
+		vec3 moveSpeed = vec3(1.0f + (moveDiffY * tick));
+
+		CameraThird::updatePosition(cPos * moveSpeed, cLookAt * moveSpeed, cUp * moveSpeed);
 	}
 
 	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {

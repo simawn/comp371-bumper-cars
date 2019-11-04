@@ -10,11 +10,6 @@
 #include "ModelCube.h"
 #include "Shaders.h"
 #include "Renderer.h"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/common.hpp>
 
 using namespace glm;
 

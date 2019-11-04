@@ -1,7 +1,7 @@
 #include "Setup.h"
 #include <string>
 #include <iostream>
-#define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
+//#define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
 
 #include <GLFW/glfw3.h>

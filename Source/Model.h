@@ -9,9 +9,12 @@
 
 #pragma once
 #define GLEW_STATIC 1
-#include "OBJloaderV2.h"
+//#include "OBJloaderV2.h"
+#include "OBJ_Loader.h"
 #include <vector>
+#include <map>
 #include <string>
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
 #include <GL/glew.h>
@@ -40,7 +43,9 @@ public:
 	glm::vec3 GetScaling() const		{ return mScaling; }
 	glm::vec3 GetRotationAxis() const	{ return mRotationAxis; }
 	float     GetRotationAngle() const	{ return mRotationAngleInDegrees; }
-	GLuint setupModelEBO(string path, int& vertexCount);
+	GLuint setupMeshEBO(objl::Mesh);
+	vector<objl::Mesh> loadObj(string path);
+	map<GLuint, int> meshes;
 protected:
 	glm::vec3 mPosition;
 	glm::vec3 mScaling;

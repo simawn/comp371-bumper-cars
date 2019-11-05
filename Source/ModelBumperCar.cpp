@@ -1,9 +1,12 @@
 #include "ModelBumperCar.h"
-#include "OBJloaderV2.h"
+//#include "OBJloaderV2.h"
 #include "Renderer.h"
 
 ModelBumperCar::ModelBumperCar() {
-	bumperCarVAO = setupModelEBO("../Models/bumperCar_2.obj", bumperCarVertices);
+	vector<objl::Mesh> obj = loadObj("../Models/bumperCar_2.obj");
+	for (objl::Mesh mesh : obj) {
+		meshes[setupMeshEBO(mesh)] = mesh.Vertices.size();
+	}
 }
 
 ModelBumperCar::~ModelBumperCar() {
@@ -13,7 +16,9 @@ void ModelBumperCar::Update(float dt) {
 }
 
 void ModelBumperCar::Draw() {
-	glBindVertexArray(bumperCarVAO);
-	Renderer::setWorldMatrix(Shaders::currentShaderProgram, GetWorldMatrix());
-	glDrawElements(GL_TRIANGLES, bumperCarVertices, GL_UNSIGNED_INT, 0);
+	for (auto const& mesh : meshes) {
+		glBindVertexArray(mesh.first);
+		Renderer::setWorldMatrix(Shaders::currentShaderProgram, GetWorldMatrix());
+		glDrawElements(GL_TRIANGLES, mesh.second, GL_UNSIGNED_INT, 0);
+	}
 }

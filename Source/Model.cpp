@@ -9,6 +9,7 @@
 
 #include "Model.h"
 
+
 using namespace std;
 using namespace glm;
 
@@ -48,15 +49,29 @@ void Model::SetRotation(glm::vec3 axis, float angleDegrees) {
 	mRotationAngleInDegrees = angleDegrees;
 }
 
-GLuint Model::setupModelEBO(string path, int& vertexCount) {
+GLuint Model::setupMeshEBO(objl::Mesh mesh) {
 	vector<int> vertexIndices; //The contiguous sets of three indices of vertices, normals and UVs, used to make a triangle
+	
 	vector<glm::vec3> vertices;
 	vector<glm::vec3> normals;
 	vector<glm::vec2> UVs;
 
+	for (int i = 0; i < mesh.Vertices.size(); i++) {
+		vertices.push_back(vec3(mesh.Vertices[i].Position.X, mesh.Vertices[i].Position.Y, mesh.Vertices[i].Position.Z));
+		normals.push_back(vec3(mesh.Vertices[i].Normal.X, mesh.Vertices[i].Normal.Y, mesh.Vertices[i].Normal.Z));
+		UVs.push_back(vec2(mesh.Vertices[i].TextureCoordinate.X, mesh.Vertices[i].TextureCoordinate.Y));
+	}
+
+	for (int i = 0; i < mesh.Indices.size(); i++) {
+		vertexIndices.push_back(mesh.Indices[i]);
+	}
+	
+	
+	
+
 	//read the vertices from the cube.obj file
 	//We won't be needing the normals or UVs for this program
-	loadOBJ2(path.c_str(), vertexIndices, vertices, normals, UVs);
+	//loadOBJ2(path.c_str(), vertexIndices, vertices, normals, UVs);
 
 	GLuint VAO;
 	glGenVertexArrays(1, &VAO);
@@ -94,6 +109,15 @@ GLuint Model::setupModelEBO(string path, int& vertexCount) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertexIndices.size() * sizeof(int), &vertexIndices.front(), GL_STATIC_DRAW);
 
 	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
-	vertexCount = vertexIndices.size();
+	//vertexCount = vertexIndices.size();
 	return VAO;
+}
+
+vector<objl::Mesh> Model::loadObj(string path) {
+	objl::Loader Loader;
+	bool loadout = Loader.LoadFile(path);
+	if (loadout) return Loader.LoadedMeshes;
+	else {
+		cout << "Error loading obj" << endl;
+	}
 }

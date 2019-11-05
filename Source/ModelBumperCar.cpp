@@ -3,7 +3,7 @@
 #include "Renderer.h"
 
 ModelBumperCar::ModelBumperCar() {
-	bumperCarVAO = setupModelEBO("../Models/bumperCar.obj", bumperCarVertices);
+	bumperCarVAO = setupModelEBO("../Models/bumperCar_2.obj", bumperCarVertices);
 }
 
 ModelBumperCar::~ModelBumperCar() {

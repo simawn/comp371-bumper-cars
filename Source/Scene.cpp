@@ -46,7 +46,7 @@ void Scene::update(float tick) {
 	cube1->SetPosition(cube1->GetPosition() + vec3(tick));
 
 	Model* bc1 = models["bc1"];
-	bc1->SetRotation(vec3(0.0f, 1.0f, 0.0f), acc * 200);
+	bc1->SetRotation(vec3(0.0f, 1.0f, 0.0f), acc * 100);
 	acc += tick;
 }
 

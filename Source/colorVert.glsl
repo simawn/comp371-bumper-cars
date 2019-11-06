@@ -10,7 +10,7 @@ uniform vec3 mainColor; //overwrites other colors
 
 out vec3 vertexColor;
 void main(){
-   vertexColor = aColor;
+   vertexColor = mainColor;
    mat4 modelViewProjection = projectionMatrix * viewMatrix * worldMatrix;
    gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);
 };

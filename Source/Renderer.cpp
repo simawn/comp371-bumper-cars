@@ -28,7 +28,7 @@ Renderer& Renderer::getInstance() {
 
 Renderer::Renderer() {
 	//createDepthMap(); messes initial render
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	setTexture();
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -159,12 +159,9 @@ void Renderer::useTexture(GLuint textureID) {
 	glUniform1i(textureLocation, 0);
 }
 
-void Renderer::setColor(vec3 mainColor, GLuint location, int useColor) {
-	GLint mainColorUniformLocation = glGetUniformLocation(location, "mainColor");
+void Renderer::setColor(vec3 mainColor) {
+	GLint mainColorUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "mainColor");
 	glUniform3fv(mainColorUniformLocation, 1, &mainColor[0]);
-
-	GLuint useColorUniformLocation = glGetUniformLocation(location, "useColor");
-	glUniform1i(useColorUniformLocation, useColor);
 }
 
 void Renderer::matProperties(float specStrength, float specHighlight, vec3 matSpecColor) {

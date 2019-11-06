@@ -13,6 +13,7 @@
 #include "OBJ_Loader.h"
 #include <vector>
 #include <map>
+#include <tuple>
 #include <string>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
@@ -45,7 +46,7 @@ public:
 	float     GetRotationAngle() const	{ return mRotationAngleInDegrees; }
 	GLuint setupMeshEBO(objl::Mesh);
 	vector<objl::Mesh> loadObj(string path);
-	map<GLuint, int> meshes;
+	vector<tuple<objl::Mesh, GLuint, int>> meshes;
 protected:
 	glm::vec3 mPosition;
 	glm::vec3 mScaling;

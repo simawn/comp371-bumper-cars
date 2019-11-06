@@ -159,8 +159,8 @@ void Renderer::useTexture(GLuint textureID) {
 	glUniform1i(textureLocation, 0);
 }
 
-void Renderer::setColor(vec3 mainColor) {
-	GLint mainColorUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "mainColor");
+void Renderer::setDiffuseColor(vec3 mainColor) {
+	GLint mainColorUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "diffuseColor");
 	glUniform3fv(mainColorUniformLocation, 1, &mainColor[0]);
 }
 

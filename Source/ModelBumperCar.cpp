@@ -22,7 +22,7 @@ void ModelBumperCar::Draw() {
 		glBindVertexArray(get<1>(mesh));
 		Renderer::setWorldMatrix(Shaders::currentShaderProgram, GetWorldMatrix());
 		objl::Material meshMat = get<0>(mesh).MeshMaterial;
-		Renderer::setColor(vec3(meshMat.Kd.X, meshMat.Kd.Y, meshMat.Kd.Z));
+		Renderer::setDiffuseColor(vec3(meshMat.Kd.X, meshMat.Kd.Y, meshMat.Kd.Z));
 		glDrawElements(GL_TRIANGLES, get<2>(mesh), GL_UNSIGNED_INT, 0);
 	}
 }

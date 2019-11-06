@@ -17,6 +17,7 @@
     <ClInclude Include="..\Source\ModelBumperCar.h" />
     <ClInclude Include="..\Source\ModelCube.h" />
     <ClInclude Include="..\Source\OBJloaderV2.h" />
+    <ClInclude Include="..\Source\OBJ_Loader.h" />
     <ClInclude Include="..\Source\Renderer.h" />
     <ClInclude Include="..\Source\Scene.h" />
     <ClInclude Include="..\Source\Setup.h" />

@@ -18,16 +18,21 @@ Shaders& Shaders::getInstance() {
 	return *instance;
 }
 
+void Shaders::setCurrentShaderProgram(int program) {
+	currentShaderProgram = program;
+}
+
 Shaders::Shaders() {
-	string tempVert[] = { readFile("../Source/colorVert.glsl"), readFile("../Source/textureVert.glsl"), readFile("../Source/shadowVert.glsl") };
-	string tempFrag[] = { readFile("../Source/colorFrag.glsl"), readFile("../Source/textureFrag.glsl"), readFile("../Source/shadowFrag.glsl") };
+	string tempVert[] = { readFile("../Source/colorVert.glsl"), readFile("../Source/textureVert.glsl"), readFile("../Source/shadowVert.glsl"), readFile("../Source/sceneVert.glsl") };
+	string tempFrag[] = { readFile("../Source/colorFrag.glsl"), readFile("../Source/textureFrag.glsl"), readFile("../Source/shadowFrag.glsl"), readFile("../Source/sceneFrag.glsl") };
 
 	
 	colorShaderProgram = compileAndLinkShaders(tempVert[0].c_str(), tempFrag[0].c_str());
 	texturedShaderProgram = compileAndLinkShaders(tempVert[1].c_str(), tempFrag[1].c_str());
 	shadowShaderProgram = compileAndLinkShaders(tempVert[2].c_str(), tempFrag[2].c_str());
+	sceneShaderProgram = compileAndLinkShaders(tempVert[3].c_str(), tempFrag[3].c_str());
 
-	currentShaderProgram = colorShaderProgram;
+	currentShaderProgram = sceneShaderProgram;
 }
 
 string Shaders::readFile(string filePath) {

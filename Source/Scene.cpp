@@ -1,19 +1,5 @@
 #include "Scene.h"
 
-#include "Model.h"
-#include "ModelCube.h"
-#include "ModelBumperCar.h"
-
-#include <iostream>
-#include <string>
-#include <map>
-//#define GLEW_STATIC 1 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/common.hpp>
-
 using namespace std;
 using namespace glm;
 
@@ -29,15 +15,18 @@ Scene& Scene::getInstance() {
 Scene::Scene() {
 	Model* cube1 = new ModelCube(vec3(1.0f, 1.0f, 1.0f));
 	Model* cube2 = new ModelCube(vec3(2.0f, 2.0f, 2.0f));
+	Model* ground = new ModelCube(vec3(100.0f, 0.1f, 100.0f));
 	Model* bumperCar1 = new ModelBumperCar();
-
+	Light* lightPoint1 = new LightPoint(vec3(10.1f, 100.0f, 0.1f));
+	
 	cube1->SetPosition(vec3(5.0f, 0.0f, 5.0f));
 	cube2->SetPosition(vec3(5.0f, 0.0f, 5.0f));
 	bumperCar1->SetScaling(vec3(5.0f));
-
+	bumperCar1->SetPosition(vec3(0.0f, 0.0f, 5.0f));
 	models["Cube1"] = cube1;
 	models["Cube2"] = cube2;
 	models["bc1"] = bumperCar1;
+	models["ground"] = ground;
 }
 
 void Scene::update(float tick) {

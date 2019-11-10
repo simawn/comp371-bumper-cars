@@ -6,7 +6,7 @@ class Shaders {
 public:
 	static Shaders& getInstance();
 	static int currentShaderProgram;
-	
+	static void setCurrentShaderProgram(int program);
 private:
 	Shaders();
 	static Shaders* instance;
@@ -15,4 +15,5 @@ private:
 	int colorShaderProgram;
 	int texturedShaderProgram;
 	int shadowShaderProgram;
+	int sceneShaderProgram;
 };

@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClInclude Include="..\Source\CameraThird.h" />
     <ClInclude Include="..\Source\IO.h" />
+    <ClInclude Include="..\Source\Light.h" />
+    <ClInclude Include="..\Source\LightPoint.h" />
     <ClInclude Include="..\Source\Model.h" />
     <ClInclude Include="..\Source\ModelBumperCar.h" />
     <ClInclude Include="..\Source\ModelCube.h" />
@@ -33,6 +35,8 @@
   <ItemGroup>
     <None Include="..\Source\colorFrag.glsl" />
     <None Include="..\Source\colorVert.glsl" />
+    <None Include="..\Source\sceneFrag.glsl" />
+    <None Include="..\Source\sceneVert.glsl" />
     <None Include="..\Source\shadowFrag.glsl" />
     <None Include="..\Source\shadowVert.glsl" />
     <None Include="..\Source\textureFrag.glsl" />
@@ -41,6 +45,8 @@
   <ItemGroup>
     <ClCompile Include="..\Source\CameraThird.cpp" />
     <ClCompile Include="..\Source\IO.cpp" />
+    <ClCompile Include="..\Source\Light.cpp" />
+    <ClCompile Include="..\Source\LightPoint.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Model.cpp" />
     <ClCompile Include="..\Source\ModelBumperCar.cpp" />

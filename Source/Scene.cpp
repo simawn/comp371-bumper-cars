@@ -17,7 +17,7 @@ Scene::Scene() {
 	Model* cube2 = new ModelCube(vec3(2.0f, 2.0f, 2.0f));
 	Model* ground = new ModelCube(vec3(100.0f, 0.1f, 100.0f));
 	Model* bumperCar1 = new ModelBumperCar();
-	Light* lightPoint1 = new LightPoint(vec3(10.1f, 100.0f, 0.1f));
+	Light* lightPoint1 = new LightPoint(vec3(0.0f, 10.0f, 0.0f));
 	
 	cube1->SetPosition(vec3(5.0f, 0.0f, 5.0f));
 	cube2->SetPosition(vec3(5.0f, 0.0f, 5.0f));

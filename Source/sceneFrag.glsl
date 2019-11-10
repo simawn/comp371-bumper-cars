@@ -44,4 +44,6 @@ void main() {
 	//output
 	FragColor = vec4(matAmbientColor + matDiffuse + matSpecColor, 1.0f);
 	//FragColor = vec4(diffuseColor.r, diffuseColor.g, diffuseColor.b, 1.0f);
+	//Debug
+	//FragColor = vec4(lightPoint.x, lightPoint.y, lightPoint.z, 1.0f);
 }

@@ -13,7 +13,7 @@ void LightPoint::setPosition(vec3 pos) {
 void LightPoint::setShaderLocation() {
 	glUseProgram(Shaders::currentShaderProgram);
 	GLuint lightPointLocation = glGetUniformLocation(Shaders::currentShaderProgram, "lightPoint");
-	glUniform3fv(lightPointLocation, GL_FALSE, &position[0]);
-	std::cout << "In setShaderLocation " << lightPointLocation << ": " << to_string(position) << endl;
+	glUniform3fv(lightPointLocation, 1, &position[0]);
+	std::cout << "In setShaderLocation " << lightPointLocation << ": " << &position[0] << endl;
 }
 

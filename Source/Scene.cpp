@@ -16,7 +16,7 @@ Scene& Scene::getInstance() {
 Scene::Scene() {
 	Model* cube1 = new ModelCube(vec3(1.0f, 1.0f, 1.0f));
 	Model* cube2 = new ModelCube(vec3(2.0f, 2.0f, 2.0f));
-	Model* ground = new ModelCube(vec3(100.0f, 0.1f, 100.0f));
+	Model* ground = new ModelCube(vec3(50.0f, 0.1f, 50.0f));
 	Model* bumperCar1 = new ModelBumperCar();
 	Model* bumperCar2 = new ModelBumperCar();
 	Model* bumperCar3 = new ModelBumperCar();
@@ -41,6 +41,9 @@ Scene::Scene() {
 	bumperCar5->SetScaling(vec3(5.0f));
 
 	bumperCar1->SetPosition(vec3(0.0f, 0.0f, 5.0f));
+	bumperCar2->SetRotation(bumperCar2->GetRotationAxis(), 45);
+	bumperCar3->SetRotation(bumperCar3->GetRotationAxis(), 90);
+	bumperCar4->SetRotation(bumperCar4->GetRotationAxis(), 75);
 
 	models["Cube1"] = cube1;
 	models["Cube2"] = cube2;

@@ -4,6 +4,7 @@
 //#include "Renderer.h"
 
 #include <vector>
+#include <map>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -21,6 +22,6 @@ public:
 private:
 	Movement();
 	static Movement* instance;
-	vector<Model*> movingObjects;
+	map<Model*, float> movingObjects;
 	float generateRandomFloat(); //Between 0 and 1
 };

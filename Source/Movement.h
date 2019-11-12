@@ -1,5 +1,6 @@
 #pragma once
 #include "Model.h"
+#include <time.h>
 //#include "Renderer.h"
 
 #include <vector>
@@ -21,4 +22,5 @@ private:
 	Movement();
 	static Movement* instance;
 	vector<Model*> movingObjects;
+	float generateRandomFloat(); //Between 0 and 1
 };

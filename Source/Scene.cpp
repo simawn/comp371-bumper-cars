@@ -6,6 +6,7 @@ using namespace glm;
 Scene* Scene::instance = 0;
 map<string, Model*> Scene::models = {};
 float Scene::acc = 0;
+Movement& Scene::movement = Movement::getInstance();
 
 Scene& Scene::getInstance() {
 	if(instance == 0) instance = new Scene();
@@ -18,7 +19,10 @@ Scene::Scene() {
 	Model* ground = new ModelCube(vec3(100.0f, 0.1f, 100.0f));
 	Model* bumperCar1 = new ModelBumperCar();
 	Light* lightPoint1 = new LightPoint(vec3(0.0f, 10.0f, 0.0f));
-	
+
+	//Controls car movements
+	movement.addObject(bumperCar1);
+
 	cube1->SetPosition(vec3(5.0f, 0.0f, 5.0f));
 	cube2->SetPosition(vec3(5.0f, 0.0f, 5.0f));
 	bumperCar1->SetScaling(vec3(5.0f));
@@ -30,13 +34,8 @@ Scene::Scene() {
 }
 
 void Scene::update(float tick) {
-	//cout << tick << endl;
-	Model* cube1 = models["Cube1"];
-	cube1->SetPosition(cube1->GetPosition() + vec3(tick));
-
-	Model* bc1 = models["bc1"];
-	bc1->SetRotation(vec3(0.0f, 1.0f, 0.0f), acc * 100);
-	acc += tick;
+	//Update movement
+	movement.updateMovements();
 }
 
 void Scene::draw(float tick) {

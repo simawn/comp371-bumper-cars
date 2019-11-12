@@ -3,6 +3,8 @@
 #include "Model.h"
 #include "ModelCube.h"
 #include "ModelBumperCar.h"
+#include "Movement.h"
+
 #include <map>
 #include <string>
 #include <iostream>
@@ -27,4 +29,5 @@ private:
 	static void update(float tick);
 	static map<string, Model*> models;
 	static float acc;
+	static Movement& movement;
 };

@@ -17,6 +17,7 @@ Scene::Scene() {
 	Model* cube1 = new ModelCube(vec3(1.0f, 1.0f, 1.0f));
 	Model* cube2 = new ModelCube(vec3(2.0f, 2.0f, 2.0f));
 	Model* ground = new ModelCube(vec3(50.0f, 0.1f, 50.0f));
+	//Model* ground = new ModelCube(vec3(5.0f, 1.0f, 7.5f)); //reference for a single car
 	Model* bumperCar1 = new ModelBumperCar();
 	Model* bumperCar2 = new ModelBumperCar();
 	Model* bumperCar3 = new ModelBumperCar();

@@ -20,12 +20,13 @@ float Movement::generateRandomFloat() {
 }
 
 void Movement::addObject(Model * model) {
-	movingObjects[model][0] = 0.0;
+	movingObjects[model][0] = 0.0; //Random float for behaviour
 	movingObjects[model][1] = generateRandomFloat() * 20 + 60; //Max foward Step
-	movingObjects[model][2] = 0.0;
+	movingObjects[model][2] = 0.0; //Current foward step
 	movingObjects[model][3] = generateRandomFloat() * 20 + 60; //Max rotate step
-	movingObjects[model][4] = 0.0;
-	movingObjects[model][5] = 0.0;
+	movingObjects[model][4] = 0.0; //Current rotate step
+	movingObjects[model][5] = 0.0; //state: stuck or unstuck
+	movingObjects[model][6] = generateRandomFloat() / 3 + 0.1; //Car Speed
 }
 
 void Movement::updateMovements() {
@@ -37,23 +38,9 @@ void Movement::updateMovements() {
 		float* objMaxRotStep = &object.second[3];
 		float* objCurRotSteps = &object.second[4];
 		float* objCurState = &object.second[5];
+		float* objCarSpeed = &object.second[6];
 
-		/*
-		int axisX = 0; // 1 OR 0
-		int axisZ = 0; // 1 OR 0
-		int rotate = 0; // 1 OR 0
-		int rotateDir = 1; // 1 OR -1
-		int dirX = 1; // 1 OR -1
-		int dirZ = 1; // 1 OR -1
-		generateRandomFloat() >= 0.5 ? axisX = 1 : axisX = 0;
-		generateRandomFloat() >= 0.5 ? axisZ = 1 : axisZ = 0;
-		generateRandomFloat() >= 0.5 ? rotate = 1 : rotate = 0;
-		generateRandomFloat() >= 0.5 ? rotateDir = -1 : rotateDir = 1;
-		generateRandomFloat() >= 0.5 ? dirX = -1 : dirX = 1;
-		generateRandomFloat() >= 0.5 ? dirZ = -1 : dirZ = 1;
-		*/
-		
-		float r = 0.15; // Car speed
+		float r = *objCarSpeed;
 		
 		vec3 carPosition = model ->GetPosition();
 		//Move forward only if in range
@@ -85,7 +72,7 @@ void Movement::updateMovements() {
 					*objCurFowSteps = 0.0;
 				}
 			}
-		} else { //Obj is stuck
+		} else { //Obj is stuck, force turn it
 			if (*objRandNum == 0.0) *objRandNum = generateRandomFloat();
 			int stuckRotateDir = *objRandNum >= 0.5 ? 1 : -1;
 			model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + 3 * stuckRotateDir);
@@ -93,36 +80,5 @@ void Movement::updateMovements() {
 			*objCurRotSteps = 0.0;
 			*objCurFowSteps = 0.0;
 		}
-
-		// Obj is stuck
-
-
-
-
-
-
-
-		
-		/*
-		if (isInRange && objCurFowSteps <= objMaxFowStep) {
-			objRandNum = 0.0;
-			model->SetPosition(nextPosition);
-			objCurFowSteps += 1;
-		}
-		if (!isInRange) {
-			if (objRandNum == 0.0) objRandNum = generateRandomFloat();
-			int stuckRotateDir = objRandNum >= 0.5 ? 1 : -1;
-			model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + 3 * stuckRotateDir);
-		} else {
-			if (objCurFowSteps > objMaxFowStep && objCurRotSteps <= objMaxRotStep) {
-				model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + generateRandomFloat() * 10 * rotate * rotateDir);
-				objCurRotSteps += 1;
-				if (objCurRotSteps > objMaxRotStep) {
-					objCurFowSteps = 0;
-					objCurRotSteps = 0;
-				}
-			}
-		}
-		*/
 	}
 }

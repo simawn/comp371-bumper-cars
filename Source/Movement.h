@@ -24,7 +24,7 @@ private:
 	Movement();
 	static Movement* instance;
 	//Stores movement properties of the moving objects
-	map<Model*, float[6]> movingObjects;
+	map<Model*, float[7]> movingObjects;
 	//float[3]
 	//[0] stores a random int that defines the behaviour of the object
 	//[1] ideal max step size for foward movement
@@ -34,5 +34,6 @@ private:
 	//[5] stores the current state of the obj
 		//0: can move
 		//1: stuck
+	//[6] car speed
 	float generateRandomFloat(); //Between 0 and 1
 };

@@ -5,6 +5,7 @@ using namespace std;
 using namespace glm;
 
 Movement* Movement::instance = 0;
+Collision& Movement::collision = Collision::getInstance();
 
 Movement& Movement::getInstance() {
 	if (instance == 0) instance = new Movement();
@@ -26,7 +27,9 @@ void Movement::addObject(Model * model) {
 	movingObjects[model][3] = generateRandomFloat() * 20 + 60; //Max rotate step
 	movingObjects[model][4] = 0.0; //Current rotate step
 	movingObjects[model][5] = 0.0; //state: stuck or unstuck
-	movingObjects[model][6] = generateRandomFloat() / 3 + 0.1; //Car Speed
+	movingObjects[model][6] = generateRandomFloat() / 4 + 0.1; //Car Speed, min speed is 0.1
+	
+	collision.addObject(model);
 }
 
 void Movement::updateMovements() {
@@ -50,11 +53,14 @@ void Movement::updateMovements() {
 												);
 		bool isInRange = nextPosition.x >= -21 && nextPosition.x <= 21 && nextPosition.z >= -21 && nextPosition.z <= 21;
 		
+		//Is it within boundary?
 		isInRange ? *objCurState = 0.0 : *objCurState = 1.0;
+
+		//Is it colliding with someone?
+		if (isInRange) collision.IsColliding(model) ? *objCurState = 1.0 : *objCurState = 0.0;
 
 		// Obj is not stuck
 		if (*objCurState == 0.0) {
-			*objRandNum = 0.0; //Resets behaviour
 			//Foward steps met?
 			if (*objCurFowSteps <= *objMaxFowStep) {
 				model->SetPosition(nextPosition);
@@ -70,6 +76,7 @@ void Movement::updateMovements() {
 				if (*objCurRotSteps > *objMaxRotStep) { //Rotated enough, reset step counts
 					*objCurRotSteps = 0.0;
 					*objCurFowSteps = 0.0;
+					*objRandNum = 0.0; //Resets behaviour
 				}
 			}
 		} else { //Obj is stuck, force turn it

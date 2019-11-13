@@ -1,5 +1,6 @@
 #pragma once
 #include "Model.h"
+#include "Collision.h"
 #include <time.h>
 //#include "Renderer.h"
 
@@ -36,4 +37,5 @@ private:
 		//1: stuck
 	//[6] car speed
 	float generateRandomFloat(); //Between 0 and 1
+	static Collision& collision;
 };

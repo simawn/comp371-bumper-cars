@@ -15,7 +15,7 @@ class Collision {
 public:
 	static Collision& getInstance();
 	void addObject(Model* model);
-	void checkCollisions();
+	bool IsColliding(Model* model);
 private:
 	Collision();
 	static Collision* instance;

@@ -41,7 +41,12 @@ Scene::Scene() {
 	bumperCar4->SetScaling(vec3(5.0f));
 	bumperCar5->SetScaling(vec3(5.0f));
 
-	bumperCar1->SetPosition(vec3(0.0f, 0.0f, 5.0f));
+	bumperCar1->SetPosition(vec3(0.0f, 0.0f, 0.0f));
+	bumperCar2->SetPosition(vec3(-10.0f, 0.0f, -10.0f));
+	bumperCar3->SetPosition(vec3(-5.0f, 0.0f, -5.0f));
+	bumperCar4->SetPosition(vec3(0.0f, 0.0f, 10.0f));
+	bumperCar5->SetPosition(vec3(5.0f, 0.0f, 5.0f));
+
 	bumperCar2->SetRotation(bumperCar2->GetRotationAxis(), 45);
 	bumperCar3->SetRotation(bumperCar3->GetRotationAxis(), 90);
 	bumperCar4->SetRotation(bumperCar4->GetRotationAxis(), 75);

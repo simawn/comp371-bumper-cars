@@ -74,8 +74,9 @@ void main() {
 	vec3 R = reflect(-L, N);
 	float cosAlpha = pow(max(dot(E, R), 0.0), 64);
 
+	vec3 matAmbient = matAmbientColor;
 	vec3 matDiffuse = matDiffuseColor * lightColor * lightPower * cosTheta / (distance * distance);
-	vec3 matSpecualar = matSpecColor * lightColor * cosAlpha * 32;
+	vec3 matSpecular = matSpecColor * lightColor * cosAlpha * 32;
 
 	//
 	//Shadows
@@ -83,5 +84,5 @@ void main() {
 	float shadow = shadowCalc(dot(lightDirectionCam, normCam));
 
 	//output
-	FragColor = vec4(matAmbientColor + (1.0f - shadow) * (matDiffuse + matSpecColor), 1.0f);
+	FragColor = vec4(matAmbient + (1.0f - shadow) * (matDiffuse + matSpecular), 1.0f);
 }

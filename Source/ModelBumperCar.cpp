@@ -1,5 +1,4 @@
 #include "ModelBumperCar.h"
-//#include "OBJloaderV2.h"
 #include "Renderer.h"
 
 using namespace std;
@@ -14,9 +13,14 @@ ModelBumperCar::ModelBumperCar() {
 	for (objl::Mesh mesh : obj) {
 		meshes.push_back(make_tuple(mesh, setupMeshEBO(mesh), mesh.Vertices.size()));
 	}
+
+	emitter = new Emitter(this);
 }
 
 ModelBumperCar::~ModelBumperCar() {
+	glDeleteBuffers(1, &mVBO);
+	glDeleteVertexArrays(1, &mVAO);
+	delete emitter;
 }
 
 void ModelBumperCar::Update(float dt) {
@@ -42,4 +46,8 @@ void ModelBumperCar::Draw() {
 
 		glDrawElements(GL_TRIANGLES, get<2>(mesh), GL_UNSIGNED_INT, 0);
 	}
+
+	//Update emitter and draw particles
+	emitter->setPosition(this->GetPosition());
+	emitter->generateParticles();
 }

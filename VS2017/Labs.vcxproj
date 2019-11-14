@@ -13,12 +13,14 @@
   <ItemGroup>
     <ClInclude Include="..\Source\CameraThird.h" />
     <ClInclude Include="..\Source\Collision.h" />
+    <ClInclude Include="..\Source\Emitter.h" />
     <ClInclude Include="..\Source\IO.h" />
     <ClInclude Include="..\Source\Light.h" />
     <ClInclude Include="..\Source\LightPoint.h" />
     <ClInclude Include="..\Source\Model.h" />
     <ClInclude Include="..\Source\ModelBumperCar.h" />
     <ClInclude Include="..\Source\ModelCube.h" />
+    <ClInclude Include="..\Source\ModelSmoke.h" />
     <ClInclude Include="..\Source\Movement.h" />
     <ClInclude Include="..\Source\OBJloaderV2.h" />
     <ClInclude Include="..\Source\OBJ_Loader.h" />
@@ -47,6 +49,7 @@
   <ItemGroup>
     <ClCompile Include="..\Source\CameraThird.cpp" />
     <ClCompile Include="..\Source\Collision.cpp" />
+    <ClCompile Include="..\Source\Emitter.cpp" />
     <ClCompile Include="..\Source\IO.cpp" />
     <ClCompile Include="..\Source\Light.cpp" />
     <ClCompile Include="..\Source\LightPoint.cpp" />
@@ -54,6 +57,7 @@
     <ClCompile Include="..\Source\Model.cpp" />
     <ClCompile Include="..\Source\ModelBumperCar.cpp" />
     <ClCompile Include="..\Source\ModelCube.cpp" />
+    <ClCompile Include="..\Source\ModelSmoke.cpp" />
     <ClCompile Include="..\Source\Movement.cpp" />
     <ClCompile Include="..\Source\OBJloaderV2.cpp" />
     <ClCompile Include="..\Source\Renderer.cpp" />

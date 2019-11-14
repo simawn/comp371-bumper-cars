@@ -56,4 +56,9 @@ protected:
 	vector<vec3> verts;
 	vector<vec2> uvs;
 	vector<vec3> norms;
+	GLuint VAO;
+	GLuint vertices_VBO;
+	GLuint normals_VBO;
+	GLuint uvs_VBO;
+	GLuint EBO;
 };

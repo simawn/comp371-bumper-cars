@@ -33,4 +33,6 @@ private:
 
 	int bumperCarVertices;
 	GLuint bumperCarVAO;
+
+	static vector<objl::Mesh> obj;
 };

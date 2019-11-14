@@ -3,9 +3,12 @@
 #include "Renderer.h"
 
 using namespace std;
+vector<objl::Mesh> ModelBumperCar::obj = {};
 
 ModelBumperCar::ModelBumperCar() {
-	vector<objl::Mesh> obj = loadObj("../Models/bumperCar_2.obj");
+	//Loads the model once
+	if(obj.empty()) obj = loadObj("../Models/bumperCar_2.obj");
+
 	for (objl::Mesh mesh : obj) {
 		meshes.push_back(make_tuple(mesh, setupMeshEBO(mesh), mesh.Vertices.size()));
 	}

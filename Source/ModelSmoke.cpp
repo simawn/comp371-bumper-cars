@@ -12,6 +12,8 @@ ModelSmoke::ModelSmoke() {
 }
 
 ModelSmoke::~ModelSmoke() {
+	glDeleteBuffers(1, &mVBO);
+	glDeleteVertexArrays(1, &mVAO);
 }
 
 void ModelSmoke::Update(float dt) {
@@ -30,7 +32,8 @@ void ModelSmoke::Draw() {
 		Renderer::setSpecExp(meshMat.Ns);
 		Renderer::setAmbientColor(vec3(meshMat.Ka.X, meshMat.Ka.Y, meshMat.Ka.Z));
 
-		//glDrawElements(GL_TRIANGLES, get<2>(mesh), GL_UNSIGNED_INT, 0); //Old
-		glDrawElementsInstanced(GL_TRIANGLES, get<2>(mesh), GL_UNSIGNED_INT, 0, 1); //Faster way
+		glDrawElements(GL_TRIANGLES, get<2>(mesh), GL_UNSIGNED_INT, 0); //Old
+		//glDrawElementsInstanced(GL_TRIANGLES, get<2>(mesh), GL_UNSIGNED_INT, 0, 1); //Faster way
 	}
 }
+

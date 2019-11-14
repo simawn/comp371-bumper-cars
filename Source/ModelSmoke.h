@@ -18,8 +18,7 @@ public:
 
 	virtual void Update(float dt);
 	virtual void Draw();
-	int life;
-	float size;
+	int life = 0;
 private:
 	// The vertex format could be different for different types of models
 	struct Vertex

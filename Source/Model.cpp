@@ -19,7 +19,13 @@ Model::Model() :	mPosition(0.0f, 0.0f, 0.0f),
 					mRotationAngleInDegrees(0.0f)
 {}
 
-Model::~Model() {}
+Model::~Model() {
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &vertices_VBO);
+	glDeleteBuffers(1, &normals_VBO);
+	glDeleteBuffers(1, &uvs_VBO);
+	glDeleteBuffers(1, &EBO);
+}
 
 void Model::Update(float dt) {}
 
@@ -73,13 +79,13 @@ GLuint Model::setupMeshEBO(objl::Mesh mesh) {
 	//We won't be needing the normals or UVs for this program
 	//loadOBJ2(path.c_str(), vertexIndices, vertices, normals, UVs);
 
-	GLuint VAO;
+	
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO); //Becomes active VAO
 							// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
 
 							//Vertex VBO setup
-	GLuint vertices_VBO;
+	
 	glGenBuffers(1, &vertices_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices.front(), GL_STATIC_DRAW);
@@ -87,7 +93,7 @@ GLuint Model::setupMeshEBO(objl::Mesh mesh) {
 	glEnableVertexAttribArray(0);
 
 	//Normals VBO setup
-	GLuint normals_VBO;
+	
 	glGenBuffers(1, &normals_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, normals_VBO);
 	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals.front(), GL_STATIC_DRAW);
@@ -95,7 +101,7 @@ GLuint Model::setupMeshEBO(objl::Mesh mesh) {
 	glEnableVertexAttribArray(1);
 
 	//UVs VBO setup
-	GLuint uvs_VBO;
+	
 	glGenBuffers(1, &uvs_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, uvs_VBO);
 	glBufferData(GL_ARRAY_BUFFER, UVs.size() * sizeof(glm::vec2), &UVs.front(), GL_STATIC_DRAW);
@@ -103,7 +109,7 @@ GLuint Model::setupMeshEBO(objl::Mesh mesh) {
 	glEnableVertexAttribArray(2);
 
 	//EBO setup
-	GLuint EBO;
+	
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertexIndices.size() * sizeof(int), &vertexIndices.front(), GL_STATIC_DRAW);

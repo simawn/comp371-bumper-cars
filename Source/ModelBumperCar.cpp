@@ -18,6 +18,8 @@ ModelBumperCar::ModelBumperCar() {
 }
 
 ModelBumperCar::~ModelBumperCar() {
+	glDeleteBuffers(1, &mVBO);
+	glDeleteVertexArrays(1, &mVAO);
 }
 
 void ModelBumperCar::Update(float dt) {

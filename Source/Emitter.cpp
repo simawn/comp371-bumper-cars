@@ -12,8 +12,20 @@ void Emitter::setPosition(vec3 newPosition) {
 }
 
 void Emitter::generateParticles() {
+	//Kill old particles
+	
+	for (auto it = particleArray.begin(); it != particleArray.end();) {
+		if ((*it)->life > MAX_LIFE) {
+			delete (*it);
+			it = particleArray.erase(it);
+		} else {
+			++it;
+		}
+	}
+	
+
 	if (particleArray.size() <= MAX_PARTICLES && count % RATE == 0) {
-		Model* smokePart = new ModelSmoke();
+		ModelSmoke* smokePart = new ModelSmoke();
 		smokePart->SetPosition(position);
 		particleArray.push_back(smokePart);
 		count = 0;
@@ -29,7 +41,7 @@ void Emitter::simulate() {
 	for (auto &particle : particleArray) {
 		particle->SetPosition(particle->GetPosition() + upDir);
 		particle->SetScaling(particle->GetScaling() + sizeInc);
-
+		particle->life++;
 	}
 }
 

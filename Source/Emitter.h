@@ -13,6 +13,8 @@
 using namespace glm;
 using namespace std;
 
+class ModelSmoke;
+
 class Emitter {
 public:
 	Emitter();
@@ -25,7 +27,7 @@ private:
 
 	vec3 position;
 	
-	vector<Model*> particleArray;
+	vector<ModelSmoke*> particleArray;
 	
 	void simulate();
 	void draw();

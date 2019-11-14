@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "ModelCube.h"
 #include "ModelBumperCar.h"
+#include "ModelSmoke.h"
 #include "Movement.h"
 
 #include <map>

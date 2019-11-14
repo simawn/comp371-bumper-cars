@@ -1,9 +1,7 @@
 #pragma once
 
-
-#include "Emitter.h"
 #include "Model.h"
-
+#include "Renderer.h"
 #include <vector>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -13,17 +11,15 @@
 using namespace std;
 using namespace glm;
 
-class Emitter;
-
-class ModelBumperCar : public Model
-{
+class ModelSmoke : public Model {
 public:
-	ModelBumperCar();
-	virtual ~ModelBumperCar();
+	ModelSmoke();
+	virtual ~ModelSmoke();
 
 	virtual void Update(float dt);
 	virtual void Draw();
-
+	int life;
+	float size;
 private:
 	// The vertex format could be different for different types of models
 	struct Vertex
@@ -36,9 +32,7 @@ private:
 	unsigned int mVAO;
 	unsigned int mVBO;
 
-	int bumperCarVertices;
-	GLuint bumperCarVAO;
-	vec3 diffuseColor;
+	int smokeVertices;
+	GLuint smokeVAO;
 	static vector<objl::Mesh> obj;
-	Emitter* emitter;
 };

@@ -14,8 +14,9 @@ Scene& Scene::getInstance() {
 }
 
 Scene::Scene() {
-	Model* cube1 = new ModelCube(vec3(1.0f, 1.0f, 1.0f));
-	Model* cube2 = new ModelCube(vec3(2.0f, 2.0f, 2.0f));
+	//Model* cube1 = new ModelCube(vec3(1.0f, 1.0f, 1.0f));
+	//Model* cube2 = new ModelCube(vec3(2.0f, 2.0f, 2.0f));
+	Model* smoke = new ModelSmoke();
 	Model* ground = new ModelCube(vec3(50.0f, 0.1f, 50.0f));
 	//Model* ground = new ModelCube(vec3(5.0f, 1.0f, 7.5f)); //reference for a single car
 	Model* bumperCar1 = new ModelBumperCar();
@@ -32,15 +33,16 @@ Scene::Scene() {
 	movement.addObject(bumperCar4);
 	movement.addObject(bumperCar5);
 
-	cube1->SetPosition(vec3(5.0f, 0.0f, 5.0f));
-	cube2->SetPosition(vec3(5.0f, 0.0f, 5.0f));
-
+	//cube1->SetPosition(vec3(5.0f, 0.0f, 5.0f));
+	//cube2->SetPosition(vec3(5.0f, 0.0f, 5.0f));
+	smoke->SetScaling(vec3(50.0f));
 	bumperCar1->SetScaling(vec3(5.0f));
 	bumperCar2->SetScaling(vec3(5.0f));
 	bumperCar3->SetScaling(vec3(5.0f));
 	bumperCar4->SetScaling(vec3(5.0f));
 	bumperCar5->SetScaling(vec3(5.0f));
 
+	smoke->SetPosition(vec3(0.0f, 3.0f, 0.0f));
 	bumperCar1->SetPosition(vec3(0.0f, 0.0f, 0.0f));
 	bumperCar2->SetPosition(vec3(-10.0f, 0.0f, -10.0f));
 	bumperCar3->SetPosition(vec3(-5.0f, 0.0f, -5.0f));
@@ -51,8 +53,9 @@ Scene::Scene() {
 	bumperCar3->SetRotation(bumperCar3->GetRotationAxis(), 90);
 	bumperCar4->SetRotation(bumperCar4->GetRotationAxis(), 75);
 
-	models["Cube1"] = cube1;
-	models["Cube2"] = cube2;
+	//models["Cube1"] = cube1;
+	//models["Cube2"] = cube2;
+	models["smoke1"] = smoke;
 	models["bc1"] = bumperCar1;
 	models["bc2"] = bumperCar2;
 	models["bc3"] = bumperCar3;

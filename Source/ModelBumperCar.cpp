@@ -14,12 +14,13 @@ ModelBumperCar::ModelBumperCar() {
 		meshes.push_back(make_tuple(mesh, setupMeshEBO(mesh), mesh.Vertices.size()));
 	}
 
-	emitter = new Emitter();
+	emitter = new Emitter(this);
 }
 
 ModelBumperCar::~ModelBumperCar() {
 	glDeleteBuffers(1, &mVBO);
 	glDeleteVertexArrays(1, &mVAO);
+	delete emitter;
 }
 
 void ModelBumperCar::Update(float dt) {

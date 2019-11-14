@@ -3,8 +3,6 @@
 using namespace std;
 using namespace glm;
 
-const int Emitter::MAX_PARTICLES = 10;
-
 Emitter::Emitter() {
 	cout << "emiiter init" << endl;
 }
@@ -28,9 +26,10 @@ void Emitter::generateParticles() {
 void Emitter::simulate() {
 	vec3 upDir = vec3(0.0f, 0.1f, 0.0f);
 	vec3 sizeInc = vec3(0.1f);
-	for (auto const &particle : particleArray) {
+	for (auto &particle : particleArray) {
 		particle->SetPosition(particle->GetPosition() + upDir);
 		particle->SetScaling(particle->GetScaling() + sizeInc);
+
 	}
 }
 

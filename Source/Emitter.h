@@ -21,9 +21,10 @@ public:
 private:
 	static const int RATE = 10;
 	static const int MAX_LIFE = 120;
+	static const int MAX_PARTICLES = 10;
 
 	vec3 position;
-	static const int MAX_PARTICLES;
+	
 	vector<Model*> particleArray;
 	
 	void simulate();

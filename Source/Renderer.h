@@ -29,6 +29,9 @@ public:
 	static void useTexture(GLuint textureID);
 
 	static void setDiffuseColor(vec3 mainColor);
+	static void setSpecColor(vec3 specColor);
+	static void setSpecExp(int specExp);
+	static void setAmbientColor(vec3 ambientColor);
 
 	static void matProperties(float specStrength, float specHighlight, vec3 matSpecColor);
 

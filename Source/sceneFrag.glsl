@@ -7,13 +7,16 @@ in vec3 normCam;
 in vec3 eyeDirectionCam;
 in vec3 lightDirectionCam;
 in vec3 positionWorld;
-
 in vec3 FragPos;
 in vec4 FragPosLightSpace;
 
 uniform sampler2D textureSampler;
-
 uniform sampler2D shadowMap;
+
+//Properties from obj
+uniform vec3 specColor = vec3(0.3, 0.3, 0.3);
+uniform int specExp = 255;
+uniform vec3 ambientColor = vec3(1.0, 1.0, 1.0);
 
 out vec4 FragColor;
 
@@ -54,8 +57,8 @@ void main() {
 	//
 	//vec3 matDiffuseColor = texture(textureSampler, vertexUV).rgb;
 	vec3 matDiffuseColor = diffuseColor.rgb;
-	vec3 matAmbientColor = vec3(0.5f, 0.5f, 0.5f) * matDiffuseColor;
-	vec3 matSpecColor = vec3(0.3, 0.3, 0.3);
+	vec3 matAmbientColor = ambientColor * matDiffuseColor;
+	vec3 matSpecColor = specColor;
 
 	//
 	// Lighting
@@ -72,7 +75,7 @@ void main() {
 
 	vec3 E = normalize(eyeDirectionCam);
 	vec3 R = reflect(-L, N);
-	float cosAlpha = pow(max(dot(E, R), 0.0), 64);
+	float cosAlpha = pow(max(dot(E, R), 0.0), specExp);
 
 	vec3 matAmbient = matAmbientColor;
 	vec3 matDiffuse = matDiffuseColor * lightColor * lightPower * cosTheta / (distance * distance);

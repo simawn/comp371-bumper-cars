@@ -187,13 +187,14 @@ void Renderer::setDiffuseColor(vec3 mainColor) {
 	glUniform3fv(mainColorUniformLocation, 1, &mainColor[0]);
 }
 
-void Renderer::matProperties(float specStrength, float specHighlight, vec3 matSpecColor) {
-	GLuint specStrengthUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "specStrength");
-	glUniform1f(specStrengthUniformLocation, specStrength);
+void Renderer::setSpecColor(vec3 specColor) {
+	glUniform3fv(glGetUniformLocation(Shaders::currentShaderProgram, "specColor"), 1, &specColor[0]);
+}
 
-	GLuint specHighlightUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "specHighlight");
-	glUniform1f(specHighlightUniformLocation, specHighlight);
+void Renderer::setSpecExp(int specExp) {
+	glUniform1i(glGetUniformLocation(Shaders::currentShaderProgram, "specExp"), specExp);
+}
 
-	GLuint specColorUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "matSpecColor");
-	glUniform3fv(specColorUniformLocation, 1, &matSpecColor[0]);
+void Renderer::setAmbientColor(vec3 ambientColor) {
+	glUniform3fv(glGetUniformLocation(Shaders::currentShaderProgram, "ambientColor"), 1, &ambientColor[0]);
 }

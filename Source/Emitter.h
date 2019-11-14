@@ -24,9 +24,8 @@ public:
 	void setPosition(vec3 newPosition);
 	void generateParticles();
 private:
-	static const int RATE = 5;
+	static const int RATE;
 	int MAX_LIFE;
-	static const int MAX_PARTICLES = 10;
 	float generateRandomFloat();
 	vec3 position;
 	

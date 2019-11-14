@@ -7,8 +7,10 @@ vector<objl::Mesh> ModelBumperCar::obj = {};
 ModelBumperCar::ModelBumperCar() {
 	//Loads the model once
 	if(obj.empty()) obj = loadObj("../Models/bumperCar_3.obj");
-	
-	diffuseColor = vec3(rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX);
+	int clampCol = 1.6;
+	diffuseColor = vec3(rand() / (float)RAND_MAX / clampCol, 
+						rand() / (float)RAND_MAX / clampCol, 
+						rand() / (float)RAND_MAX / clampCol);
 
 	for (objl::Mesh mesh : obj) {
 		meshes.push_back(make_tuple(mesh, setupMeshEBO(mesh), mesh.Vertices.size()));

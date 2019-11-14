@@ -4,6 +4,7 @@ using namespace std;
 using namespace glm;
 
 const vec3 Emitter::EMITTER_OFFSET = vec3(1.3f, 1.1f, 3.5f);
+const int Emitter::RATE = 4;
 
 Emitter::Emitter(ModelBumperCar* model) {
 	MAX_LIFE = 120 + (int) generateRandomFloat() * 100;
@@ -37,6 +38,7 @@ void Emitter::generateParticles() {
 	if (count % RATE == 0) {
 		ModelSmoke* smokePart = new ModelSmoke();
 		smokePart->SetPosition(position);
+		smokePart->SetScaling(vec3(generateRandomFloat()));
 		particleArray.push_back(smokePart);
 		count = 0;
 	}
@@ -51,13 +53,15 @@ float Emitter::generateRandomFloat() {
 }
 
 void Emitter::simulate() {
-	
 	for (auto &particle : particleArray) {
-		vec3 upDir = vec3(generateRandomFloat() / 5, 0.07f, generateRandomFloat() / 5);
-		vec3 sizeInc = vec3(0.1f);
+		vec3 upDir = vec3(generateRandomFloat() / 5,
+						  generateRandomFloat() / 15,
+						  generateRandomFloat() / 5);
+		vec3 sizeInc = vec3(generateRandomFloat() / 3);
+		//vec3 sizeExtra = generateRandomFloat() > 0.5 ? vec3(generateRandomFloat()/2, 0.0f, 0.0f) : vec3(0.0f, 0.0f, generateRandomFloat()/2);
 		particle->SetPosition(particle->GetPosition() + upDir);
 		particle->SetScaling(particle->GetScaling() + sizeInc);
-		particle->SetRotation(vec3(1.0f, 0.0f, 1.0f), generateRandomFloat() * 100);
+		particle->SetRotation(vec3(1.0f, 0.0f, 1.0f), particle->GetRotationAngle() + generateRandomFloat() * 10);
 		particle->life++;
 	}
 }

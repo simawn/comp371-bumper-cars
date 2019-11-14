@@ -31,7 +31,7 @@ float shadowCalc(float dotLightNormal){
 	//bias to eliminate moire pattern
 	//Removed bias for point light
 	//float bias = max(0.005 * (1.0 - dotLightNormal), 0.0005);
-	//float bias = 0.005;
+	float bias = 0.0005;
     // check whether current frag pos is in shadow
     float shadow = 0.0;
 	//Smoother shadows
@@ -39,8 +39,8 @@ float shadowCalc(float dotLightNormal){
 	for(int x = -1; x <= 1; ++x) {
 		for(int y = -1; y <= 1; ++y) {
 			float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
-			//shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
-			shadow += currentDepth > pcfDepth ? 1.0 : 0.0;        
+			shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
+			//shadow += currentDepth > pcfDepth ? 1.0 : 0.0;        
 		}    
 	}
 	shadow /= 12.0;
@@ -62,7 +62,7 @@ void main() {
 	//
 	//Light params
 	vec3 lightColor = vec3(1.0f, 1.0f, 1.0f);
-	float lightPower = 500.0f;
+	float lightPower = 250.0f;
 	//
 	float distance = length(lightPoint - positionWorld);
 	

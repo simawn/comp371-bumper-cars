@@ -20,8 +20,8 @@ public:
 	static map<string, GLuint> textureMap;
 	static unsigned int depthMap;
 	static unsigned int depthMapFBO;
-	static const unsigned int SHADOW_WIDTH = 2048;
-	static const unsigned int SHADOW_HEIGHT = 2048;
+	static const unsigned int SHADOW_WIDTH = 4096;
+	static const unsigned int SHADOW_HEIGHT = 4096;
 	static void setProjectionMatrix(int shaderProgram, mat4 projectionMatrix);
 	static void setViewMatrix(int shaderProgram, mat4 viewMatrix);
 	static void setWorldMatrix(int shaderProgram, mat4 worldMatrix);

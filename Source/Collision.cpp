@@ -67,7 +67,7 @@ bool Collision::IsColliding(Model* model) {
 			botRight = rotate(botRight, radians(angleOffset));
 			point = rotate(point, radians(angleOffset));
 			iter++;
-			if (isInRectangle(point, topLeft, botRight)) return true;
+			//if (isInRectangle(point, topLeft, botRight)) return true;
 		}
 	}
 

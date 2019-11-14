@@ -27,7 +27,7 @@ void Movement::addObject(Model * model) {
 	movingObjects[model][3] = generateRandomFloat() * 20 + 60; //Max rotate step
 	movingObjects[model][4] = 0.0; //Current rotate step
 	movingObjects[model][5] = 0.0; //state: stuck or unstuck
-	movingObjects[model][6] = generateRandomFloat() / 4 + 0.1; //Car Speed, min speed is 0.1
+	movingObjects[model][6] = generateRandomFloat() / 5 + 0.1; //Car Speed, min speed is 0.1
 	
 	collision.addObject(model);
 }

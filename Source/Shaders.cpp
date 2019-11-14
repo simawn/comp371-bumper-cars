@@ -12,6 +12,10 @@ using namespace std;
 
 Shaders* Shaders::instance = 0; 
 int Shaders::currentShaderProgram = 0;
+int Shaders::colorShaderProgram = 0;
+int Shaders::texturedShaderProgram = 0;
+int Shaders::shadowShaderProgram = 0;
+int Shaders::sceneShaderProgram = 0;
 
 Shaders& Shaders::getInstance() {
 	if (instance == 0) instance = new Shaders();

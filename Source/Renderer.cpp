@@ -27,7 +27,7 @@ Renderer& Renderer::getInstance() {
 }
 
 Renderer::Renderer() {
-	//createDepthMap(); messes initial render
+	createDepthMap();
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	setTexture();
 	glEnable(GL_CULL_FACE);
@@ -44,12 +44,34 @@ void Renderer::updateTick() {
 }
 
 void Renderer::renderScene() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//Shadow pass
+	glCullFace(GL_FRONT);
+	glUseProgram(Shaders::shadowShaderProgram);
+	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	Shaders::setCurrentShaderProgram(Shaders::shadowShaderProgram);
 	Scene::draw(tick);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glCullFace(GL_BACK);
+
+	
+	//Rendering normally
+	glUseProgram(Shaders::sceneShaderProgram);
+	Shaders::setCurrentShaderProgram(Shaders::sceneShaderProgram);
+	glViewport(0, 0, Setup::SCREEN_WIDTH, Setup::SCREEN_HEIGHT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//Shadow texture in texture unit 3
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glUniform1i(glGetUniformLocation(Shaders::sceneShaderProgram, "shadowMap"), 3);
+	Scene::draw(tick);
+	
+
 	glfwSwapBuffers(Setup::window);
 }
 
-void Renderer::createDepthMap() {
+void Renderer::createDepthMap() {	
 	//Depth map. Modified code from: https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
 	//Create frame buffer to store texture
 	glGenFramebuffers(1, &depthMapFBO);
@@ -77,6 +99,7 @@ void Renderer::createDepthMap() {
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
+	
 }
 
 void Renderer::setTexture() {

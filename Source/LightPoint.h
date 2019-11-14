@@ -1,5 +1,9 @@
 #pragma once
 #include "Light.h"
+#include "Renderer.h"
+
+using namespace glm;
+using namespace std;
 
 class LightPoint : public Light {
 public:
@@ -7,4 +11,5 @@ public:
 	void setPosition(vec3 pos);
 private:
 	void setShaderLocation();
+	void setLightMatrix();
 };

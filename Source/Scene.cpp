@@ -23,7 +23,7 @@ Scene::Scene() {
 	Model* bumperCar3 = new ModelBumperCar();
 	Model* bumperCar4 = new ModelBumperCar();
 	Model* bumperCar5 = new ModelBumperCar();
-	Light* lightPoint1 = new LightPoint(vec3(0.0f, 10.0f, 0.0f));
+	Light* lightPoint1 = new LightPoint(vec3(0.0f, 30.0f, 0.0f));
 
 	//Controls car movements
 	movement.addObject(bumperCar1);

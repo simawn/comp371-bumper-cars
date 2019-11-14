@@ -34,4 +34,5 @@ private:
 	int smokeVertices;
 	GLuint smokeVAO;
 	static vector<objl::Mesh> obj;
+	vec3 color;
 };

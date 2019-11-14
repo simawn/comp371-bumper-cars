@@ -9,6 +9,10 @@ ModelSmoke::ModelSmoke() {
 	for (objl::Mesh mesh : obj) {
 		meshes.push_back(make_tuple(mesh, setupMeshEBO(mesh), mesh.Vertices.size()));
 	}
+
+	float b = 0.4 + ((float) rand() / RAND_MAX) / 3;
+
+	color = vec3(b, b, b);
 }
 
 ModelSmoke::~ModelSmoke() {
@@ -25,7 +29,8 @@ void ModelSmoke::Draw() {
 		Renderer::setWorldMatrix(Shaders::currentShaderProgram, GetWorldMatrix());
 		objl::Material meshMat = get<0>(mesh).MeshMaterial;
 		
-		Renderer::setDiffuseColor(vec3(meshMat.Kd.X, meshMat.Kd.Y, meshMat.Kd.Z));
+		//Renderer::setDiffuseColor(vec3(meshMat.Kd.X, meshMat.Kd.Y, meshMat.Kd.Z));
+		Renderer::setDiffuseColor(color);
 
 		//Other properties
 		Renderer::setSpecColor(vec3(meshMat.Ks.X, meshMat.Ks.Y, meshMat.Ks.Z));

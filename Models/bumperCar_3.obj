@@ -1,6 +1,6 @@
 # Blender v2.80 (sub 75) OBJ File: 'bumperCar.blend'
 # www.blender.org
-mtllib bumperCar.mtl
+mtllib bumperCar_3.mtl
 o bottom_Cube.004
 v -0.253500 0.022927 0.750000
 v -0.487500 0.022927 0.390000

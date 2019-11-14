@@ -7,6 +7,7 @@ uniform mat4 worldMatrix;
 uniform mat4 viewMatrix = mat4(1.0);  // default value for view matrix (identity)
 uniform mat4 projectionMatrix = mat4(1.0);
 uniform vec3 lightPoint;
+uniform mat4 lightSpaceMatrix;
 
 out vec3 vertexColor;
 out vec2 vertexUV;
@@ -14,6 +15,8 @@ out vec3 positionWorld;
 out vec3 eyeDirectionCam;
 out vec3 normCam;
 out vec3 lightDirectionCam;
+out vec4 FragPosLightSpace;
+out vec3 FragPos;
 
 void main(){
 	mat4 modelViewProjection = projectionMatrix * viewMatrix * worldMatrix;
@@ -35,4 +38,10 @@ void main(){
 	//
 
 	vertexUV = vec2(aUV.x, aUV.y);
+
+	//
+	//Shadows
+	//
+	FragPos = vec3(worldMatrix * vec4(aPos, 1.0));
+	FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
 };

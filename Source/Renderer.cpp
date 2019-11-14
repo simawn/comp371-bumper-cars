@@ -27,8 +27,8 @@ Renderer& Renderer::getInstance() {
 }
 
 Renderer::Renderer() {
-	//createDepthMap(); messes initial render
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	createDepthMap();
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	setTexture();
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -44,12 +44,34 @@ void Renderer::updateTick() {
 }
 
 void Renderer::renderScene() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//Shadow pass
+	glCullFace(GL_FRONT);
+	glUseProgram(Shaders::shadowShaderProgram);
+	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	Shaders::setCurrentShaderProgram(Shaders::shadowShaderProgram);
 	Scene::draw(tick);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glCullFace(GL_BACK);
+
+	
+	//Rendering normally
+	glUseProgram(Shaders::sceneShaderProgram);
+	Shaders::setCurrentShaderProgram(Shaders::sceneShaderProgram);
+	glViewport(0, 0, Setup::SCREEN_WIDTH, Setup::SCREEN_HEIGHT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//Shadow texture in texture unit 3
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glUniform1i(glGetUniformLocation(Shaders::sceneShaderProgram, "shadowMap"), 3);
+	Scene::draw(tick);
+	
+
 	glfwSwapBuffers(Setup::window);
 }
 
-void Renderer::createDepthMap() {
+void Renderer::createDepthMap() {	
 	//Depth map. Modified code from: https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
 	//Create frame buffer to store texture
 	glGenFramebuffers(1, &depthMapFBO);
@@ -77,6 +99,7 @@ void Renderer::createDepthMap() {
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
+	
 }
 
 void Renderer::setTexture() {
@@ -164,13 +187,14 @@ void Renderer::setDiffuseColor(vec3 mainColor) {
 	glUniform3fv(mainColorUniformLocation, 1, &mainColor[0]);
 }
 
-void Renderer::matProperties(float specStrength, float specHighlight, vec3 matSpecColor) {
-	GLuint specStrengthUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "specStrength");
-	glUniform1f(specStrengthUniformLocation, specStrength);
+void Renderer::setSpecColor(vec3 specColor) {
+	glUniform3fv(glGetUniformLocation(Shaders::currentShaderProgram, "specColor"), 1, &specColor[0]);
+}
 
-	GLuint specHighlightUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "specHighlight");
-	glUniform1f(specHighlightUniformLocation, specHighlight);
+void Renderer::setSpecExp(int specExp) {
+	glUniform1i(glGetUniformLocation(Shaders::currentShaderProgram, "specExp"), specExp);
+}
 
-	GLuint specColorUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "matSpecColor");
-	glUniform3fv(specColorUniformLocation, 1, &matSpecColor[0]);
+void Renderer::setAmbientColor(vec3 ambientColor) {
+	glUniform3fv(glGetUniformLocation(Shaders::currentShaderProgram, "ambientColor"), 1, &ambientColor[0]);
 }

@@ -21,6 +21,7 @@ using namespace glm;
 using namespace std;
 
 int main(int argc, char*argv[]) {
+	srand(time(0));
 	Setup setup = Setup::getInstance(1600, 800, "Final");
 	IO IO = IO::getInstance();
 	Shaders shaders = Shaders::getInstance();

@@ -141,6 +141,9 @@ void ModelCube::Draw()
 
 	Renderer::setWorldMatrix(Shaders::currentShaderProgram, GetWorldMatrix());
 	Renderer::setDiffuseColor(vec3(0.2, 0.2, 0.2));
+	Renderer::setSpecColor(vec3(0.0f));
+	Renderer::setSpecExp(2048);
+	Renderer::setAmbientColor(vec3(0.8f));
 
 	// Draw the triangles !
 	glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices: 3 * 2 * 6 (3 per triangle, 2 triangles per face, 6 faces)

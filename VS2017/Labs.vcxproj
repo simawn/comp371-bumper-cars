@@ -20,6 +20,9 @@
     <ClInclude Include="..\Source\Model.h" />
     <ClInclude Include="..\Source\ModelBumperCar.h" />
     <ClInclude Include="..\Source\ModelCube.h" />
+    <ClInclude Include="..\Source\ModelEntrance.h" />
+    <ClInclude Include="..\Source\ModelExit.h" />
+    <ClInclude Include="..\Source\ModelField.h" />
     <ClInclude Include="..\Source\ModelSmoke.h" />
     <ClInclude Include="..\Source\Movement.h" />
     <ClInclude Include="..\Source\OBJloaderV2.h" />
@@ -57,6 +60,9 @@
     <ClCompile Include="..\Source\Model.cpp" />
     <ClCompile Include="..\Source\ModelBumperCar.cpp" />
     <ClCompile Include="..\Source\ModelCube.cpp" />
+    <ClCompile Include="..\Source\ModelEntrance.cpp" />
+    <ClCompile Include="..\Source\ModelExit.cpp" />
+    <ClCompile Include="..\Source\ModelField.cpp" />
     <ClCompile Include="..\Source\ModelSmoke.cpp" />
     <ClCompile Include="..\Source\Movement.cpp" />
     <ClCompile Include="..\Source\OBJloaderV2.cpp" />

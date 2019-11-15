@@ -23,17 +23,21 @@ public:
 	Emitter(ModelBumperCar* parent);
 	void setPosition(vec3 newPosition);
 	void generateParticles();
+	~Emitter();
 private:
 	static const int RATE;
+	static const int MAX_EMITTER_PARTICLES;
 	int MAX_LIFE;
 	float generateRandomFloat();
 	vec3 position;
 	
-	vector<ModelSmoke*> particleArray;
+	ModelSmoke* particleArray;
 	
 	void simulate();
 	void draw();
 	int count;
 	static const vec3 EMITTER_OFFSET;
 	ModelBumperCar* parent;
+	int findDeadParticle();
+	int pointer = 0;
 };

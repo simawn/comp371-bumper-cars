@@ -9,7 +9,6 @@ ModelSmoke::ModelSmoke() {
 	for (objl::Mesh mesh : obj) {
 		meshes.push_back(make_tuple(mesh, setupMeshEBO(mesh), mesh.Vertices.size()));
 	}
-
 	float b = 0.4 + ((float) rand() / RAND_MAX) / 3;
 
 	color = vec3(b, b, b);

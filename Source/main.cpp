@@ -27,7 +27,7 @@ int main(int argc, char*argv[]) {
 	Shaders shaders = Shaders::getInstance();
 	Renderer renderer = Renderer::getInstance();
 	
-	CameraThird cameraThird = CameraThird::getInstance(vec3(0.0f,10.0f,10.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+	CameraThird cameraThird = CameraThird::getInstance(vec3(0.0f,50.0f,40.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	renderer.setProjectionMatrix(Shaders::currentShaderProgram, cameraThird.getProjMatrix());
 	

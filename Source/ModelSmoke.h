@@ -2,6 +2,7 @@
 
 #include "Model.h"
 #include "Renderer.h"
+#include "Emitter.h"
 #include <vector>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -18,8 +19,11 @@ public:
 
 	virtual void Update(float dt);
 	virtual void Draw();
+	static void InstanceDraw();
 	int life = 0;
 	bool alive = false;
+	static unsigned int mVAO;
+	static vector<tuple<objl::Mesh, GLuint, int>> smokeMeshes;
 private:
 	// The vertex format could be different for different types of models
 	struct Vertex
@@ -29,7 +33,7 @@ private:
 		glm::vec3 color;
 	};
 
-	unsigned int mVAO;
+	
 	unsigned int mVBO;
 
 	int smokeVertices;

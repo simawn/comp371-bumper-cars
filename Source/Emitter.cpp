@@ -11,6 +11,8 @@ Emitter::Emitter(ModelBumperCar* model) {
 	MAX_LIFE = 120 + (int) generateRandomFloat() * 100;
 	parent = model;
 	particleArray = new ModelSmoke[Emitter::MAX_EMITTER_PARTICLES];
+	particleMatrices = new mat4[Emitter::MAX_EMITTER_PARTICLES];
+	setupInstancedArray();
 }
 
 void Emitter::setPosition(vec3 newPosition) {
@@ -37,7 +39,6 @@ void Emitter::generateParticles() {
 	
 	if (count % RATE == 0) {
 		int i = findDeadParticle();
-		cout << i << endl;
 		ModelSmoke* smoke = &particleArray[i];
 		smoke->alive = true;
 		smoke->SetPosition(position);
@@ -47,6 +48,7 @@ void Emitter::generateParticles() {
 	}
 
 	simulate();
+	updateParticleMatrices();
 	draw();
 	count++;
 }
@@ -56,6 +58,7 @@ Emitter::~Emitter() {
 		delete &particleArray[i];
 	}
 	delete particleArray;
+	delete particleMatrices;
 }
 
 float Emitter::generateRandomFloat() {
@@ -80,31 +83,66 @@ void Emitter::simulate() {
 }
 
 void Emitter::draw() {
+	/*
 	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
 		ModelSmoke* smoke = &particleArray[i];
 		if (smoke->alive) {
 			smoke->Draw();
 		}
 	}
+	*/
+	ModelSmoke::InstanceDraw();
 }
 
 int Emitter::findDeadParticle() {
 	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
 		ModelSmoke* smoke = &particleArray[i];
 		if (!smoke->alive) {
-			// pointer = i;
+			pointer = i;
 			return i;
 		}
 	}
-	/*
+	
 	for (int i = 0; i < pointer; i++) {
-		ModelSmoke smoke = particleArray[i];
+		ModelSmoke* smoke = &particleArray[i];
 		if (!smoke->alive) {
 			pointer = i;
 			return i;
 		}
 	}
-	*/
-
+	
 	return 0;
+}
+
+void Emitter::updateParticleMatrices() {
+	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
+		particleMatrices[i] = particleArray[i].GetWorldMatrix();
+	}
+}
+
+void Emitter::setupInstancedArray() {
+	//Init instanced array
+	unsigned int buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, Emitter::MAX_EMITTER_PARTICLES * sizeof(glm::mat4), &particleMatrices[0], GL_STATIC_DRAW);
+
+	unsigned int VAO = ModelSmoke::mVAO;
+	glBindVertexArray(VAO);
+	// set attribute pointers for matrix (4 times vec4)
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*)0);
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*)(sizeof(glm::vec4)));
+	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*)(2 * sizeof(glm::vec4)));
+	glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*)(3 * sizeof(glm::vec4)));
+
+	glVertexAttribDivisor(3, 1);
+	glVertexAttribDivisor(4, 1);
+	glVertexAttribDivisor(5, 1);
+	glVertexAttribDivisor(6, 1);
+
+	glBindVertexArray(0);
 }

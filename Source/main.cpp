@@ -30,7 +30,8 @@ int main(int argc, char*argv[]) {
 	CameraThird cameraThird = CameraThird::getInstance(vec3(0.0f,50.0f,40.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	renderer.setProjectionMatrix(Shaders::currentShaderProgram, cameraThird.getProjMatrix());
-	
+	renderer.setProjectionMatrix(Shaders::smokeShaderProgram, cameraThird.getProjMatrix());
+
 	const double MAX_FPS = 60.0;
 	const double MAX_PERIOD = 1.0 / MAX_FPS;
 	double lastTime = 0.0;
@@ -43,6 +44,7 @@ int main(int argc, char*argv[]) {
 			IO.updateMousePosition();
 			renderer.updateTick();
 			renderer.setViewMatrix(Shaders::currentShaderProgram, cameraThird.getViewMatrix());
+			renderer.setViewMatrix(Shaders::smokeShaderProgram, cameraThird.getViewMatrix());
 			renderer.renderScene();
 			IO.processInputs();
 		}

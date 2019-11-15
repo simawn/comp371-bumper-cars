@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 using namespace glm;
 using namespace std;
@@ -24,9 +25,9 @@ public:
 	void setPosition(vec3 newPosition);
 	void generateParticles();
 	~Emitter();
+	static const int MAX_EMITTER_PARTICLES;
 private:
 	static const int RATE;
-	static const int MAX_EMITTER_PARTICLES;
 	int MAX_LIFE;
 	float generateRandomFloat();
 	vec3 position;
@@ -40,4 +41,7 @@ private:
 	ModelBumperCar* parent;
 	int findDeadParticle();
 	int pointer = 0;
+	mat4* particleMatrices; //Keeps track on model matrix
+	void updateParticleMatrices();
+	void setupInstancedArray();
 };

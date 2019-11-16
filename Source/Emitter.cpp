@@ -5,7 +5,7 @@ using namespace glm;
 
 const vec3 Emitter::EMITTER_OFFSET = vec3(1.3f, 1.1f, 3.5f);
 const int Emitter::RATE = 4;
-const int Emitter::MAX_EMITTER_PARTICLES = 50;
+const int Emitter::MAX_EMITTER_PARTICLES = 40;
 
 Emitter::Emitter(ModelBumperCar* model) {
 	MAX_LIFE = 120 + (int) generateRandomFloat() * 100;
@@ -59,6 +59,7 @@ Emitter::~Emitter() {
 	}
 	delete particleArray;
 	delete particleMatrices;
+	glDeleteBuffers(1, &buffer);
 }
 
 float Emitter::generateRandomFloat() {

@@ -49,11 +49,24 @@ void ModelSmoke::Draw() {
 }
 
 void ModelSmoke::InstanceDraw() {
+	glUseProgram(Shaders::currentShaderProgram);
 
-	glUseProgram(Shaders::smokeShaderProgram);
-	
+	//Renderer::setDiffuseColor(color); //Need another way to load colors
+
+	//Other properties
+	objl::Material meshMat = get<0>(smokeMeshes.front()).MeshMaterial;
+
+	Renderer::setSpecColor(vec3(meshMat.Ks.X, meshMat.Ks.Y, meshMat.Ks.Z));
+	Renderer::setSpecExp(meshMat.Ns);
+	Renderer::setAmbientColor(vec3(meshMat.Ka.X, meshMat.Ka.Y, meshMat.Ka.Z));
+
+
+	//enable instancing
+	glUniform1i(glGetUniformLocation(Shaders::currentShaderProgram, "instanced"), 1);
 	glBindVertexArray(ModelSmoke::mVAO);
 	glDrawElementsInstanced(GL_TRIANGLES, get<2>(smokeMeshes.front()), GL_UNSIGNED_INT, 0, Emitter::MAX_EMITTER_PARTICLES);
 	glBindVertexArray(0);
+	//disable instancing
+	glUniform1i(glGetUniformLocation(Shaders::currentShaderProgram, "instanced"), 0);
 }
 

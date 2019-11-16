@@ -26,26 +26,26 @@ public:
 	void generateParticles();
 	~Emitter();
 	static const int MAX_EMITTER_PARTICLES;
+	static void draw();
 private:
 	static const int RATE;
 	int MAX_LIFE;
-	float generateRandomFloat();
+	static float generateRandomFloat();
 	vec3 position;
 	
-	vector<ModelSmoke*> particleArray;
-	mat4* particleMatrices; //Keeps track on model matrix
+	static vector<ModelSmoke*> particleArray;
+	static mat4* particleMatrices; //Keeps track on model matrix
 
-	void simulate();
-	void draw();
+	static void simulate();
+	
 	int count;
 	static const vec3 EMITTER_OFFSET;
 	ModelBumperCar* parent;
-	int findDeadParticle();
 	int pointer = 0;
 	
-	void updateParticleMatrices();
+	static void updateParticleMatrices();
 	void setupInstancedArray();
-	void updateInstancedArray();
-	unsigned int buffer;
-	unsigned int VAO;
+	static void updateInstancedArray();
+	static unsigned int buffer;
+	static unsigned int VAO;
 };

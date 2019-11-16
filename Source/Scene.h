@@ -8,6 +8,7 @@
 #include "ModelExit.h"
 #include "ModelField.h"
 #include "Movement.h"
+#include "Emitter.h"
 
 #include <map>
 #include <string>
@@ -21,6 +22,8 @@
 
 using namespace std;
 using namespace glm;
+
+class Emitter;
 
 class Scene {
 public:

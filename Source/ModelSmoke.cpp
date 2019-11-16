@@ -20,8 +20,8 @@ ModelSmoke::ModelSmoke() {
 }
 
 ModelSmoke::~ModelSmoke() {
-	glDeleteBuffers(1, &mVBO);
-	glDeleteVertexArrays(1, &mVAO);
+	//glDeleteBuffers(1, &mVBO);
+	//glDeleteVertexArrays(1, &mVAO);
 }
 
 void ModelSmoke::Update(float dt) {

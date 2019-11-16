@@ -5,12 +5,16 @@ using namespace glm;
 
 const vec3 Emitter::EMITTER_OFFSET = vec3(1.3f, 1.1f, 3.5f);
 const int Emitter::RATE = 1;
-const int Emitter::MAX_EMITTER_PARTICLES = 200;
+const int Emitter::MAX_EMITTER_PARTICLES = 1000;
+mat4* Emitter::particleMatrices = new mat4[Emitter::MAX_EMITTER_PARTICLES];
+unsigned int Emitter::buffer;
+unsigned int Emitter::VAO;
+vector<ModelSmoke*> Emitter::particleArray = {};
 
 Emitter::Emitter(ModelBumperCar* model) {
-	MAX_LIFE = 100 + (int) generateRandomFloat() * 100;
+	MAX_LIFE = 75 + (int) generateRandomFloat() * 100;
 	parent = model;
-	particleMatrices = new mat4[Emitter::MAX_EMITTER_PARTICLES];
+	
 	setupInstancedArray();
 }
 
@@ -31,6 +35,7 @@ void Emitter::generateParticles() {
 	
 	for (auto it = particleArray.begin(); it != particleArray.end();) {
 		if ((*it)->life > MAX_LIFE) {
+			delete *it;
 			it = particleArray.erase(it);
 		} else {
 			++it;
@@ -47,9 +52,9 @@ void Emitter::generateParticles() {
 		count = 0;
 	}
 
-	simulate();
-	updateParticleMatrices();
-	draw();
+	
+	
+	//draw();
 	count++;
 }
 
@@ -80,37 +85,10 @@ void Emitter::simulate() {
 }
 
 void Emitter::draw() {
-	/*
-	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
-		ModelSmoke* smoke = &particleArray[i];
-		if (smoke->alive) {
-			smoke->Draw();
-		}
-	}
-	*/
+	simulate();
+	updateParticleMatrices();
 	updateInstancedArray();
 	ModelSmoke::InstanceDraw();
-}
-
-int Emitter::findDeadParticle() {
-	/*
-	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
-		ModelSmoke* smoke = &particleArray[i];
-		if (!smoke->alive) {
-			pointer = i;
-			return i;
-		}
-	}
-	
-	for (int i = 0; i < pointer; i++) {
-		ModelSmoke* smoke = &particleArray[i];
-		if (!smoke->alive) {
-			pointer = i;
-			return i;
-		}
-	}
-	*/
-	return 0;
 }
 
 void Emitter::updateParticleMatrices() {

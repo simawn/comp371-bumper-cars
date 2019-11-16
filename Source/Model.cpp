@@ -20,11 +20,11 @@ Model::Model() :	mPosition(0.0f, 0.0f, 0.0f),
 {}
 
 Model::~Model() {
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &vertices_VBO);
-	glDeleteBuffers(1, &normals_VBO);
-	glDeleteBuffers(1, &uvs_VBO);
-	glDeleteBuffers(1, &EBO);
+	//glDeleteVertexArrays(1, &VAO);
+	//glDeleteBuffers(1, &vertices_VBO);
+	//glDeleteBuffers(1, &normals_VBO);
+	//glDeleteBuffers(1, &uvs_VBO);
+	//glDeleteBuffers(1, &EBO);
 }
 
 void Model::Update(float dt) {}

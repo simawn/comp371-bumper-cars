@@ -51,7 +51,7 @@ void ModelSmoke::Draw() {
 void ModelSmoke::InstanceDraw() {
 	glUseProgram(Shaders::currentShaderProgram);
 
-	//Renderer::setDiffuseColor(color); //Need another way to load colors
+	Renderer::setDiffuseColor(vec3(0.4f));
 
 	//Other properties
 	objl::Material meshMat = get<0>(smokeMeshes.front()).MeshMaterial;

@@ -38,7 +38,7 @@ Shaders::Shaders() {
 							readFile("../Source/textureFrag.glsl"), 
 							readFile("../Source/shadowFrag.glsl"), 
 							readFile("../Source/sceneFrag.glsl"),
-							readFile("../Source/smokeVert.glsl") };
+							readFile("../Source/smokeFrag.glsl") };
 
 	
 	colorShaderProgram = compileAndLinkShaders(tempVert[0].c_str(), tempFrag[0].c_str());

@@ -44,4 +44,7 @@ private:
 	mat4* particleMatrices; //Keeps track on model matrix
 	void updateParticleMatrices();
 	void setupInstancedArray();
+	void updateInstancedArray();
+	unsigned int buffer;
+	unsigned int VAO;
 };

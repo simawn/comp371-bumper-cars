@@ -91,6 +91,7 @@ void Emitter::draw() {
 		}
 	}
 	*/
+	updateInstancedArray();
 	ModelSmoke::InstanceDraw();
 }
 
@@ -117,17 +118,18 @@ int Emitter::findDeadParticle() {
 void Emitter::updateParticleMatrices() {
 	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
 		particleMatrices[i] = particleArray[i].GetWorldMatrix();
+		//particleMatrices[i] = parent->GetWorldMatrix();
 	}
 }
 
 void Emitter::setupInstancedArray() {
 	//Init instanced array
-	unsigned int buffer;
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, Emitter::MAX_EMITTER_PARTICLES * sizeof(glm::mat4), &particleMatrices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, Emitter::MAX_EMITTER_PARTICLES * sizeof(glm::mat4), &particleMatrices[0], GL_DYNAMIC_DRAW);
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, Emitter::MAX_EMITTER_PARTICLES * sizeof(glm::mat4), &particleMatrices[0]);
 
-	unsigned int VAO = ModelSmoke::mVAO;
+	VAO = ModelSmoke::mVAO;
 	glBindVertexArray(VAO);
 	// set attribute pointers for matrix (4 times vec4)
 	glEnableVertexAttribArray(3);
@@ -145,4 +147,28 @@ void Emitter::setupInstancedArray() {
 	glVertexAttribDivisor(6, 1);
 
 	glBindVertexArray(0);
+}
+
+void Emitter::updateInstancedArray() {
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, Emitter::MAX_EMITTER_PARTICLES * sizeof(glm::mat4), &particleMatrices[0]);
+	/*
+	glBindVertexArray(VAO);
+	// set attribute pointers for matrix (4 times vec4)
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*)0);
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*)(sizeof(glm::vec4)));
+	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*)(2 * sizeof(glm::vec4)));
+	glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*)(3 * sizeof(glm::vec4)));
+
+	glVertexAttribDivisor(3, 1);
+	glVertexAttribDivisor(4, 1);
+	glVertexAttribDivisor(5, 1);
+	glVertexAttribDivisor(6, 1);
+
+	glBindVertexArray(0);
+	*/
 }

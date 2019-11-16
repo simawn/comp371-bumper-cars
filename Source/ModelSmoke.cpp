@@ -49,9 +49,11 @@ void ModelSmoke::Draw() {
 }
 
 void ModelSmoke::InstanceDraw() {
+
 	glUseProgram(Shaders::smokeShaderProgram);
+	
 	glBindVertexArray(ModelSmoke::mVAO);
 	glDrawElementsInstanced(GL_TRIANGLES, get<2>(smokeMeshes.front()), GL_UNSIGNED_INT, 0, Emitter::MAX_EMITTER_PARTICLES);
-	//glBindVertexArray(0);
+	glBindVertexArray(0);
 }
 

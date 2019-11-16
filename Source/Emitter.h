@@ -33,7 +33,8 @@ private:
 	vec3 position;
 	
 	ModelSmoke* particleArray;
-	
+	mat4* particleMatrices; //Keeps track on model matrix
+
 	void simulate();
 	void draw();
 	int count;
@@ -41,7 +42,7 @@ private:
 	ModelBumperCar* parent;
 	int findDeadParticle();
 	int pointer = 0;
-	mat4* particleMatrices; //Keeps track on model matrix
+	
 	void updateParticleMatrices();
 	void setupInstancedArray();
 	void updateInstancedArray();

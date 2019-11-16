@@ -32,7 +32,7 @@ private:
 	float generateRandomFloat();
 	vec3 position;
 	
-	ModelSmoke* particleArray;
+	vector<ModelSmoke*> particleArray;
 	mat4* particleMatrices; //Keeps track on model matrix
 
 	void simulate();

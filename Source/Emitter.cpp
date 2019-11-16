@@ -4,13 +4,12 @@ using namespace std;
 using namespace glm;
 
 const vec3 Emitter::EMITTER_OFFSET = vec3(1.3f, 1.1f, 3.5f);
-const int Emitter::RATE = 4;
-const int Emitter::MAX_EMITTER_PARTICLES = 40;
+const int Emitter::RATE = 1;
+const int Emitter::MAX_EMITTER_PARTICLES = 200;
 
 Emitter::Emitter(ModelBumperCar* model) {
-	MAX_LIFE = 120 + (int) generateRandomFloat() * 100;
+	MAX_LIFE = 100 + (int) generateRandomFloat() * 100;
 	parent = model;
-	particleArray = new ModelSmoke[Emitter::MAX_EMITTER_PARTICLES];
 	particleMatrices = new mat4[Emitter::MAX_EMITTER_PARTICLES];
 	setupInstancedArray();
 }
@@ -29,21 +28,22 @@ void Emitter::setPosition(vec3 newPosition) {
 
 void Emitter::generateParticles() {
 	//kill dead particles
-	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
-		ModelSmoke* smoke = &particleArray[i];
-		if (smoke->life > MAX_LIFE) {
-			smoke->alive = false;
-			smoke->life = 0;
+	
+	for (auto it = particleArray.begin(); it != particleArray.end();) {
+		if ((*it)->life > MAX_LIFE) {
+			it = particleArray.erase(it);
+		} else {
+			++it;
 		}
 	}
 	
 	if (count % RATE == 0) {
-		int i = findDeadParticle();
-		ModelSmoke* smoke = &particleArray[i];
-		smoke->alive = true;
-		smoke->SetPosition(position);
-		smoke->SetScaling(vec3(generateRandomFloat()));
-		
+		ModelSmoke* smokePart = new ModelSmoke();
+		smokePart->SetPosition(position);
+		smokePart->SetScaling(vec3(generateRandomFloat() * 7));
+		if (particleArray.size() < Emitter::MAX_EMITTER_PARTICLES) {
+			particleArray.push_back(smokePart);
+		}
 		count = 0;
 	}
 
@@ -54,10 +54,9 @@ void Emitter::generateParticles() {
 }
 
 Emitter::~Emitter() {
-	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
-		delete &particleArray[i];
+	for (auto it = particleArray.begin(); it != particleArray.end();) {
+		delete (*it);
 	}
-	delete particleArray;
 	delete particleMatrices;
 	glDeleteBuffers(1, &buffer);
 }
@@ -67,19 +66,16 @@ float Emitter::generateRandomFloat() {
 }
 
 void Emitter::simulate() {
-	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
-		ModelSmoke* smoke = &particleArray[i];
-		if (smoke->alive) {
-			vec3 upDir = vec3(generateRandomFloat() / 5,
-				generateRandomFloat() / 15,
-				generateRandomFloat() / 5);
-			vec3 sizeInc = vec3(generateRandomFloat() / 3);
-			//vec3 sizeExtra = generateRandomFloat() > 0.5 ? vec3(generateRandomFloat()/2, 0.0f, 0.0f) : vec3(0.0f, 0.0f, generateRandomFloat()/2);
-			smoke->SetPosition(smoke->GetPosition() + upDir);
-			smoke->SetScaling(smoke->GetScaling() + sizeInc);
-			smoke->SetRotation(vec3(1.0f, 0.0f, 1.0f), smoke->GetRotationAngle() + generateRandomFloat() * 10);
-			smoke->life++;
-		}
+	for (auto &particle : particleArray) {
+		vec3 upDir = vec3(generateRandomFloat() / 5,
+						  generateRandomFloat() / 10,
+						  generateRandomFloat() / 5);
+		vec3 sizeInc = vec3(generateRandomFloat() / 3);
+		//vec3 sizeExtra = generateRandomFloat() > 0.5 ? vec3(generateRandomFloat()/2, 0.0f, 0.0f) : vec3(0.0f, 0.0f, generateRandomFloat()/2);
+		particle->SetPosition(particle->GetPosition() + upDir);
+		particle->SetScaling(particle->GetScaling() + sizeInc);
+		particle->SetRotation(vec3(1.0f, 0.0f, 1.0f), particle->GetRotationAngle() + generateRandomFloat() * 10);
+		particle->life++;
 	}
 }
 
@@ -97,6 +93,7 @@ void Emitter::draw() {
 }
 
 int Emitter::findDeadParticle() {
+	/*
 	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
 		ModelSmoke* smoke = &particleArray[i];
 		if (!smoke->alive) {
@@ -112,13 +109,20 @@ int Emitter::findDeadParticle() {
 			return i;
 		}
 	}
-	
+	*/
 	return 0;
 }
 
 void Emitter::updateParticleMatrices() {
+	//Clear matrix
 	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
-		particleMatrices[i] = particleArray[i].GetWorldMatrix();
+		particleMatrices[i] = mat4();
+	}
+	//Add content
+	int counter = 0;
+	for (auto &particle : particleArray) {
+		particleMatrices[counter] = particle->GetWorldMatrix();
+		counter++;
 	}
 }
 

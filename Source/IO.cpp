@@ -13,6 +13,7 @@ using namespace std;
 using namespace glm;
 
 IO* IO::instance = 0;
+bool IO::stopSimulation = false;
 
 IO& IO::getInstance() {
 	if (instance == 0) instance = new IO();
@@ -88,6 +89,12 @@ void IO::processInputs() {
 
 	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
 	}
+
+	//Stop movement
+	if (lastHState == GLFW_RELEASE && glfwGetKey(Setup::window, GLFW_KEY_H) == GLFW_PRESS) {
+		stopSimulation = !stopSimulation;
+	}
+	lastHState = glfwGetKey(Setup::window, GLFW_KEY_H);
 }
 
 void IO::updateCameraPosition(int dir) {

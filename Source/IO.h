@@ -16,6 +16,7 @@ public:
 	void updateMousePosition();
 	pair<double, double> getMouseMoveDifference();
 	void processInputs();
+	static bool stopSimulation;
 private:
 	IO();
 	static IO* instance;
@@ -27,4 +28,6 @@ private:
 	double lastMousePosY = 0;
 	const float CAM_SPEED = 20;
 	void updateCameraPosition(int dir);
+	//Keep track of keys
+	int lastHState = GLFW_RELEASE;
 };

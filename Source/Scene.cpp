@@ -82,8 +82,10 @@ Scene::Scene() {
 
 void Scene::update(float tick) {
 	//Update movement
-	movement.updateMovements();
-	models["bc1"]->SetRotation(vec3(0.0f, 1.0f, 0.0f), models["bc1"]->GetRotationAngle() + tick * 40);
+	if (!IO::stopSimulation) {
+		movement.updateMovements();
+		models["bc1"]->SetRotation(vec3(0.0f, 1.0f, 0.0f), models["bc1"]->GetRotationAngle() + tick * 40);
+	}
 }
 
 void Scene::draw(float tick) {

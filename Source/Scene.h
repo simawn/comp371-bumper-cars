@@ -9,6 +9,7 @@
 #include "ModelField.h"
 #include "Movement.h"
 #include "Emitter.h"
+#include "IO.h"
 
 #include <map>
 #include <string>

@@ -46,6 +46,8 @@
     <None Include="..\Source\sceneVert.glsl" />
     <None Include="..\Source\shadowFrag.glsl" />
     <None Include="..\Source\shadowVert.glsl" />
+    <None Include="..\Source\smokeFrag.glsl" />
+    <None Include="..\Source\smokeVert.glsl" />
     <None Include="..\Source\textureFrag.glsl" />
     <None Include="..\Source\textureVert.glsl" />
   </ItemGroup>

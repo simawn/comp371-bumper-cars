@@ -18,8 +18,8 @@ Scene::Scene() {
 	//Model* cube2 = new ModelCube(vec3(2.0f, 2.0f, 2.0f));
 	//Model* smoke = new ModelSmoke();
 	Model* ground = new ModelCube(vec3(50.0f, 0.1f, 50.0f));
-	Model* entrance = new ModelEntrance();
-	Model* exit = new ModelExit();
+	//Model* entrance = new ModelEntrance();
+	//Model* exit = new ModelExit();
 	//Model* ground = new ModelCube(vec3(5.0f, 1.0f, 7.5f)); //reference for a single car
 	Model* bumperCar1 = new ModelBumperCar();
 	Model* bumperCar2 = new ModelBumperCar();
@@ -46,8 +46,8 @@ Scene::Scene() {
 	bumperCar5->SetScaling(vec3(5.0f));
 	//field->SetScaling(vec3(5.0f));
 
-	entrance->SetScaling(vec3(2.0f));
-	exit->SetScaling(vec3(2.0f));
+	//entrance->SetScaling(vec3(2.0f));
+	//exit->SetScaling(vec3(2.0f));
 
 	//smoke->SetPosition(vec3(0.0f, 3.0f, 0.0f));
 	bumperCar1->SetPosition(vec3(0.0f, 0.0f, 0.0f));
@@ -55,11 +55,11 @@ Scene::Scene() {
 	bumperCar3->SetPosition(vec3(-5.0f, 0.0f, -5.0f));
 	bumperCar4->SetPosition(vec3(0.0f, 0.0f, 10.0f));
 	bumperCar5->SetPosition(vec3(5.0f, 0.0f, 5.0f));
-	entrance->SetPosition(vec3(28.5f, 0.0f, 0.0f));
-	exit->SetPosition(vec3(-28.5f, 0.0f, 0.0f));
+	//entrance->SetPosition(vec3(28.5f, 0.0f, 0.0f));
+	//exit->SetPosition(vec3(-28.5f, 0.0f, 0.0f));
 
-	entrance->SetRotation(vec3(0,1,0), 90);
-	exit->SetRotation(vec3(0,1,0), 90);
+	//entrance->SetRotation(vec3(0,1,0), 90);
+	//exit->SetRotation(vec3(0,1,0), 90);
 	bumperCar1->SetRotation(bumperCar1->GetRotationAxis(), 180);
 	bumperCar2->SetRotation(bumperCar2->GetRotationAxis(), 45);
 	bumperCar3->SetRotation(bumperCar3->GetRotationAxis(), 90);
@@ -76,8 +76,8 @@ Scene::Scene() {
 	//models["field"] = field;
 
 	models["ground"] = ground;
-	models["entrance"] = entrance;
-	models["exit"] = exit;
+	//models["entrance"] = entrance;
+	//models["exit"] = exit;
 }
 
 void Scene::update(float tick) {
@@ -93,6 +93,8 @@ void Scene::draw(float tick) {
 	for (auto const& model : models) {
 		model.second->Draw();
 	}
+
+	Emitter::draw();
 }
 
 

@@ -11,6 +11,7 @@ public:
 	static int texturedShaderProgram;
 	static int shadowShaderProgram;
 	static int sceneShaderProgram;
+	static int smokeShaderProgram;
 private:
 	Shaders();
 	static Shaders* instance;

@@ -16,6 +16,7 @@ int Shaders::colorShaderProgram = 0;
 int Shaders::texturedShaderProgram = 0;
 int Shaders::shadowShaderProgram = 0;
 int Shaders::sceneShaderProgram = 0;
+int Shaders::smokeShaderProgram = 0;
 
 Shaders& Shaders::getInstance() {
 	if (instance == 0) instance = new Shaders();
@@ -27,14 +28,24 @@ void Shaders::setCurrentShaderProgram(int program) {
 }
 
 Shaders::Shaders() {
-	string tempVert[] = { readFile("../Source/colorVert.glsl"), readFile("../Source/textureVert.glsl"), readFile("../Source/shadowVert.glsl"), readFile("../Source/sceneVert.glsl") };
-	string tempFrag[] = { readFile("../Source/colorFrag.glsl"), readFile("../Source/textureFrag.glsl"), readFile("../Source/shadowFrag.glsl"), readFile("../Source/sceneFrag.glsl") };
+	string tempVert[] = {	readFile("../Source/colorVert.glsl"), 
+							readFile("../Source/textureVert.glsl"), 
+							readFile("../Source/shadowVert.glsl"), 
+							readFile("../Source/sceneVert.glsl"),
+							readFile("../Source/smokeVert.glsl") };
+
+	string tempFrag[] = {	readFile("../Source/colorFrag.glsl"), 
+							readFile("../Source/textureFrag.glsl"), 
+							readFile("../Source/shadowFrag.glsl"), 
+							readFile("../Source/sceneFrag.glsl"),
+							readFile("../Source/smokeFrag.glsl") };
 
 	
 	colorShaderProgram = compileAndLinkShaders(tempVert[0].c_str(), tempFrag[0].c_str());
 	texturedShaderProgram = compileAndLinkShaders(tempVert[1].c_str(), tempFrag[1].c_str());
 	shadowShaderProgram = compileAndLinkShaders(tempVert[2].c_str(), tempFrag[2].c_str());
 	sceneShaderProgram = compileAndLinkShaders(tempVert[3].c_str(), tempFrag[3].c_str());
+	smokeShaderProgram = compileAndLinkShaders(tempVert[4].c_str(), tempFrag[4].c_str());
 
 	currentShaderProgram = sceneShaderProgram;
 }

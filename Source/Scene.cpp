@@ -26,7 +26,66 @@ Scene::Scene() {
 	Model* bumperCar3 = new ModelBumperCar();
 	Model* bumperCar4 = new ModelBumperCar();
 	Model* bumperCar5 = new ModelBumperCar();
+
+	//Global light to generate shadows only, models are not affected by it
 	Light* lightPoint1 = new LightPoint(vec3(5.0f, 25.0f, -9.0f));
+
+	//Create 4 point lights
+	int sceneShader = Shaders::sceneShaderProgram;
+
+	vec3 pointLightPositions[] = {
+		vec3(-20.0f, 10.0f, -20.0f),
+		vec3(-20.0f, 10.0f, 20.0f),
+		vec3(20.0f, 10.0f, -20.0f),
+		vec3(20.0f, 10.0f, 20.0f)
+	};
+	vec3 pointLightColors[] = {
+		vec3(1.0f,  0.0f,  0.0f),
+		vec3(0.0f,  1.0f,  0.0f),
+		vec3(0.0f,  0.0f,  1.0f),
+		vec3(1.0f,  1.0f,  1.0f)
+	};
+
+	for (GLuint i = 0; i < 4; i++) {
+		string number = to_string(i);
+		glUniform3f(glGetUniformLocation(sceneShader, ("pointLights[" + number + "].position").c_str()), pointLightPositions[i].x, pointLightPositions[i].y, pointLightPositions[i].z);
+		glUniform3f(glGetUniformLocation(sceneShader, ("pointLights[" + number + "].ambient").c_str()), pointLightColors[i].r * 0.1f, pointLightColors[i].g * 0.1f, pointLightColors[i].b * 0.1f);
+		glUniform3f(glGetUniformLocation(sceneShader, ("pointLights[" + number + "].diffuse").c_str()), pointLightColors[i].r, pointLightColors[i].g, pointLightColors[i].b);
+		glUniform3f(glGetUniformLocation(sceneShader, ("pointLights[" + number + "].specular").c_str()), 1.0f, 1.0f, 1.0f);
+		glUniform1f(glGetUniformLocation(sceneShader, ("pointLights[" + number + "].constant").c_str()), 1.0f);
+		glUniform1f(glGetUniformLocation(sceneShader, ("pointLights[" + number + "].linear").c_str()), 0.09f);
+		glUniform1f(glGetUniformLocation(sceneShader, ("pointLights[" + number + "].quadratic").c_str()), 0.032f);
+	}
+
+	//Create 4 directionals lights
+	vec3 dirLightPositions[] = {
+		vec3(-20.0f, 10.0f, -20.0f),
+		vec3(-20.0f, 10.0f, 20.0f),
+		vec3(20.0f, 10.0f, -20.0f),
+		vec3(20.0f, 10.0f, 20.0f)
+	};
+	vec3 dirLightColors[] = {
+		vec3(0.0f,  1.0f,  0.0f),
+		vec3(1.0f,  1.0f,  0.0f),
+		vec3(1.0f,  0.0f,  1.0f),
+		vec3(1.0f,  1.0f,  1.0f)
+	};
+	vec3 dirLightDirections[] = {
+		vec3(1.0f,  1.0f,  0.0f),
+		vec3(1.0f,  1.0f,  0.0f),
+		vec3(1.0f,  0.0f,  1.0f),
+		vec3(1.0f,  1.0f,  1.0f)
+	};
+
+	for (GLuint i = 0; i < 4; i++) {
+		string number = to_string(i);
+		glUniform3f(glGetUniformLocation(sceneShader, ("dirLights[" + number + "].position").c_str()), dirLightPositions[i].x, dirLightPositions[i].y, dirLightPositions[i].z);
+		glUniform3f(glGetUniformLocation(sceneShader, ("dirLights[" + number + "].ambient").c_str()), dirLightColors[i].r * 0.1f, dirLightColors[i].g * 0.1f, dirLightColors[i].b * 0.1f);
+		glUniform3f(glGetUniformLocation(sceneShader, ("dirLights[" + number + "].diffuse").c_str()), dirLightColors[i].r, dirLightColors[i].g, dirLightColors[i].b);
+		glUniform3f(glGetUniformLocation(sceneShader, ("dirLights[" + number + "].direction").c_str()), dirLightDirections[i].x, dirLightDirections[i].y, dirLightDirections[i].z);
+		glUniform3f(glGetUniformLocation(sceneShader, ("dirLights[" + number + "].specular").c_str()), 1.0f, 1.0f, 1.0f);
+	}
+
 	//Model* field = new ModelField();
 
 	//Controls car movements

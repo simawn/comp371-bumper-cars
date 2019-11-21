@@ -34,16 +34,16 @@ Scene::Scene() {
 	int sceneShader = Shaders::sceneShaderProgram;
 
 	vec3 pointLightPositions[] = {
-		vec3(-20.0f, 10.0f, -20.0f),
-		vec3(-20.0f, 10.0f, 20.0f),
-		vec3(20.0f, 10.0f, -20.0f),
-		vec3(20.0f, 10.0f, 20.0f)
+		vec3(-15.0f, 10.0f, -15.0f),
+		vec3(-15.0f, 10.0f, 15.0f),
+		vec3(15.0f, 10.0f, -15.0f),
+		vec3(15.0f, 10.0f, 15.0f)
 	};
 	vec3 pointLightColors[] = {
-		vec3(1.0f,  0.0f,  0.0f),
-		vec3(0.0f,  1.0f,  0.0f),
-		vec3(0.0f,  0.0f,  1.0f),
-		vec3(1.0f,  1.0f,  1.0f)
+		vec3(1.0f,  0.0f,  1.0f),
+		vec3(1.0f,  0.0f,  1.0f),
+		vec3(0.0f,  1.0f,  1.0f),
+		vec3(0.0f,  1.0f,  1.0f)
 	};
 
 	for (GLuint i = 0; i < 4; i++) {
@@ -65,16 +65,16 @@ Scene::Scene() {
 		vec3(20.0f, 10.0f, 20.0f)
 	};
 	vec3 dirLightColors[] = {
-		vec3(0.0f,  1.0f,  0.0f),
-		vec3(1.0f,  1.0f,  0.0f),
+		vec3(0.0f,  1.0f,  1.0f),
+		vec3(1.0f,  1.0f,  1.0f),
 		vec3(1.0f,  0.0f,  1.0f),
-		vec3(1.0f,  1.0f,  1.0f)
+		vec3(1.0f,  0.0f,  1.0f)
 	};
 	vec3 dirLightDirections[] = {
-		vec3(1.0f,  1.0f,  0.0f),
-		vec3(1.0f,  1.0f,  0.0f),
-		vec3(1.0f,  0.0f,  1.0f),
-		vec3(1.0f,  1.0f,  1.0f)
+		vec3(0.2f,  -0.5f,  0.5f),
+		vec3(0.3f,  -0.9f,  0.4f),
+		vec3(0.4f,  -0.2f,  0.3f),
+		vec3(0.5f,  -0.4f,  0.2f)
 	};
 
 	for (GLuint i = 0; i < 4; i++) {

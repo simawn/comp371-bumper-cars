@@ -96,8 +96,9 @@ vec3 CalcDirLight(DirLight light, vec3 normal) {
 } 
 
 //Light Uniforms
-#define NR_POINT_LIGHTS 4
+#define NR_POINT_LIGHTS 5
 #define NR_DIR_LIGHTS 4
+
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform DirLight dirLights[NR_DIR_LIGHTS];
 

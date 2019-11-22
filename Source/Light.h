@@ -1,5 +1,6 @@
 #pragma once
 #include "Shaders.h"
+#include <vector>
 //#include "Renderer.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
@@ -13,11 +14,17 @@ using namespace std;
 class Light {
 public:
 	Light();
-	Light(vec3 pos);
+	Light(vec3 pos, vec3 color);
+	Light(vec3 pos, vec3 color, vec3 direction);
 	vec3 getPosition();
-	virtual void setPosition(vec3 pos) = 0;
+	vec3 getColor();
+	vec3 getDirection();
+	static bool shadowLightIsSet; //The very first point light we create will also create the shadows
+	static vector<Light*> directionalLights;
+	static vector<Light*> pointLights;
+	static void updateLights();
 protected:
 	vec3 position;
-	virtual void setShaderLocation() = 0;
-	
+	vec3 color;
+	vec3 direction;
 };

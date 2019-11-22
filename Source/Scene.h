@@ -1,5 +1,6 @@
 #pragma once
 #include "LightPoint.h"
+#include "LightDirectional.h"
 #include "Model.h"
 #include "ModelCube.h"
 #include "ModelBumperCar.h"

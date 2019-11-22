@@ -39,11 +39,11 @@ Scene::Scene() {
 	//Light* dirLight1 = new LightDirectional(vec3(-20.0f, 10.0f, -20.0f), vec3(0.0f,  1.0f,  1.0f), vec3(0.2f,  -0.5f,  0.5f));
 	//Light* dirLight2 = new LightDirectional(vec3(-20.0f, 10.0f, 20.0f), vec3(1.0f,  1.0f,  1.0f), vec3(0.3f,  -0.9f,  0.4f));
 	//Light* dirLight3 = new LightDirectional(vec3(20.0f, 10.0f, -20.0f), vec3(1.0f,  0.0f,  1.0f), vec3(0.4f,  -0.2f,  0.3f));
-	Light* dirLight4 = new LightDirectional(vec3(20.0f, 10.0f, 20.0f), vec3(1.0f,  0.0f,  0.0f), vec3(0.5f,  -0.4f,  0.2f));
+	Light* dirLight4 = new LightDirectional(vec3(20.0f, 10.0f, 20.0f), vec3(0.4f,  0.4f,  0.4f), vec3(0.5f,  -0.4f,  0.2f));
 
-	Light::updateLights();
-
+	Light* spotLight1 = new LightSpot(vec3(10.0f, 3.0f, 10.0f), vec3(1.0f, 1.0f, 1.0f), vec3(0.0f, -1.0f, 0.0f), 1, 0);
 	//Model* field = new ModelField();
+
 
 	//Controls car movements
 	//movement.addObject(bumperCar1);
@@ -97,11 +97,14 @@ Scene::Scene() {
 }
 
 void Scene::update(float tick) {
+	models["bc1"]->SetRotation(vec3(0.0f, 1.0f, 0.0f), 180);
 	//Update movement
 	if (!IO::stopSimulation) {
 		movement.updateMovements();
-		models["bc1"]->SetRotation(vec3(0.0f, 1.0f, 0.0f), models["bc1"]->GetRotationAngle() + tick * 40);
+		//models["bc1"]->SetRotation(vec3(0.0f, 1.0f, 0.0f), models["bc1"]->GetRotationAngle() + tick * 40);
+		
 	}
+	Light::updateLights();
 }
 
 void Scene::draw(float tick) {

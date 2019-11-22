@@ -27,6 +27,8 @@ ModelBumperCar::ModelBumperCar() {
 	}
 
 	emitter = new Emitter(this);
+
+
 }
 
 ModelBumperCar::~ModelBumperCar() {

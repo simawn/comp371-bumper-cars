@@ -95,12 +95,68 @@ vec3 CalcDirLight(DirLight light, vec3 normal) {
     return (ambient + diffuse + specular);
 } 
 
+//Spot Lights
+
+struct SpotLight {
+	vec3 position;  
+    vec3 direction;
+    float cutOff;
+    float outerCutOff;
+  
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+	
+    float constant;
+    float linear;
+    float quadratic;
+};
+
+vec3 CalcSpotLight(SpotLight light, vec3 normal) {
+	// ambient
+    vec3 ambient = light.ambient * diffuseColor;
+    
+	vec3 lightDir = normalize(light.position - FragPos);
+    // diffuse shading
+    float diff = max(dot(normal, lightDir), 0.0);
+
+    vec3 diffuse = light.diffuse * diffuseColor;  
+    
+    // specular
+    vec3 N = normalize(normCam);
+	vec3 L = normalize(lightDirectionCam);
+	vec3 E = normalize(eyeDirectionCam);
+	vec3 R = reflect(-L, N);
+
+    float spec = pow(max(dot(E, R), 0.0), specExp);
+
+    vec3 specular = light.specular * spec * diffuseColor;  
+    
+    // spotlight (soft edges)
+    float theta = dot(lightDir, normalize(-light.direction)); 
+    float epsilon = (light.cutOff - light.outerCutOff);
+    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    diffuse  *= intensity;
+    specular *= intensity;
+    
+    // attenuation
+    float distance    = length(light.position - FragPos);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
+    ambient  *= attenuation; 
+    diffuse   *= attenuation;
+    specular *= attenuation;   
+	
+	return (ambient + diffuse + specular);
+}
+
 //Light Uniforms
 #define NR_POINT_LIGHTS 1
 #define NR_DIR_LIGHTS 1
+#define NR_SPOT_LIGHTS 1
 
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform DirLight dirLights[NR_DIR_LIGHTS];
+uniform SpotLight spotLights[NR_SPOT_LIGHTS];
 
 //Shadows
 
@@ -154,6 +210,11 @@ void main() {
 	//Dir Lights
 	for(int i = 0; i < NR_DIR_LIGHTS; i++) {
         result += CalcDirLight(dirLights[i], normCam);
+	}
+
+	//Spot Lights
+	for(int i = 0; i < NR_SPOT_LIGHTS; i++) {
+        result += CalcSpotLight(spotLights[i], normCam);
 	}
 
 	//

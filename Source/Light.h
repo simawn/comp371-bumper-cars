@@ -17,11 +17,17 @@ public:
 	Light(vec3 pos, vec3 color); //Point
 	Light(vec3 pos, vec3 color, vec3 direction); //Directional
 	Light(vec3 pos, vec3 color, vec3 direction, float cutOff, float outerCutOff); //Spot
+
 	vec3 getPosition();
 	vec3 getColor();
 	vec3 getDirection();
 	float getCutOff();
 	float getOuterCutOff();
+
+	void setPosition(vec3 pos);
+	void setDirection(vec3 dir);
+	void setColor(vec3 color);
+
 	static bool shadowLightIsSet; //The very first point light we create will also create the shadows
 	static vector<Light*> directionalLights;
 	static vector<Light*> pointLights;

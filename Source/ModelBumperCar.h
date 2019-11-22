@@ -1,14 +1,16 @@
 #pragma once
 
-
+#include "LightSpot.h"
 #include "Emitter.h"
 #include "Model.h"
+#include "IO.h"
 
 #include <vector>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 using namespace std;
 using namespace glm;
@@ -41,4 +43,8 @@ private:
 	vec3 diffuseColor;
 	static vector<objl::Mesh> obj;
 	Emitter* emitter;
+	LightSpot* lights[4];
+	vec3 lightPosOffsets[4];
+	vec3 lightDirOffsets[4];
+	vec3 lightColors[4];
 };

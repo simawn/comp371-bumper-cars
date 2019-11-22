@@ -48,6 +48,18 @@ float Light::getOuterCutOff() {
 	return outerCutOff;
 }
 
+void Light::setPosition(vec3 pos) {
+	this->position = pos;
+}
+
+void Light::setDirection(vec3 dir) {
+	this->direction = dir;
+}
+
+void Light::setColor(vec3 color) {
+	this->color = color;
+}
+
 void Light::updateLights() {
 	int sceneShader = Shaders::sceneShaderProgram;
 

@@ -31,15 +31,15 @@ Scene::Scene() {
 	//!IMPORTANT: We need to set #DEFINE in the shader to the correct amount of light
 	Light* lightPoint1 = new LightPoint(vec3(5.0f, 25.0f, -9.0f), vec3(1.0f));
 
-	Light* lightPoint2 = new LightPoint(vec3(-15.0f, 10.0f, -15.0f), vec3(1.0f,  0.0f,  1.0f));
-	Light* lightPoint3 = new LightPoint(vec3(-15.0f, 10.0f, 15.0f), vec3(1.0f,  0.0f,  1.0f));
-	Light* lightPoint4 = new LightPoint(vec3(15.0f, 10.0f, -15.0f), vec3(0.0f,  1.0f,  1.0f));
-	Light* lightPoint5 = new LightPoint(vec3(15.0f, 10.0f, 15.0f), vec3(0.0f,  1.0f,  1.0f));
+	//Light* lightPoint2 = new LightPoint(vec3(-15.0f, 10.0f, -15.0f), vec3(1.0f,  0.0f,  1.0f));
+	//Light* lightPoint3 = new LightPoint(vec3(-15.0f, 10.0f, 15.0f), vec3(1.0f,  0.0f,  1.0f));
+	//Light* lightPoint4 = new LightPoint(vec3(15.0f, 10.0f, -15.0f), vec3(0.0f,  1.0f,  1.0f));
+	//Light* lightPoint5 = new LightPoint(vec3(15.0f, 10.0f, 15.0f), vec3(0.0f,  1.0f,  1.0f));
 
-	Light* dirLight1 = new LightDirectional(vec3(-20.0f, 10.0f, -20.0f), vec3(0.0f,  1.0f,  1.0f), vec3(0.2f,  -0.5f,  0.5f));
-	Light* dirLight2 = new LightDirectional(vec3(-20.0f, 10.0f, 20.0f), vec3(1.0f,  1.0f,  1.0f), vec3(0.3f,  -0.9f,  0.4f));
-	Light* dirLight3 = new LightDirectional(vec3(20.0f, 10.0f, -20.0f), vec3(1.0f,  0.0f,  1.0f), vec3(0.4f,  -0.2f,  0.3f));
-	Light* dirLight4 = new LightDirectional(vec3(20.0f, 10.0f, 20.0f), vec3(1.0f,  0.0f,  1.0f), vec3(0.5f,  -0.4f,  0.2f));
+	//Light* dirLight1 = new LightDirectional(vec3(-20.0f, 10.0f, -20.0f), vec3(0.0f,  1.0f,  1.0f), vec3(0.2f,  -0.5f,  0.5f));
+	//Light* dirLight2 = new LightDirectional(vec3(-20.0f, 10.0f, 20.0f), vec3(1.0f,  1.0f,  1.0f), vec3(0.3f,  -0.9f,  0.4f));
+	//Light* dirLight3 = new LightDirectional(vec3(20.0f, 10.0f, -20.0f), vec3(1.0f,  0.0f,  1.0f), vec3(0.4f,  -0.2f,  0.3f));
+	Light* dirLight4 = new LightDirectional(vec3(20.0f, 10.0f, 20.0f), vec3(1.0f,  0.0f,  0.0f), vec3(0.5f,  -0.4f,  0.2f));
 
 	Light::updateLights();
 

@@ -2,17 +2,15 @@
 #include <iostream>
 #include <glm/gtx/string_cast.hpp>
 LightPoint::LightPoint(vec3 pos, vec3 color) : Light(pos, color) {
-	setPosition(pos);
-	if(!shadowLightIsSet) setLightMatrix();
-	pointLights.push_back(this);
-}
+	this->position = pos;
 
-void LightPoint::setPosition(vec3 pos) {
-	position = pos;
 	if (!shadowLightIsSet) {
 		setShaderLocation();
+		setLightMatrix();
 		shadowLightIsSet = true;
 	}
+
+	pointLights.push_back(this);
 }
 
 void LightPoint::setShaderLocation() {

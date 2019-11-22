@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Source\CameraFirst.h" />
     <ClInclude Include="..\Source\CameraThird.h" />
     <ClInclude Include="..\Source\Collision.h" />
     <ClInclude Include="..\Source\Emitter.h" />
@@ -54,6 +55,7 @@
     <None Include="..\Source\textureVert.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\CameraFirst.cpp" />
     <ClCompile Include="..\Source\CameraThird.cpp" />
     <ClCompile Include="..\Source\Collision.cpp" />
     <ClCompile Include="..\Source\Emitter.cpp" />

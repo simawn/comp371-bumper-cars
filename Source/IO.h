@@ -18,6 +18,7 @@ public:
 	void processInputs();
 	static bool stopSimulation;
 	static bool stopLights;
+	static bool isFirstCamera;
 private:
 	IO();
 	static IO* instance;
@@ -32,4 +33,5 @@ private:
 	//Keep track of keys
 	int lastHState = GLFW_RELEASE;
 	int lastLState = GLFW_RELEASE;
+	int lastCState = GLFW_RELEASE;
 };

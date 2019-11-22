@@ -3,6 +3,7 @@
 
 using namespace std;
 vector<objl::Mesh> ModelBumperCar::obj = {};
+vector<ModelBumperCar*> ModelBumperCar::bumperCarList = {};
 
 ModelBumperCar::ModelBumperCar() {
 	//Loads the model once
@@ -52,12 +53,17 @@ ModelBumperCar::ModelBumperCar() {
 	lightDirOffsets[3] = vec3(0.0f, -0.5f, -1.0f);
 	lightColors[3] = vec3(1.0f, 1.0f, 1.0f);
 	lights[3] = new LightSpot(lightPosOffsets[3], lightColors[3], lightDirOffsets[3], cutOff, outerCutOff);
+
+	bumperCarList.push_back(this);
 }
 
 ModelBumperCar::~ModelBumperCar() {
 	glDeleteBuffers(1, &mVBO);
 	glDeleteVertexArrays(1, &mVAO);
 	delete emitter;
+	for (ModelBumperCar* bumperCar : bumperCarList) {
+		delete bumperCar;
+	}
 }
 
 void ModelBumperCar::Update(float dt) {

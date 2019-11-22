@@ -15,6 +15,7 @@ using namespace glm;
 IO* IO::instance = 0;
 bool IO::stopSimulation = false;
 bool IO::stopLights = false;
+bool IO::isFirstCamera = false;
 
 IO& IO::getInstance() {
 	if (instance == 0) instance = new IO();
@@ -75,14 +76,16 @@ void IO::processInputs() {
 	}
 
 	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-		float moveDiffY = getMouseMoveDifference().second;
-		vec3 cPos = CameraThird::getPosition();
-		vec3 cLookAt = CameraThird::getLookAt();
-		vec3 cUp = CameraThird::getUpVector();
-		float tick = Renderer::tick;
-		vec3 moveSpeed = vec3(1.0f + (moveDiffY * tick));
+		if (!isFirstCamera) {
+			float moveDiffY = getMouseMoveDifference().second;
+			vec3 cPos = CameraThird::getPosition();
+			vec3 cLookAt = CameraThird::getLookAt();
+			vec3 cUp = CameraThird::getUpVector();
+			float tick = Renderer::tick;
+			vec3 moveSpeed = vec3(1.0f + (moveDiffY * tick));
 
-		CameraThird::updatePosition(cPos * moveSpeed, cLookAt * moveSpeed, cUp * moveSpeed);
+			CameraThird::updatePosition(cPos * moveSpeed, cLookAt * moveSpeed, cUp * moveSpeed);
+		}
 	}
 
 	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
@@ -102,49 +105,57 @@ void IO::processInputs() {
 		stopLights = !stopLights;
 	}
 	lastLState = glfwGetKey(Setup::window, GLFW_KEY_L);
+
+	//Toggle camera
+	if (lastCState == GLFW_RELEASE && glfwGetKey(Setup::window, GLFW_KEY_C) == GLFW_PRESS) {
+		isFirstCamera = !isFirstCamera;
+	}
+	lastCState = glfwGetKey(Setup::window, GLFW_KEY_C);
 }
 
 void IO::updateCameraPosition(int dir) {
-	int eastWest = 0;
-	int northSouth = 0;
-	int upDown = 0;
+	if (!isFirstCamera) {
+		int eastWest = 0;
+		int northSouth = 0;
+		int upDown = 0;
 
-	switch (dir) {
-	case 0:
-		northSouth = -1;
-		break;
-	case 1:
-		northSouth = 1;
-		break;
-	case 2:
-		eastWest = -1;
-		break;
-	case 3:
-		eastWest = 1;
-		break;
-	case 4:
-		upDown = 1;
-		break;
-	case 5:
-		upDown = -1;
-		break;
+		switch (dir) {
+		case 0:
+			northSouth = -1;
+			break;
+		case 1:
+			northSouth = 1;
+			break;
+		case 2:
+			eastWest = -1;
+			break;
+		case 3:
+			eastWest = 1;
+			break;
+		case 4:
+			upDown = 1;
+			break;
+		case 5:
+			upDown = -1;
+			break;
+		}
+		vec3 cPos = CameraThird::getPosition();
+		vec3 cLookAt = CameraThird::getLookAt();
+		vec3 cUp = CameraThird::getUpVector();
+		float tick = Renderer::tick;
+		float moveSpeed = tick * CAM_SPEED;
+
+		vec3 newCPos = vec3(cPos.x + eastWest * (moveSpeed),
+							cPos.y + upDown * (moveSpeed),
+							cPos.z + northSouth * (moveSpeed));
+
+		vec3 newCLookAt = vec3(cLookAt.x + eastWest * (moveSpeed),
+							   cLookAt.y + upDown * (moveSpeed),
+							   cLookAt.z + northSouth * (moveSpeed));
+		vec3 newCUp = cUp;
+
+		CameraThird::updatePosition(newCPos, newCLookAt, newCUp);
 	}
-	vec3 cPos = CameraThird::getPosition();
-	vec3 cLookAt = CameraThird::getLookAt();
-	vec3 cUp = CameraThird::getUpVector();
-	float tick = Renderer::tick;
-	float moveSpeed = tick * CAM_SPEED;
-
-	vec3 newCPos = vec3(cPos.x + eastWest * (moveSpeed), 
-						cPos.y + upDown * (moveSpeed), 
-						cPos.z + northSouth * (moveSpeed));
-
-	vec3 newCLookAt = vec3(cLookAt.x + eastWest * (moveSpeed), 
-						   cLookAt.y + upDown * (moveSpeed), 
-						   cLookAt.z + northSouth * (moveSpeed));
-	vec3 newCUp = cUp;
-
-	CameraThird::updatePosition(newCPos, newCLookAt, newCUp);
 }
 
 IO::IO() {}

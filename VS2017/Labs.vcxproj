@@ -16,7 +16,9 @@
     <ClInclude Include="..\Source\Emitter.h" />
     <ClInclude Include="..\Source\IO.h" />
     <ClInclude Include="..\Source\Light.h" />
+    <ClInclude Include="..\Source\LightDirectional.h" />
     <ClInclude Include="..\Source\LightPoint.h" />
+    <ClInclude Include="..\Source\LightSpot.h" />
     <ClInclude Include="..\Source\Model.h" />
     <ClInclude Include="..\Source\ModelBumperCar.h" />
     <ClInclude Include="..\Source\ModelCube.h" />
@@ -57,7 +59,9 @@
     <ClCompile Include="..\Source\Emitter.cpp" />
     <ClCompile Include="..\Source\IO.cpp" />
     <ClCompile Include="..\Source\Light.cpp" />
+    <ClCompile Include="..\Source\LightDirectional.cpp" />
     <ClCompile Include="..\Source\LightPoint.cpp" />
+    <ClCompile Include="..\Source\LightSpot.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Model.cpp" />
     <ClCompile Include="..\Source\ModelBumperCar.cpp" />

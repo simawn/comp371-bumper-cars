@@ -7,8 +7,7 @@ using namespace std;
 
 class LightPoint : public Light {
 public:
-	LightPoint(vec3 pos);
-	void setPosition(vec3 pos);
+	LightPoint(vec3 pos, vec3 color);
 private:
 	void setShaderLocation();
 	void setLightMatrix();

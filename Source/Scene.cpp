@@ -14,7 +14,14 @@ Scene& Scene::getInstance() {
 }
 
 Scene::Scene() {
-	//Model* cube1 = new ModelCube(vec3(1.0f, 1.0f, 1.0f));
+	//References for car light positioning
+	//Model* cube1 = new ModelCube(vec3(0.1f, 0.1f, 0.1f));
+	//cube1->SetPosition(vec3(0.85f, 2.2f, 3.3f)); //position right back light
+	//cube1->SetPosition(vec3(-0.85f, 2.2f, 3.3f)); //position left back light
+	//cube1->SetPosition(vec3(-1.05f, 1.15f, -3.3f)); //position left front light
+	//cube1->SetPosition(vec3(1.05f, 1.15f, -3.3f)); //position right front light
+
+
 	//Model* cube2 = new ModelCube(vec3(2.0f, 2.0f, 2.0f));
 	//Model* smoke = new ModelSmoke();
 	Model* ground = new ModelCube(vec3(50.0f, 0.1f, 50.0f));
@@ -26,8 +33,24 @@ Scene::Scene() {
 	Model* bumperCar3 = new ModelBumperCar();
 	Model* bumperCar4 = new ModelBumperCar();
 	Model* bumperCar5 = new ModelBumperCar();
-	Light* lightPoint1 = new LightPoint(vec3(5.0f, 25.0f, -9.0f));
+
+	//Global light to generate shadows only, models are not affected by it
+	//!IMPORTANT: We need to set #DEFINE in the shader to the correct amount of light
+	Light* lightPoint1 = new LightPoint(vec3(5.0f, 25.0f, -9.0f), vec3(1.0f));
+
+	//Light* lightPoint2 = new LightPoint(vec3(-15.0f, 10.0f, -15.0f), vec3(1.0f,  0.0f,  1.0f));
+	//Light* lightPoint3 = new LightPoint(vec3(-15.0f, 10.0f, 15.0f), vec3(1.0f,  0.0f,  1.0f));
+	//Light* lightPoint4 = new LightPoint(vec3(15.0f, 10.0f, -15.0f), vec3(0.0f,  1.0f,  1.0f));
+	//Light* lightPoint5 = new LightPoint(vec3(15.0f, 10.0f, 15.0f), vec3(0.0f,  1.0f,  1.0f));
+
+	//Light* dirLight1 = new LightDirectional(vec3(-20.0f, 10.0f, -20.0f), vec3(0.0f,  1.0f,  1.0f), vec3(0.2f,  -0.5f,  0.5f));
+	//Light* dirLight2 = new LightDirectional(vec3(-20.0f, 10.0f, 20.0f), vec3(1.0f,  1.0f,  1.0f), vec3(0.3f,  -0.9f,  0.4f));
+	//Light* dirLight3 = new LightDirectional(vec3(20.0f, 10.0f, -20.0f), vec3(1.0f,  0.0f,  1.0f), vec3(0.4f,  -0.2f,  0.3f));
+	Light* dirLight4 = new LightDirectional(vec3(20.0f, 10.0f, 20.0f), vec3(0.4f,  0.4f,  0.4f), vec3(0.5f,  -0.4f,  0.2f));
+
+	Light* spotLight1 = new LightSpot(vec3(10.0f, 3.0f, 10.0f), vec3(1.0f, 1.0f, 1.0f), vec3(0.0f, -1.0f, 0.0f), 1, 0);
 	//Model* field = new ModelField();
+
 
 	//Controls car movements
 	//movement.addObject(bumperCar1);
@@ -36,7 +59,6 @@ Scene::Scene() {
 	movement.addObject(bumperCar4);
 	movement.addObject(bumperCar5);
 
-	//cube1->SetPosition(vec3(5.0f, 0.0f, 5.0f));
 	//cube2->SetPosition(vec3(5.0f, 0.0f, 5.0f));
 	//smoke->SetScaling(vec3(50.0f));
 	bumperCar1->SetScaling(vec3(5.0f));
@@ -81,11 +103,15 @@ Scene::Scene() {
 }
 
 void Scene::update(float tick) {
+	//models["bc1"]->SetRotation(vec3(0.0f, 1.0f, 0.0f), 180);
 	//Update movement
 	if (!IO::stopSimulation) {
 		movement.updateMovements();
 		models["bc1"]->SetRotation(vec3(0.0f, 1.0f, 0.0f), models["bc1"]->GetRotationAngle() + tick * 40);
+		
 	}
+
+	Light::updateLights();
 }
 
 void Scene::draw(float tick) {

@@ -14,6 +14,7 @@ using namespace glm;
 
 IO* IO::instance = 0;
 bool IO::stopSimulation = false;
+bool IO::stopLights = false;
 
 IO& IO::getInstance() {
 	if (instance == 0) instance = new IO();
@@ -95,6 +96,12 @@ void IO::processInputs() {
 		stopSimulation = !stopSimulation;
 	}
 	lastHState = glfwGetKey(Setup::window, GLFW_KEY_H);
+
+	//Toggle lights
+	if (lastLState == GLFW_RELEASE && glfwGetKey(Setup::window, GLFW_KEY_L) == GLFW_PRESS) {
+		stopLights = !stopLights;
+	}
+	lastLState = glfwGetKey(Setup::window, GLFW_KEY_L);
 }
 
 void IO::updateCameraPosition(int dir) {

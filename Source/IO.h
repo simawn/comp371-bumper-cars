@@ -17,6 +17,7 @@ public:
 	pair<double, double> getMouseMoveDifference();
 	void processInputs();
 	static bool stopSimulation;
+	static bool stopLights;
 private:
 	IO();
 	static IO* instance;
@@ -30,4 +31,5 @@ private:
 	void updateCameraPosition(int dir);
 	//Keep track of keys
 	int lastHState = GLFW_RELEASE;
+	int lastLState = GLFW_RELEASE;
 };

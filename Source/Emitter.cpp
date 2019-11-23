@@ -4,35 +4,31 @@ using namespace std;
 using namespace glm;
 
 const vec3 Emitter::EMITTER_OFFSET = vec3(1.3f, 1.1f, 3.5f);
-const int Emitter::RATE = 1;
+const int Emitter::RATE = 4;
 const int Emitter::MAX_EMITTER_PARTICLES = 1000;
 mat4* Emitter::particleMatrices = new mat4[Emitter::MAX_EMITTER_PARTICLES];
-unsigned int Emitter::buffer;
+unsigned int Emitter::buffer = 0;
 unsigned int Emitter::VAO;
 vector<ModelSmoke*> Emitter::particleArray = {};
 
 Emitter::Emitter(ModelBumperCar* model) {
-	MAX_LIFE = 75 + (int) generateRandomFloat() * 100;
+	MAX_LIFE = 20 + (int) generateRandomFloat() * 100;
 	parent = model;
-	
-	setupInstancedArray();
+
+	ModelSmoke init; //Needed if rate is >1
+
+	//Create a single buffer for instanced rendering
+	if (Emitter::buffer == 0) {
+		glGenBuffers(1, &buffer);
+	}
 }
 
 void Emitter::setPosition(vec3 newPosition) {
-	
 	position = newPosition + rotate(EMITTER_OFFSET, radians(parent->GetRotationAngle() + 180), vec3(0.0f, 1.0f, 0.0f));
-	
-	/*
-	ModelSmoke indicator = ModelSmoke();
-	indicator.SetScaling(vec3(4.0f));
-	indicator.SetPosition(position);
-	indicator.Draw();
-	*/
 }
 
 void Emitter::generateParticles() {
 	//kill dead particles
-	
 	for (auto it = particleArray.begin(); it != particleArray.end();) {
 		if ((*it)->life > MAX_LIFE) {
 			delete *it;
@@ -41,7 +37,7 @@ void Emitter::generateParticles() {
 			++it;
 		}
 	}
-	
+
 	if (count % RATE == 0) {
 		ModelSmoke* smokePart = new ModelSmoke();
 		smokePart->SetPosition(position);
@@ -52,9 +48,6 @@ void Emitter::generateParticles() {
 		count = 0;
 	}
 
-	
-	
-	//draw();
 	count++;
 }
 
@@ -75,7 +68,7 @@ void Emitter::simulate() {
 		vec3 upDir = vec3(generateRandomFloat() / 5,
 						  generateRandomFloat() / 10,
 						  generateRandomFloat() / 5);
-		vec3 sizeInc = vec3(generateRandomFloat() / 3);
+		vec3 sizeInc = vec3(generateRandomFloat() * 1.5);
 		//vec3 sizeExtra = generateRandomFloat() > 0.5 ? vec3(generateRandomFloat()/2, 0.0f, 0.0f) : vec3(0.0f, 0.0f, generateRandomFloat()/2);
 		particle->SetPosition(particle->GetPosition() + upDir);
 		particle->SetScaling(particle->GetScaling() + sizeInc);
@@ -92,11 +85,6 @@ void Emitter::draw() {
 }
 
 void Emitter::updateParticleMatrices() {
-	//Clear matrix
-	for (int i = 0; i < Emitter::MAX_EMITTER_PARTICLES; i++) {
-		particleMatrices[i] = mat4();
-	}
-	//Add content
 	int counter = 0;
 	for (auto &particle : particleArray) {
 		particleMatrices[counter] = particle->GetWorldMatrix();
@@ -104,16 +92,9 @@ void Emitter::updateParticleMatrices() {
 	}
 }
 
-void Emitter::setupInstancedArray() {
-	//Init instanced array
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, Emitter::MAX_EMITTER_PARTICLES * sizeof(glm::mat4), 0, GL_STATIC_DRAW);
-}
-
 void Emitter::updateInstancedArray() {
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, Emitter::MAX_EMITTER_PARTICLES * sizeof(glm::mat4), &particleMatrices[0]);
+	glBufferData(GL_ARRAY_BUFFER, Emitter::MAX_EMITTER_PARTICLES * sizeof(glm::mat4), &particleMatrices[0], GL_DYNAMIC_DRAW);
 
 	VAO = ModelSmoke::mVAO;
 

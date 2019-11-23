@@ -44,7 +44,6 @@ private:
 	int pointer = 0;
 	
 	static void updateParticleMatrices();
-	void setupInstancedArray();
 	static void updateInstancedArray();
 	static unsigned int buffer;
 	static unsigned int VAO;

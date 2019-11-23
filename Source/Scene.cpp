@@ -53,7 +53,7 @@ Scene::Scene() {
 
 
 	//Controls car movements
-	//movement.addObject(bumperCar1);
+	movement.addObject(bumperCar1);
 	movement.addObject(bumperCar2);
 	movement.addObject(bumperCar3);
 	movement.addObject(bumperCar4);
@@ -107,7 +107,7 @@ void Scene::update(float tick) {
 	//Update movement
 	if (!IO::stopSimulation) {
 		movement.updateMovements();
-		models["bc1"]->SetRotation(vec3(0.0f, 1.0f, 0.0f), models["bc1"]->GetRotationAngle() + tick * 40);
+		//models["bc1"]->SetRotation(vec3(0.0f, 1.0f, 0.0f), models["bc1"]->GetRotationAngle() + tick * 40);
 		
 	}
 

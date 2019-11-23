@@ -28,24 +28,6 @@ void ModelSmoke::Update(float dt) {
 }
 
 void ModelSmoke::Draw() {
-	/*
-	for (auto const& mesh : meshes) { //smokeMeshes
-		glBindVertexArray(get<1>(mesh));
-		Renderer::setWorldMatrix(Shaders::currentShaderProgram, GetWorldMatrix());
-		objl::Material meshMat = get<0>(mesh).MeshMaterial;
-		
-		//Renderer::setDiffuseColor(vec3(meshMat.Kd.X, meshMat.Kd.Y, meshMat.Kd.Z));
-		Renderer::setDiffuseColor(color);
-
-		//Other properties
-		Renderer::setSpecColor(vec3(meshMat.Ks.X, meshMat.Ks.Y, meshMat.Ks.Z));
-		Renderer::setSpecExp(meshMat.Ns);
-		Renderer::setAmbientColor(vec3(meshMat.Ka.X, meshMat.Ka.Y, meshMat.Ka.Z));
-
-		glDrawElements(GL_TRIANGLES, get<2>(mesh), GL_UNSIGNED_INT, 0);
-	}
-	*/
-	
 }
 
 void ModelSmoke::InstanceDraw() {

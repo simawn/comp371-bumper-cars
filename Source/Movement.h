@@ -38,4 +38,5 @@ private:
 	//[6] car speed
 	float generateRandomFloat(); //Between 0 and 1
 	static Collision& collision;
+	float easyEase(float t);
 };

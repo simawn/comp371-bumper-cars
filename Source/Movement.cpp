@@ -69,8 +69,9 @@ void Movement::updateMovements() {
 				if (*objCurRotSteps == 0.0) {
 					*objRandNum = generateRandomFloat(); //Assign a behaviour
 				}
-				int rotateDir = *objRandNum >= 0.5 ? 1.0 : -1.0;
-				model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + generateRandomFloat() * 3.0 * rotateDir);
+				int rotateDir = *objRandNum >= 0.5 ? 1.0 : -1.0; //Set rotation direction
+				float rotationAmount = easyEase(*objCurRotSteps / *objMaxRotStep);
+				model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + rotationAmount * rotateDir);
 				model->SetPosition(nextPosition); //Still make it move forward so it is smooth
 				*objCurRotSteps += 1.0;
 				if (*objCurRotSteps > *objMaxRotStep) { //Rotated enough, reset step counts
@@ -82,10 +83,16 @@ void Movement::updateMovements() {
 		} else { //Obj is stuck, force turn it
 			if (*objRandNum == 0.0) *objRandNum = generateRandomFloat();
 			int stuckRotateDir = *objRandNum >= 0.5 ? 1 : -1;
-			model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + 3 * stuckRotateDir);
+			model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + 2.0f * stuckRotateDir);
 			//Reset setps
 			*objCurRotSteps = 0.0;
 			*objCurFowSteps = 0.0;
 		}
 	}
+}
+
+float Movement::easyEase(float t) {
+	if(t <= 0.5f) return 2.0f * sqrt(t);
+	t -= 0.5f;
+	return 2.0f * t * (1.0f - t) + 0.5;
 }

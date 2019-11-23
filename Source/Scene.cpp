@@ -46,9 +46,12 @@ Scene::Scene() {
 	//Light* dirLight1 = new LightDirectional(vec3(-20.0f, 10.0f, -20.0f), vec3(0.0f,  1.0f,  1.0f), vec3(0.2f,  -0.5f,  0.5f));
 	//Light* dirLight2 = new LightDirectional(vec3(-20.0f, 10.0f, 20.0f), vec3(1.0f,  1.0f,  1.0f), vec3(0.3f,  -0.9f,  0.4f));
 	//Light* dirLight3 = new LightDirectional(vec3(20.0f, 10.0f, -20.0f), vec3(1.0f,  0.0f,  1.0f), vec3(0.4f,  -0.2f,  0.3f));
-	Light* dirLight4 = new LightDirectional(vec3(20.0f, 10.0f, 20.0f), vec3(0.4f,  0.4f,  0.4f), vec3(0.5f,  -0.4f,  0.2f));
+	//Light* dirLight4 = new LightDirectional(vec3(20.0f, 10.0f, 20.0f), vec3(0.4f,  0.4f,  0.4f), vec3(0.5f,  -0.4f,  0.2f));
 
-	Light* spotLight1 = new LightSpot(vec3(10.0f, 3.0f, 10.0f), vec3(1.0f, 1.0f, 1.0f), vec3(0.0f, -1.0f, 0.0f), 1, 0);
+	Light* spotLight1 = new LightSpot(vec3(25.0f, 5.0f, 25.0f), vec3(1.0f, 0.0f, 1.0f), vec3(-0.5f, -1.0f, -0.5f), 0.1, 0.1);
+	Light* spotLight2 = new LightSpot(vec3(-25.0f, 5.0f, 25.0f), vec3(0.0f, 1.0f, 1.0f), vec3(0.5f, -1.0f, -0.5f), 0.1, 0.1);
+	Light* spotLight3 = new LightSpot(vec3(0.0f, 5.0f, -25.0f), vec3(1.0f, 1.0f, 0.0f), vec3(0.0f, -1.0f, 0.5f), 0.1, 0.1);
+	Light* spotLight4 = new LightSpot(vec3(0.0f, 5.0f, 0.0f), vec3(1.0f, 1.0f, 1.0f), vec3(0.0f, -1.0f, 0.0f), 0.1, 0.1);
 	//Model* field = new ModelField();
 
 

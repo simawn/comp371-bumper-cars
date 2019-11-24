@@ -21,6 +21,7 @@ public:
 	static Movement& getInstance();
 	void addObject(Model* model);
 	void updateMovements();
+	static int count;
 private:
 	Movement();
 	static Movement* instance;

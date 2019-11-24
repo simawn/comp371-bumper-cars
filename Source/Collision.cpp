@@ -1,3 +1,6 @@
+// Collisions using SAT (Separating Axis Theorem)
+// Source refered: https://www.youtube.com/watch?v=IELWpIGtjRg
+
 #include "Collision.h"
 
 using namespace std;
@@ -15,70 +18,134 @@ void Collision::addObject(Model* model) {
 	collisionObjects.push_back(model);
 }
 
-bool Collision::IsColliding(Model* model) {
-	vector<tuple<Model*, float, float>> coords = getCoordsFor(model);
-	vector<tuple<Model*, float, float>> otherCoords = getAllCoordsExcept(model);
-	
-	
-	/* //Debug
-	if (count % 600 == 0) {
-		cout << "This coords:" << endl;
-		for (auto const& coord : coords) {
-			cout << get<0>(coord) << ": " << get<1>(coord) << " " << get<2>(coord) << endl;
+vec2 Collision::collisionCheck(Model* model) {
+	for (Model* other : collisionObjects) {
+		if (other == model) continue;
+		tuple<Model*, vec2, vec2, vec2, vec2> modelCoord = getCoordsFor(model);
+		tuple<Model*, vec2, vec2, vec2, vec2> otherCoord = getCoordsFor(other);
+		tuple<vec2, vec2> modelUniqueNorms = getUniqueNormals(get<1>(modelCoord), get<2>(modelCoord), get<3>(modelCoord), get<4>(modelCoord));
+		tuple<vec2, vec2> otherUniqueNorms = getUniqueNormals(get<1>(otherCoord), get<2>(otherCoord), get<3>(otherCoord), get<4>(otherCoord));
+		
+		//Compile data
+		vec2 allNorms[] = { 
+			get<0>(modelUniqueNorms),
+			get<1>(modelUniqueNorms),
+
+			get<0>(otherUniqueNorms),
+			get<1>(otherUniqueNorms)
+		};
+
+		vec2 allCoordsModel[] = {
+			get<1>(modelCoord),
+			get<2>(modelCoord),
+			get<3>(modelCoord),
+			get<4>(modelCoord),
+		};
+		
+		vec2 allCoordsOther[] = {
+			get<1>(otherCoord),
+			get<2>(otherCoord),
+			get<3>(otherCoord),
+			get<4>(otherCoord),
+		};
+
+		
+		/*
+		for (int i = 0; i < 4; i++) {
+			cout << "Norms" << endl;
+			cout << to_string(allNorms[i]) << endl;
 		}
-		cout << "====" << endl;
-		cout << "Other coords:" << endl;
-		for (auto const& coord : otherCoords) {
-			cout << get<0>(coord) << ": " << get<1>(coord) << " " << get<2>(coord) << endl;
+		for (int i = 0; i < 4; i++) {
+			cout << "Coords Model" << endl;
+			cout << to_string(allCoordsModel[i]) << endl;
+		}
+		for (int i = 0; i < 4; i++) {
+			cout << "Coords Other" << endl;
+			cout << to_string(allCoordsOther[i]) << endl;
 		}
 		cout << endl;
-	}
-	
-	*/
-	vec3 modelPosition = model->GetPosition();
-	vec2 modelCenterCoord = vec2(modelPosition.x, modelPosition.z);
-	float radius = distance(modelCenterCoord, vec2(get<1>(coords.front()), get<2>(coords.front())));
-	float radiusExtra = 0.2;
+		*/
 
-	vector<Model*> potentialColliders;
+		//Minimum translation vectors on collision
+		vector<vec2> mtv;
 
-	for (auto const& coord : otherCoords) {
-		if (find(potentialColliders.begin(), potentialColliders.end(), get<0>(coord)) != potentialColliders.end()) continue;
+		//Overlap flag
+		bool hasOverlap = true;
 
-		float otherDistance = distance(modelCenterCoord, vec2(get<1>(coord), get<2>(coord)));
-		if (otherDistance <= (radius + radiusExtra)) {
-			potentialColliders.push_back(get<0>(coord));
+		//Axis checks
+		for (int i = 0; i < 4; i++) { //Axis
+
+			//Store scalars for intersection check
+			float scalarModel[4] = {};
+			float scalarOther[4] = {};
+
+			for (int j = 0; j < 4; j++) { //Pts
+				scalarModel[j] = dot(allNorms[i], allCoordsModel[j]);
+				scalarOther[j] = dot(allNorms[i], allCoordsOther[j]);
+			}
+
+			float maxScalarModel = *max_element(scalarModel, scalarModel + 4);
+			float minScalarModel = *min_element(scalarModel, scalarModel + 4);
+			float maxScalarOther = *max_element(scalarOther, scalarOther + 4);
+			float minScalarOther = *min_element(scalarOther, scalarOther + 4);
+
+			/*
+			cout << "Scalar other: " << endl;
+			for (int k = 0; k < 4; k++) {
+				cout << scalarOther[k] << endl;
+			}
+			cout << "Max is: " << maxScalarOther << endl;
+			cout << "Min is: " << minScalarOther << endl;
+
+			cout << "Scalar model: " << endl;
+			for (int k = 0; k < 4; k++) {
+				cout << scalarModel[k] << endl;
+			}
+			cout << "Max is: " << maxScalarModel << endl;
+			cout << "Min is: " << minScalarModel << endl;
+			cout << endl;
+			*/
+
+			//No collision -> no overlap. Stop checking axis, do not check mtv, go to next comparison model
+			if (minScalarOther > maxScalarModel || maxScalarOther < minScalarModel) {
+				hasOverlap = false;
+				break;
+			}
+
+			mtv.push_back(allNorms[i] * abs(maxScalarOther - minScalarModel));
+
+		} //Axis check stop
+
+		//Returns the axis with the least overlap. This determines the car behaviour on collision
+		if (hasOverlap) {
+			float shortestLength = -1;
+			vec2 minimumVector = vec2(0, 0);
+
+			for (vec2 v : mtv) {
+				float lengthV = length(v);
+				if (shortestLength == -1 || lengthV < shortestLength) {
+					shortestLength = lengthV;
+					minimumVector = v;
+				}
+			}
+			return normalize(minimumVector);
 		}
-	}
-
-	for (auto const& collider : potentialColliders) {
-		int colliderRotation = (int) collider->GetRotationAngle() % 360;
-		vector<tuple<Model*, float, float>> colliderCoords = getCoordsFor(collider);
-		//Check curr points
-		int iter = 0;
-		for (auto const& curCarCoord : coords) {
-			if (iter >= 2) break; //only checking the front points
-			vec2 topLeft = vec2(get<1>(colliderCoords.front()), get<2>(colliderCoords.front()));
-			vec2 botRight = vec2(get<1>(colliderCoords.back()), get<2>(colliderCoords.back()));
-			vec2 point = vec2(get<1>(curCarCoord), get<2>(curCarCoord));
-			//Transform
-			float angleOffset = 360 - colliderRotation;
-			topLeft = rotate(topLeft, radians(angleOffset));
-			botRight = rotate(botRight, radians(angleOffset));
-			point = rotate(point, radians(angleOffset));
-			iter++;
-			//if (isInRectangle(point, topLeft, botRight)) return true;
-		}
-	}
 
 
-	count++;
-	return false;
+		
+	} //Other model check end
+
+	return vec2(0, 0);
 }
 
-Collision::Collision() {}
+Collision::Collision() {
+}
 
-vector<tuple<Model*, float, float>> Collision::getCoordsFor(Model * model) {
+Collision::~Collision() {
+}
+
+//Model, topLeft, topRight, bottomLeft, bottomRight
+tuple<Model*, vec2, vec2, vec2, vec2> Collision::getCoordsFor(Model* model) {
 	//Car length: 5
 	//Car width: 7.5
 	float centerX = model->GetPosition().x;
@@ -87,58 +154,57 @@ vector<tuple<Model*, float, float>> Collision::getCoordsFor(Model * model) {
 	float halfWidth = 5.0 / 2.0;
 	float halfHeight = 7.5 / 2.0;
 
-	float coords[8] = { centerX - halfWidth, //topLeftX
-						centerZ + halfHeight, //topLeftZ
-						centerX + halfWidth, //topRightX
-						centerZ + halfHeight, //topRightZ
-						centerX - halfWidth, //botLeftX
-						centerZ - halfHeight, //botLeftZ
-						centerX + halfWidth, //botRightX
-						centerZ - halfHeight //botRightZ
+	float coords[8] = {  
+		-halfWidth, //topLeftX
+		halfHeight, //topLeftZ
+		halfWidth, //topRightX
+		halfHeight, //topRightZ
+		-halfWidth, //botLeftX
+		-halfHeight, //botLeftZ
+		halfWidth, //botRightX
+		-halfHeight //botRightZ
 	};
 
-	//Apply rotation to coords
+	//Apply rotation to coords from origin, then add coords to car center
 	for (int i = 0; i < 8; i += 2) {
 		vec2 newXZ = rotate(vec2(coords[i], coords[i + 1]), radians(rotation));
-		coords[i] = newXZ.x;
-		coords[i + 1] = newXZ.y;
+		coords[i] = newXZ.x + centerX;
+		coords[i + 1] = newXZ.y + centerZ;
 	}
 
-	//Build resulting tuples
-	vector<tuple<Model*, float, float>> result;
-	for (int i = 0; i < 8; i += 2) {
-		tuple<Model*, float, float> item = make_tuple(model, coords[i], coords[i+1]);
-		result.push_back(item);
-	}
-
-	return result;
+	return make_tuple(model,	vec2(coords[0], coords[1]), //topLeft
+								vec2(coords[2], coords[3]), //topRight
+								vec2(coords[4], coords[5]), //botLeft
+								vec2(coords[6], coords[7]));//botRight
 }
 
-vector<tuple<Model*, float, float>> Collision::getAllCoordsExcept(Model* model) {
-	vector<tuple<Model*, float, float>> result;
+tuple<vec2, vec2> Collision::getUniqueNormals(vec2 topLeft, vec2 topRight, vec2 bottomLeft, vec2 bottomRight) {
+	//Calculate slope
 
-	for (auto &const otherModel : collisionObjects) {
-		if (otherModel == model) continue;
-		vector<tuple<Model*, float, float>> data = getCoordsFor(otherModel);
-		result.insert(result.end(), data.begin(), data.end());
-	}
+	float a1 = topLeft.y - topRight.y;
+	float b1 = topLeft.x - topRight.x;
+	vec2 n1 = a1 == 0 || b1 == 0 ? vec2(0, 1) : vec2(1, -1 / (a1 / b1));
 
-	return result;
+	float a2 = topLeft.y - bottomLeft.y;
+	float b2 = topLeft.x - bottomLeft.x;
+	vec2 n2 = a2 == 0 || b2 == 0 ? vec2(-1, 0) : vec2(1, -1 / (a2 / b2));
+
+	return make_tuple(normalize(n1), normalize(n2));
 }
 
-tuple<vec2, vec2> Collision::getCornersFor(Model * model) {
-	vector<tuple<Model*, float, float>> coords = getCoordsFor(model);
-	vec2 topLeft = vec2(get<1>(coords.front()), get<2>(coords.front()));
-	vec2 botRight = vec2(get<1>(coords.back()), get<2>(coords.back()));
+void Collision::debug() {
+	tuple<Model*, vec2, vec2, vec2, vec2> positionData = getCoordsFor(collisionObjects.front());
+	cout << "Model: " << get<0>(positionData) << endl;
+	cout << "Model center: " << to_string(get<0>(positionData)->GetPosition()) << endl;
+	cout << "Model rotation: " << get<0>(positionData)->GetRotationAngle() << endl;
+	cout << "topLeft: " << to_string(get<1>(positionData)) << endl;
+	cout << "topRight: " << to_string(get<2>(positionData)) << endl;
+	cout << "botLeft: " << to_string(get<3>(positionData)) << endl;
+	cout << "botRight: " << to_string(get<4>(positionData)) << endl;
+	
+	tuple<vec2, vec2> norms = getUniqueNormals(get<1>(positionData), get<2>(positionData), get<3>(positionData), get<4>(positionData));
+	cout << "Unique norm 1: " << to_string(get<0>(norms)) << endl;
+	cout << "Unique norm 2: " << to_string(get<1>(norms)) << endl;
 
-	return make_tuple(topLeft, botRight);
+	cout << endl;
 }
-
-bool Collision::isInRectangle(vec2 point, vec2 topLeft, vec2 botRight) {
-	if (point.x > topLeft.x && point.x < botRight.x &&
-		point.y < topLeft.y && point.y > botRight.y) {
-		return true;
-	}
-	return false;
-}
-

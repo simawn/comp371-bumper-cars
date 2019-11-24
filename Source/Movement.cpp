@@ -4,6 +4,8 @@
 using namespace std;
 using namespace glm;
 
+int Movement::count = 0;
+
 Movement* Movement::instance = 0;
 Collision& Movement::collision = Collision::getInstance();
 
@@ -56,8 +58,20 @@ void Movement::updateMovements() {
 		//Is it within boundary?
 		isInRange ? *objCurState = 0.0 : *objCurState = 1.0;
 
-		//Is it colliding with someone?
-		if (isInRange) collision.IsColliding(model) ? *objCurState = 1.0 : *objCurState = 0.0;
+		/*
+		if (count % 60 == 0) {
+			collision.debug();
+			count = 0;
+		}
+		count++;
+		*/
+
+		//Collision detection. Returns a vector indicating which way the car is being pushed towards
+		vec2 displace = collision.collisionCheck(model) * vec2(0.05);
+		if (displace != vec2(0, 0)) {
+			model->SetPosition(model->GetPosition() + vec3(displace.x, 0, displace.y));
+			continue;
+		}
 
 		// Obj is not stuck
 		if (*objCurState == 0.0) {
@@ -80,9 +94,10 @@ void Movement::updateMovements() {
 					*objRandNum = 0.0; //Resets behaviour
 				}
 			}
-		} else { //Obj is stuck, force turn it
+		} else { //Obj is out of bounds
 			if (*objRandNum == 0.0) *objRandNum = generateRandomFloat();
 			int stuckRotateDir = *objRandNum >= 0.5 ? 1 : -1;
+
 			model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + 2.0f * stuckRotateDir);
 			//Reset setps
 			*objCurRotSteps = 0.0;

@@ -85,7 +85,10 @@ vec2 Collision::collisionCheck(Model* model) {
 				break;
 			}
 
-			mtv.push_back(allNorms[i] * abs(maxScalarOther - minScalarModel));
+			float distance1 = abs(maxScalarOther - minScalarModel);
+			float distance2 = abs(maxScalarModel - minScalarOther);
+
+			mtv.push_back(allNorms[i] * (distance1 < distance2 ? distance1 : -distance2));
 
 		} //Axis check stop
 
@@ -101,7 +104,7 @@ vec2 Collision::collisionCheck(Model* model) {
 					minimumVector = v;
 				}
 			}
-			return normalize(minimumVector);
+			return minimumVector;
 		}
 	} //Other model check end
 
@@ -119,8 +122,8 @@ tuple<Model*, vec2, vec2, vec2, vec2> Collision::getCoordsFor(Model* model) {
 	float centerX = model->GetPosition().x;
 	float centerZ = model->GetPosition().z;
 	float rotation = model->GetRotationAngle();
-	float halfWidth = 4.0 / 2.0;
-	float halfHeight = 7.0 / 2.0;
+	float halfWidth = 4.5 / 2.0;
+	float halfHeight = 7.5 / 2.0;
 
 	float coords[8] = {  
 		-halfWidth, //topLeftX

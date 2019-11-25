@@ -152,7 +152,9 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal) {
 //Light Uniforms
 #define NR_POINT_LIGHTS 1
 #define NR_DIR_LIGHTS 1
+// 4 + 4*numofCars
 #define NR_SPOT_LIGHTS 24
+
 
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform DirLight dirLights[NR_DIR_LIGHTS];

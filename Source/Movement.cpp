@@ -4,6 +4,8 @@
 using namespace std;
 using namespace glm;
 
+int Movement::count = 0;
+
 Movement* Movement::instance = 0;
 Collision& Movement::collision = Collision::getInstance();
 
@@ -28,7 +30,7 @@ void Movement::addObject(Model * model) {
 	movingObjects[model][4] = 0.0; //Current rotate step
 	movingObjects[model][5] = 0.0; //state: stuck or unstuck
 	movingObjects[model][6] = generateRandomFloat() / 20 + 0.1; //Car Speed, min speed is 0.1
-	
+
 	collision.addObject(model);
 }
 
@@ -56,8 +58,24 @@ void Movement::updateMovements() {
 		//Is it within boundary?
 		isInRange ? *objCurState = 0.0 : *objCurState = 1.0;
 
-		//Is it colliding with someone?
-		if (isInRange) collision.IsColliding(model) ? *objCurState = 1.0 : *objCurState = 0.0;
+		//Collision detection. Returns a vector indicating which way the car is being pushed towards
+		vec2 displace = collision.collisionCheck(model);
+
+		
+		vec3 newDisplacedPosition = model->GetPosition() + vec3(displace.x, 0, displace.y);
+
+		//Forces the push to stay in range
+		if (newDisplacedPosition.x >= 21) newDisplacedPosition.x = 20.9;
+		if (newDisplacedPosition.x <= -21) newDisplacedPosition.x = -20.9;
+		if (newDisplacedPosition.z >= 21) newDisplacedPosition.z = 20.9;
+		if (newDisplacedPosition.z <= -21) newDisplacedPosition.z = -20.9;
+
+		if (displace != vec2(0, 0)) {
+			model->SetPosition(newDisplacedPosition);
+			float rotationDir = *objRandNum > 0.5 ? -1 : 1;
+			model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + rotationDir * 2);
+			continue;
+		}
 
 		// Obj is not stuck
 		if (*objCurState == 0.0) {
@@ -80,9 +98,10 @@ void Movement::updateMovements() {
 					*objRandNum = 0.0; //Resets behaviour
 				}
 			}
-		} else { //Obj is stuck, force turn it
+		} else { //Obj is out of bounds
 			if (*objRandNum == 0.0) *objRandNum = generateRandomFloat();
 			int stuckRotateDir = *objRandNum >= 0.5 ? 1 : -1;
+
 			model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + 2.0f * stuckRotateDir);
 			//Reset setps
 			*objCurRotSteps = 0.0;

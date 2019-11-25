@@ -127,5 +127,3 @@ void Scene::draw(float tick) {
 
 	Emitter::draw();
 }
-
-

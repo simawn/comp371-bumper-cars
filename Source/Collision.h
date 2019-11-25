@@ -1,6 +1,7 @@
 #pragma once
 #include "Model.h"
 
+#include <iostream>
 #include <tuple>
 #include <vector>
 #include <algorithm>
@@ -10,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 using namespace std;
 using namespace glm;
@@ -18,19 +20,18 @@ class Collision {
 public:
 	static Collision& getInstance();
 	void addObject(Model* model);
-	bool IsColliding(Model* model);
+	vec2 collisionCheck(Model* model);
+	void debug(); //Outputs data of the first car
 private:
 	Collision();
+	~Collision();
 	static Collision* instance;
 	vector<Model*> collisionObjects;
 	//Debug
 	static int count;
 	//Returns the coords for a single moving object
-	vector<tuple<Model*, float, float>> getCoordsFor(Model* model);
-	//Returns all the currents coords of all moving object except the one passed
-	vector<tuple<Model*, float, float>> getAllCoordsExcept(Model* model); 
-	//Returns topLeft coord and botRight coord
-	tuple<vec2, vec2> getCornersFor(Model* model);
-	//Check if point is in rectangle (non rotated)
-	bool isInRectangle(vec2 point, vec2 topLeft, vec2 botRight);
+	//Model pointer, topLeft, topRight, bottomLeft, bottomRight
+	tuple<Model*, vec2, vec2, vec2, vec2> getCoordsFor(Model* model);
+	//Calculate the unique normals
+	tuple<vec2, vec2> getUniqueNormals(vec2 topLeft, vec2 topRight, vec2 bottomLeft, vec2 bottomRight);
 };

@@ -24,7 +24,7 @@ using namespace std;
 
 int main(int argc, char*argv[]) {
 	srand(time(0));
-	Setup setup = Setup::getInstance(1600, 800, "Final");
+	Setup setup = Setup::getInstance(1920, 1080, "Bumper Cars");
 	IO IO = IO::getInstance();
 	Shaders shaders = Shaders::getInstance();
 	Renderer renderer = Renderer::getInstance();

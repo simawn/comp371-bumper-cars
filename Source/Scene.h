@@ -40,4 +40,5 @@ private:
 	static map<string, Model*> models;
 	static float acc;
 	static Movement& movement;
+	static void generateCars(int num);
 };

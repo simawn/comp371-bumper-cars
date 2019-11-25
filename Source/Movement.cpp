@@ -74,12 +74,18 @@ void Movement::updateMovements() {
 			model->SetPosition(newDisplacedPosition);
 			//int rotate = generateRandomFloat() > 0.8 ? 1 : 0;
 			float rotationDir = *objRandNum > 0.5 ? -1 : 1;
+			*objMaxRotStep = 250;
 			if (*objCurRotSteps < *objMaxRotStep) {
+				if (*objCurRotSteps > *objMaxRotStep / 2) { //change rotation direction when stuck for too long
+					rotationDir *= -1;
+				}
 				model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + rotationDir * 2);
-				*objCurRotSteps++;
+				*objCurRotSteps += 1.0;
 			}
 			continue;
 		}
+
+		*objMaxRotStep = generateRandomFloat() * 20 + 60; //Reset to normal max rotation
 
 		// Obj is not stuck
 		if (*objCurState == 0.0) {
@@ -108,7 +114,7 @@ void Movement::updateMovements() {
 
 			model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + 2.0f * stuckRotateDir);
 			//Reset setps
-			*objCurRotSteps = 0.0;
+			//*objCurRotSteps = 0.0;
 			*objCurFowSteps = 0.0;
 		}
 	}

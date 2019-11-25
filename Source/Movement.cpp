@@ -72,8 +72,12 @@ void Movement::updateMovements() {
 
 		if (displace != vec2(0, 0)) {
 			model->SetPosition(newDisplacedPosition);
+			//int rotate = generateRandomFloat() > 0.8 ? 1 : 0;
 			float rotationDir = *objRandNum > 0.5 ? -1 : 1;
-			model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + rotationDir * 2);
+			if (*objCurRotSteps < *objMaxRotStep) {
+				model->SetRotation(model->GetRotationAxis(), model->GetRotationAngle() + rotationDir * 2);
+				*objCurRotSteps++;
+			}
 			continue;
 		}
 

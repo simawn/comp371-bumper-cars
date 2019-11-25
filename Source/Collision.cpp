@@ -19,11 +19,31 @@ void Collision::addObject(Model* model) {
 }
 
 vec2 Collision::collisionCheck(Model* model) {
+	//Minimum translation vectors on collision
+	vector<vec2> mtv;
+
+	tuple<Model*, vec2, vec2, vec2, vec2> modelCoord = getCoordsFor(model);
+	tuple<vec2, vec2> modelUniqueNorms = getUniqueNormals(get<1>(modelCoord), get<2>(modelCoord), get<3>(modelCoord), get<4>(modelCoord));
+	
+	vec2 allCoordsModel[] = {
+			get<1>(modelCoord),
+			get<2>(modelCoord),
+			get<3>(modelCoord),
+			get<4>(modelCoord),
+		};
+
+	//Overlap flag
+	bool hasOverlap = true;
+
+	//Check for car collision
 	for (Model* other : collisionObjects) {
+		mtv.clear();
+		hasOverlap = true;
+
 		if (other == model) continue;
-		tuple<Model*, vec2, vec2, vec2, vec2> modelCoord = getCoordsFor(model);
+		
 		tuple<Model*, vec2, vec2, vec2, vec2> otherCoord = getCoordsFor(other);
-		tuple<vec2, vec2> modelUniqueNorms = getUniqueNormals(get<1>(modelCoord), get<2>(modelCoord), get<3>(modelCoord), get<4>(modelCoord));
+		
 		tuple<vec2, vec2> otherUniqueNorms = getUniqueNormals(get<1>(otherCoord), get<2>(otherCoord), get<3>(otherCoord), get<4>(otherCoord));
 		
 		//Compile data
@@ -35,42 +55,12 @@ vec2 Collision::collisionCheck(Model* model) {
 			get<1>(otherUniqueNorms)
 		};
 
-		vec2 allCoordsModel[] = {
-			get<1>(modelCoord),
-			get<2>(modelCoord),
-			get<3>(modelCoord),
-			get<4>(modelCoord),
-		};
-		
 		vec2 allCoordsOther[] = {
 			get<1>(otherCoord),
 			get<2>(otherCoord),
 			get<3>(otherCoord),
 			get<4>(otherCoord),
 		};
-
-		
-		/*
-		for (int i = 0; i < 4; i++) {
-			cout << "Norms" << endl;
-			cout << to_string(allNorms[i]) << endl;
-		}
-		for (int i = 0; i < 4; i++) {
-			cout << "Coords Model" << endl;
-			cout << to_string(allCoordsModel[i]) << endl;
-		}
-		for (int i = 0; i < 4; i++) {
-			cout << "Coords Other" << endl;
-			cout << to_string(allCoordsOther[i]) << endl;
-		}
-		cout << endl;
-		*/
-
-		//Minimum translation vectors on collision
-		vector<vec2> mtv;
-
-		//Overlap flag
-		bool hasOverlap = true;
 
 		//Axis checks
 		for (int i = 0; i < 4; i++) { //Axis
@@ -88,23 +78,6 @@ vec2 Collision::collisionCheck(Model* model) {
 			float minScalarModel = *min_element(scalarModel, scalarModel + 4);
 			float maxScalarOther = *max_element(scalarOther, scalarOther + 4);
 			float minScalarOther = *min_element(scalarOther, scalarOther + 4);
-
-			/*
-			cout << "Scalar other: " << endl;
-			for (int k = 0; k < 4; k++) {
-				cout << scalarOther[k] << endl;
-			}
-			cout << "Max is: " << maxScalarOther << endl;
-			cout << "Min is: " << minScalarOther << endl;
-
-			cout << "Scalar model: " << endl;
-			for (int k = 0; k < 4; k++) {
-				cout << scalarModel[k] << endl;
-			}
-			cout << "Max is: " << maxScalarModel << endl;
-			cout << "Min is: " << minScalarModel << endl;
-			cout << endl;
-			*/
 
 			//No collision -> no overlap. Stop checking axis, do not check mtv, go to next comparison model
 			if (minScalarOther > maxScalarModel || maxScalarOther < minScalarModel) {
@@ -130,19 +103,14 @@ vec2 Collision::collisionCheck(Model* model) {
 			}
 			return normalize(minimumVector);
 		}
-
-
-		
 	} //Other model check end
 
 	return vec2(0, 0);
 }
 
-Collision::Collision() {
-}
+Collision::Collision() {}
 
-Collision::~Collision() {
-}
+Collision::~Collision() {}
 
 //Model, topLeft, topRight, bottomLeft, bottomRight
 tuple<Model*, vec2, vec2, vec2, vec2> Collision::getCoordsFor(Model* model) {
@@ -151,8 +119,8 @@ tuple<Model*, vec2, vec2, vec2, vec2> Collision::getCoordsFor(Model* model) {
 	float centerX = model->GetPosition().x;
 	float centerZ = model->GetPosition().z;
 	float rotation = model->GetRotationAngle();
-	float halfWidth = 5.0 / 2.0;
-	float halfHeight = 7.5 / 2.0;
+	float halfWidth = 4.0 / 2.0;
+	float halfHeight = 7.0 / 2.0;
 
 	float coords[8] = {  
 		-halfWidth, //topLeftX

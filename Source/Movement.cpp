@@ -58,18 +58,18 @@ void Movement::updateMovements() {
 		//Is it within boundary?
 		isInRange ? *objCurState = 0.0 : *objCurState = 1.0;
 
-		/*
-		if (count % 60 == 0) {
-			collision.debug();
-			count = 0;
-		}
-		count++;
-		*/
-
 		//Collision detection. Returns a vector indicating which way the car is being pushed towards
 		vec2 displace = collision.collisionCheck(model) * vec2(0.05);
+
+		//Forces the push to stay in range
+		vec3 newDisplacedPosition = model->GetPosition() + vec3(displace.x, 0, displace.y);
+		if (newDisplacedPosition.x >= 21) newDisplacedPosition.x = 20.9;
+		if (newDisplacedPosition.x <= -21) newDisplacedPosition.x = -20.9;
+		if (newDisplacedPosition.z >= 21) newDisplacedPosition.z = 20.9;
+		if (newDisplacedPosition.z <= -21) newDisplacedPosition.z = -20.9;
+
 		if (displace != vec2(0, 0)) {
-			model->SetPosition(model->GetPosition() + vec3(displace.x, 0, displace.y));
+			model->SetPosition(newDisplacedPosition);
 			continue;
 		}
 

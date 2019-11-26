@@ -1,12 +1,7 @@
 #include "CameraThird.h"
-#include "Setup.h"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/common.hpp>
 
 using namespace glm;
+using namespace std;
 
 CameraThird* CameraThird::instance = 0;
 const float CameraThird::FOV = 70.0;
@@ -15,9 +10,9 @@ const float CameraThird::FAR = 1000.0;
 vec3 CameraThird::cPosition = vec3(0);
 vec3 CameraThird::cLookAt = vec3(0);
 vec3 CameraThird::cUp = vec3(0);
-float CameraThird::cameraHorizontalAngle = 90.0f;
-float CameraThird::cameraVerticalAngle = 0.0f;
-const float CameraThird::CAMERA_ANGULAR_SPEED = 10.0f;
+float CameraThird::cameraHorizontalAngle = 89.0f;
+float CameraThird::cameraVerticalAngle = -60.0f;
+const float CameraThird::CAMERA_ANGULAR_SPEED = 5.0f;
 const float CameraThird::VERTICAL_CLAMP = 89.0f;
 
 CameraThird& CameraThird::getInstance(vec3 position, vec3 lookAt, vec3 up) {

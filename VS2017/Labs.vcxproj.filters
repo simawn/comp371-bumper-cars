@@ -111,34 +111,16 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Source\textureVert.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Source\colorFrag.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Source\colorVert.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="..\Source\shadowFrag.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Source\shadowVert.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Source\textureFrag.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="..\Source\sceneFrag.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Source\sceneVert.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Source\smokeFrag.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Source\smokeVert.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

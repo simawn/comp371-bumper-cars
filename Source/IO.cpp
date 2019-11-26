@@ -1,13 +1,4 @@
 #include "IO.h"
-#include "Setup.h"
-#include "CameraThird.h"
-#include "Renderer.h"
-#include <tuple>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/common.hpp>
 
 using namespace std;
 using namespace glm;
@@ -20,6 +11,12 @@ bool IO::isFirstCamera = false;
 IO& IO::getInstance() {
 	if (instance == 0) instance = new IO();
 	return *instance;
+}
+
+IO::IO() {
+	glfwGetCursorPos(Setup::window, &currentMousePosX, &currentMousePosY);
+	lastMousePosX = currentMousePosX;
+	lastMousePosY = currentMousePosY;
 }
 
 void IO::updateMousePosition() {
@@ -38,7 +35,9 @@ pair<double, double> IO::getLastMousePosition() {
 }
 
 pair<double, double> IO::getMouseMoveDifference() {
-	return make_pair(currentMousePosX - lastMousePosX, currentMousePosY - lastMousePosY);
+	float diffX = currentMousePosX - lastMousePosX;
+	float diffY = currentMousePosY - lastMousePosY;
+	return make_pair(diffX, diffY);
 }
 
 void IO::processInputs() {
@@ -151,4 +150,4 @@ void IO::updateCameraPosition(int dir) {
 	}
 }
 
-IO::IO() {}
+

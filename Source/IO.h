@@ -1,5 +1,7 @@
 #pragma once
-#include <string>
+#include "Setup.h"
+#include "CameraThird.h"
+#include "Renderer.h"
 #include <tuple>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

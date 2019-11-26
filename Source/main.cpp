@@ -49,17 +49,17 @@ int main(int argc, char*argv[]) {
 			renderer.updateTick();
 
 			if (!IO::isFirstCamera) {
+				
 				double dx = IO.getMouseMoveDifference().first;
 				double dy = IO.getMouseMoveDifference().second;
 
 				cameraThird.cameraHorizontalAngle -= dx * cameraThird.CAMERA_ANGULAR_SPEED * dt;
 				cameraThird.cameraVerticalAngle   -= dy * cameraThird.CAMERA_ANGULAR_SPEED * dt;
-				
+
 				//Clamp verticle angle
 				cameraThird.cameraVerticalAngle = std::max(-cameraThird.VERTICAL_CLAMP, std::min(cameraThird.VERTICAL_CLAMP, cameraThird.cameraVerticalAngle));
-				
-				
 
+				//Avoid overflow
 				if (cameraThird.cameraHorizontalAngle > 360) cameraThird.cameraHorizontalAngle -= 360;
 				else if (cameraThird.cameraHorizontalAngle < -360) cameraThird.cameraHorizontalAngle += 360;
 
@@ -73,9 +73,6 @@ int main(int argc, char*argv[]) {
 				renderer.setProjectionMatrix(Shaders::currentShaderProgram, cameraThird.getProjMatrix());
 				renderer.setViewMatrix(Shaders::currentShaderProgram, cameraThird.getViewMatrix());
 
-				//cout << to_string(cameraThird.getPosition()) << endl;
-				//cout << to_string(cameraThird.getLookAt()) << endl;
-				//cout << to_string(cameraThird.getUpVector()) << endl << endl;
 			} else {
 				float cameraHeight = 3.0f;
 				cameraFirst.updatePosition(	//Position                       height                            back offset

@@ -7,15 +7,11 @@ public:
 	static Shaders& getInstance();
 	static int currentShaderProgram;
 	static void setCurrentShaderProgram(int program);
-	static int colorShaderProgram;
-	static int texturedShaderProgram;
 	static int shadowShaderProgram;
 	static int sceneShaderProgram;
-	static int smokeShaderProgram;
 private:
 	Shaders();
 	static Shaders* instance;
 	string readFile(string filePath);
 	int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource);
-	
 };

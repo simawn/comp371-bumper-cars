@@ -72,6 +72,7 @@ void IO::processInputs() {
 	}
 
 	if (glfwGetKey(Setup::window, GLFW_KEY_HOME) == GLFW_PRESS) {
+		CameraThird::reset();
 	}
 
 	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
@@ -85,12 +86,6 @@ void IO::processInputs() {
 
 			CameraThird::updatePosition(cPos * moveSpeed, cLookAt * moveSpeed, cUp * moveSpeed);
 		}
-	}
-
-	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
-	}
-
-	if (glfwGetMouseButton(Setup::window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
 	}
 
 	//Stop movement

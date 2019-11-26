@@ -61,3 +61,11 @@ vec3 CameraThird::getLookAt() {
 vec3 CameraThird::getUpVector() {
 	return cUp;
 }
+
+void CameraThird::reset() {
+	cameraHorizontalAngle = 89.0f;
+	cameraVerticalAngle = -60.0f;
+	cPosition = vec3(0, 50, 40);
+	cLookAt = vec3(0, 0, 0);
+	cUp = vec3(0, 1, 0);
+}

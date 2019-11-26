@@ -27,6 +27,7 @@ public:
 	static const float VERTICAL_CLAMP;
 	static vec3 getCameraSideVector();
 	static vec3 getCameraFrontVector();
+	static void reset();
 private:
 	CameraThird(vec3 position, vec3 lookAt, vec3 up);
 	static CameraThird* instance;

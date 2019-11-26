@@ -15,10 +15,24 @@ const float CameraThird::FAR = 1000.0;
 vec3 CameraThird::cPosition = vec3(0);
 vec3 CameraThird::cLookAt = vec3(0);
 vec3 CameraThird::cUp = vec3(0);
+float CameraThird::cameraHorizontalAngle = 90.0f;
+float CameraThird::cameraVerticalAngle = 0.0f;
+const float CameraThird::CAMERA_ANGULAR_SPEED = 10.0f;
+const float CameraThird::VERTICAL_CLAMP = 89.0f;
 
 CameraThird& CameraThird::getInstance(vec3 position, vec3 lookAt, vec3 up) {
 	if (instance == 0) instance = new CameraThird(position, lookAt, up);
 	return *instance;
+}
+
+vec3 CameraThird::getCameraSideVector() {
+	return normalize(cross(getCameraFrontVector(), vec3(0.0f, 1.0f, 0.0f)));
+}
+
+vec3 CameraThird::getCameraFrontVector() {
+	vec3 lookAt = getLookAt();
+	vec3 front = vec3(lookAt.x, 0, lookAt.z);
+	return normalize(front);
 }
 
 CameraThird::CameraThird(vec3 position, vec3 lookAt, vec3 up) {
@@ -28,7 +42,7 @@ CameraThird::CameraThird(vec3 position, vec3 lookAt, vec3 up) {
 }
 
 mat4 CameraThird::getViewMatrix() {
-	return lookAt(cPosition, cLookAt, cUp);
+	return lookAt(cPosition, cPosition + cLookAt, cUp);
 }
 
 mat4 CameraThird::getProjMatrix() {

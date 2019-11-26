@@ -11,6 +11,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "Shaders.h"
 #include "Setup.h"
@@ -29,7 +30,7 @@ int main(int argc, char*argv[]) {
 	Shaders shaders = Shaders::getInstance();
 	Renderer renderer = Renderer::getInstance();
 	
-	CameraThird cameraThird = CameraThird::getInstance(vec3(0.0f,50.0f,40.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+	CameraThird cameraThird = CameraThird::getInstance(vec3(0, 50, 40), vec3(0,0,0), vec3(0.0f, 1.0f, 0.0f));
 	CameraFirst cameraFirst = CameraFirst::getInstance(vec3(0.0f), vec3(0.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	//Bumper car where the first person camera will follow
@@ -48,8 +49,33 @@ int main(int argc, char*argv[]) {
 			renderer.updateTick();
 
 			if (!IO::isFirstCamera) {
+				double dx = IO.getMouseMoveDifference().first;
+				double dy = IO.getMouseMoveDifference().second;
+
+				cameraThird.cameraHorizontalAngle -= dx * cameraThird.CAMERA_ANGULAR_SPEED * dt;
+				cameraThird.cameraVerticalAngle   -= dy * cameraThird.CAMERA_ANGULAR_SPEED * dt;
+				
+				//Clamp verticle angle
+				cameraThird.cameraVerticalAngle = std::max(-cameraThird.VERTICAL_CLAMP, std::min(cameraThird.VERTICAL_CLAMP, cameraThird.cameraVerticalAngle));
+				
+				
+
+				if (cameraThird.cameraHorizontalAngle > 360) cameraThird.cameraHorizontalAngle -= 360;
+				else if (cameraThird.cameraHorizontalAngle < -360) cameraThird.cameraHorizontalAngle += 360;
+
+				float theta = radians(cameraThird.cameraHorizontalAngle);
+				float phi = radians(cameraThird.cameraVerticalAngle);
+				
+				cameraThird.updatePosition(cameraThird.getPosition(), 
+										   vec3(cosf(theta)*cosf(phi), sinf(phi), -sinf(theta)*cosf(phi)),
+										   cameraThird.getUpVector());
+
 				renderer.setProjectionMatrix(Shaders::currentShaderProgram, cameraThird.getProjMatrix());
 				renderer.setViewMatrix(Shaders::currentShaderProgram, cameraThird.getViewMatrix());
+
+				//cout << to_string(cameraThird.getPosition()) << endl;
+				//cout << to_string(cameraThird.getLookAt()) << endl;
+				//cout << to_string(cameraThird.getUpVector()) << endl << endl;
 			} else {
 				float cameraHeight = 3.0f;
 				cameraFirst.updatePosition(	//Position                       height                            back offset

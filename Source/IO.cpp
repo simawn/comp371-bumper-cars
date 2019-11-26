@@ -48,27 +48,27 @@ void IO::processInputs() {
 	if (glfwGetKey(Setup::window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(Setup::window, true);
 
-	if (glfwGetKey(Setup::window, GLFW_KEY_UP) == GLFW_PRESS) {
+	if (glfwGetKey(Setup::window, GLFW_KEY_W) == GLFW_PRESS) {
 		updateCameraPosition(0);
 	}
 
-	if (glfwGetKey(Setup::window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+	if (glfwGetKey(Setup::window, GLFW_KEY_S) == GLFW_PRESS) {
 		updateCameraPosition(1);
 	}
 
-	if (glfwGetKey(Setup::window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+	if (glfwGetKey(Setup::window, GLFW_KEY_A) == GLFW_PRESS) {
 		updateCameraPosition(2);
 	}
 
-	if (glfwGetKey(Setup::window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+	if (glfwGetKey(Setup::window, GLFW_KEY_D) == GLFW_PRESS) {
 		updateCameraPosition(3);
 	}
 
-	if (glfwGetKey(Setup::window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+	if (glfwGetKey(Setup::window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 		updateCameraPosition(4);
 	}
 
-	if (glfwGetKey(Setup::window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
+	if (glfwGetKey(Setup::window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
 		updateCameraPosition(5);
 	}
 
@@ -115,46 +115,39 @@ void IO::processInputs() {
 
 void IO::updateCameraPosition(int dir) {
 	if (!isFirstCamera) {
-		int eastWest = 0;
-		int northSouth = 0;
-		int upDown = 0;
-
-		switch (dir) {
-		case 0:
-			northSouth = -1;
-			break;
-		case 1:
-			northSouth = 1;
-			break;
-		case 2:
-			eastWest = -1;
-			break;
-		case 3:
-			eastWest = 1;
-			break;
-		case 4:
-			upDown = 1;
-			break;
-		case 5:
-			upDown = -1;
-			break;
-		}
 		vec3 cPos = CameraThird::getPosition();
 		vec3 cLookAt = CameraThird::getLookAt();
 		vec3 cUp = CameraThird::getUpVector();
+
+		vec3 sideVector = CameraThird::getCameraSideVector();
+		vec3 frontVector = CameraThird::getCameraFrontVector();
+
+		float extraSpeed = glfwGetKey(Setup::window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS ? 5 : 1;
 		float tick = Renderer::tick;
-		float moveSpeed = tick * CAM_SPEED;
+		float moveSpeed = tick * CAM_SPEED * extraSpeed;
 
-		vec3 newCPos = vec3(cPos.x + eastWest * (moveSpeed),
-							cPos.y + upDown * (moveSpeed),
-							cPos.z + northSouth * (moveSpeed));
+		switch (dir) {
+		case 0: //northSouth W
+			cPos += frontVector * moveSpeed;
+			break;
+		case 1: //northSouth S
+			cPos -= frontVector * moveSpeed;
+			break;
+		case 2: //eastWest A
+			cPos -= sideVector * moveSpeed;
+			break;
+		case 3: //eastWest D
+			cPos += sideVector * moveSpeed;
+			break;
+		case 4: //up
+			cPos += vec3(0.0f, moveSpeed, 0.0f);
+			break;
+		case 5: //down
+			cPos -= vec3(0.0f, moveSpeed, 0.0f);
+			break;
+		}
 
-		vec3 newCLookAt = vec3(cLookAt.x + eastWest * (moveSpeed),
-							   cLookAt.y + upDown * (moveSpeed),
-							   cLookAt.z + northSouth * (moveSpeed));
-		vec3 newCUp = cUp;
-
-		CameraThird::updatePosition(newCPos, newCLookAt, newCUp);
+		CameraThird::updatePosition(cPos, cLookAt, cUp);
 	}
 }
 

@@ -17,6 +17,12 @@ public:
 	static vec3 getPosition();
 	static vec3 getLookAt();
 	static vec3 getUpVector();
+	static float cameraHorizontalAngle;
+	static float cameraVerticalAngle;
+	static const float CAMERA_ANGULAR_SPEED;
+	static const float VERTICAL_CLAMP;
+	static vec3 getCameraSideVector();
+	static vec3 getCameraFrontVector();
 private:
 	CameraThird(vec3 position, vec3 lookAt, vec3 up);
 	static CameraThird* instance;

@@ -15,6 +15,8 @@ public:
 	static IO& getInstance();
 	void updateMousePosition();
 	pair<double, double> getMouseMoveDifference();
+	pair<double, double> getCurrentMousePosition();
+	pair<double, double> getLastMousePosition();
 	void processInputs();
 	static bool stopSimulation;
 	static bool stopLights;
@@ -22,8 +24,6 @@ public:
 private:
 	IO();
 	static IO* instance;
-	pair<double, double> getCurrentMousePosition();
-	pair<double, double> getLastMousePosition();
 	double currentMousePosX = 0;
 	double currentMousePosY = 0;
 	double lastMousePosX = 0;

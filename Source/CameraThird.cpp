@@ -69,3 +69,25 @@ void CameraThird::reset() {
 	cLookAt = vec3(0, 0, 0);
 	cUp = vec3(0, 1, 0);
 }
+
+void CameraThird::updateInput() {
+	double dx = IO::getMouseMoveDifference().first;
+	double dy = IO::getMouseMoveDifference().second;
+
+	cameraHorizontalAngle -= dx * CAMERA_ANGULAR_SPEED * Renderer::tick;
+	cameraVerticalAngle -= dy * CAMERA_ANGULAR_SPEED * Renderer::tick;
+
+	//Clamp verticle angle
+	cameraVerticalAngle = std::max(-VERTICAL_CLAMP, std::min(VERTICAL_CLAMP, cameraVerticalAngle));
+
+	//Avoid overflow
+	if (cameraHorizontalAngle > 360) cameraHorizontalAngle -= 360;
+	else if (cameraHorizontalAngle < -360) cameraHorizontalAngle += 360;
+
+	float theta = radians(cameraHorizontalAngle);
+	float phi = radians(cameraVerticalAngle);
+
+	updatePosition(getPosition(),
+		vec3(cosf(theta)*cosf(phi), sinf(phi), -sinf(theta)*cosf(phi)),
+		getUpVector());
+}

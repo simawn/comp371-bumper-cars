@@ -48,42 +48,21 @@ int main(int argc, char*argv[]) {
 			IO.updateMousePosition();
 			renderer.updateTick();
 
+			mat4 projMatrix;
+			mat4 viewMatrix;
+
 			if (!IO::isFirstCamera) {
-				
-				double dx = IO.getMouseMoveDifference().first;
-				double dy = IO.getMouseMoveDifference().second;
-
-				cameraThird.cameraHorizontalAngle -= dx * cameraThird.CAMERA_ANGULAR_SPEED * dt;
-				cameraThird.cameraVerticalAngle   -= dy * cameraThird.CAMERA_ANGULAR_SPEED * dt;
-
-				//Clamp verticle angle
-				cameraThird.cameraVerticalAngle = std::max(-cameraThird.VERTICAL_CLAMP, std::min(cameraThird.VERTICAL_CLAMP, cameraThird.cameraVerticalAngle));
-
-				//Avoid overflow
-				if (cameraThird.cameraHorizontalAngle > 360) cameraThird.cameraHorizontalAngle -= 360;
-				else if (cameraThird.cameraHorizontalAngle < -360) cameraThird.cameraHorizontalAngle += 360;
-
-				float theta = radians(cameraThird.cameraHorizontalAngle);
-				float phi = radians(cameraThird.cameraVerticalAngle);
-				
-				cameraThird.updatePosition(cameraThird.getPosition(), 
-										   vec3(cosf(theta)*cosf(phi), sinf(phi), -sinf(theta)*cosf(phi)),
-										   cameraThird.getUpVector());
-
-				renderer.setProjectionMatrix(Shaders::currentShaderProgram, cameraThird.getProjMatrix());
-				renderer.setViewMatrix(Shaders::currentShaderProgram, cameraThird.getViewMatrix());
-
+				cameraThird.updateInput();
+				projMatrix = cameraThird.getProjMatrix();
+				viewMatrix = cameraThird.getViewMatrix();
 			} else {
-				float cameraHeight = 3.0f;
-				cameraFirst.updatePosition(	//Position                       height                            back offset
-											cameraBumperCar->GetPosition() + vec3(0.0f, cameraHeight, 0.0f) + rotate(vec3(0.0f, 0.0f, 2.0f), radians(cameraBumperCar->GetRotationAngle() + 180), vec3(0.0f, 1.0f, 0.0f)),
-											//Look at
-											cameraBumperCar->GetPosition() + rotate(vec3(0.0f, 0.0f, -15.0f), radians(cameraBumperCar->GetRotationAngle() + 180), vec3(0.0f, 1.0f, 0.0f)),
-											//Up
-											vec3(0.0f, 1.0f, 0.0f));
-				renderer.setProjectionMatrix(Shaders::currentShaderProgram, cameraFirst.getProjMatrix());
-				renderer.setViewMatrix(Shaders::currentShaderProgram, cameraFirst.getViewMatrix());
+				cameraFirst.updateInput(cameraBumperCar);
+				projMatrix = cameraFirst.getProjMatrix();
+				viewMatrix = cameraFirst.getViewMatrix();
 			}
+
+			renderer.setProjectionMatrix(Shaders::currentShaderProgram, projMatrix);
+			renderer.setViewMatrix(Shaders::currentShaderProgram, viewMatrix);
 
 			renderer.renderScene();
 			IO.processInputs();

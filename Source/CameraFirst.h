@@ -1,4 +1,7 @@
 #pragma once
+#include "Setup.h"
+#include "ModelBumperCar.h"
+#include "IO.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -17,7 +20,11 @@ public:
 	static vec3 getPosition();
 	static vec3 getLookAt();
 	static vec3 getUpVector();
-
+	static void updateInput(ModelBumperCar* car);
+	static float cameraHorizontalAngle;
+	static float cameraVerticalAngle;
+	static const float CAMERA_ANGULAR_SPEED;
+	static const float VERTICAL_CLAMP;
 private:
 	CameraFirst(vec3 position, vec3 lookAt, vec3 up);
 	static CameraFirst* instance;

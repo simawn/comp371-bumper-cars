@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Setup.h"
+#include "IO.h"
+#include "Renderer.h"
 #include <iostream>
+#include <algorithm>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -28,6 +31,7 @@ public:
 	static vec3 getCameraSideVector();
 	static vec3 getCameraFrontVector();
 	static void reset();
+	static void updateInput();
 private:
 	CameraThird(vec3 position, vec3 lookAt, vec3 up);
 	static CameraThird* instance;

@@ -16,9 +16,9 @@ class IO {
 public:
 	static IO& getInstance();
 	void updateMousePosition();
-	pair<double, double> getMouseMoveDifference();
-	pair<double, double> getCurrentMousePosition();
-	pair<double, double> getLastMousePosition();
+	static pair<double, double> getMouseMoveDifference();
+	static pair<double, double> getCurrentMousePosition();
+	static pair<double, double> getLastMousePosition();
 	void processInputs();
 	static bool stopSimulation;
 	static bool stopLights;
@@ -26,10 +26,10 @@ public:
 private:
 	IO();
 	static IO* instance;
-	double currentMousePosX = 0;
-	double currentMousePosY = 0;
-	double lastMousePosX = 0;
-	double lastMousePosY = 0;
+	static double currentMousePosX;
+	static double currentMousePosY;
+	static double lastMousePosX;
+	static double lastMousePosY;
 	const float CAM_SPEED = 20;
 	void updateCameraPosition(int dir);
 	//Keep track of keys

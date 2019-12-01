@@ -7,6 +7,10 @@ IO* IO::instance = 0;
 bool IO::stopSimulation = false;
 bool IO::stopLights = false;
 bool IO::isFirstCamera = false;
+double IO::currentMousePosX;
+double IO::currentMousePosY;
+double IO::lastMousePosX;
+double IO::lastMousePosY;
 
 IO& IO::getInstance() {
 	if (instance == 0) instance = new IO();

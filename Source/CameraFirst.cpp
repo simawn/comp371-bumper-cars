@@ -68,13 +68,6 @@ void CameraFirst::updateInput(ModelBumperCar* cameraBumperCar) {
 	float theta = radians(cameraHorizontalAngle);
 	float phi = radians(cameraVerticalAngle);
 
-	/*
-	updatePosition(getPosition(),
-		vec3(cosf(theta)*cosf(phi), sinf(phi), -sinf(theta)*cosf(phi)),
-		getUpVector());
-	*/
-	
-	
 	float cameraHeight = 3.0f;
 
 	vec3 cameraPosition = cameraBumperCar->GetPosition() + vec3(0.0f, cameraHeight, 0.0f) + rotate(vec3(0.0f, 0.0f, 2.0f), radians(cameraBumperCar->GetRotationAngle() + 180), vec3(0.0f, 1.0f, 0.0f));

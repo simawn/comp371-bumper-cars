@@ -14,16 +14,7 @@ ModelBumperCar::ModelBumperCar() {
 	diffuseColor = vec3(rand() / (float)RAND_MAX / clampCol, 
 						rand() / (float)RAND_MAX / clampCol, 
 						rand() / (float)RAND_MAX / clampCol);
-	
 
-	/*
-	//Limit to shades of cmy
-	float rng = rand() / (float)RAND_MAX;
-	if (rng < 0.3) rng += 0.3;
-	vec3 colors[] = { vec3(0, rng, rng), vec3(rng, 0, rng), vec3(rng, rng, 0) };
-
-	diffuseColor = colors[(int) (rng * 1000) % 3];
-	*/
 	for (objl::Mesh mesh : obj) {
 		meshes.push_back(make_tuple(mesh, setupMeshEBO(mesh), mesh.Vertices.size()));
 	}

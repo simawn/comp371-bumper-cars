@@ -29,7 +29,6 @@ Renderer& Renderer::getInstance() {
 Renderer::Renderer() {
 	createDepthMap();
 	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-	setTexture();
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -100,29 +99,6 @@ void Renderer::createDepthMap() {
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	
-}
-
-void Renderer::setTexture() {
-	// Load Textures
-#if defined(PLATFORM_OSX)
-	GLuint brickTextureID = loadTexture("Textures/brick.jpg");
-	GLuint cementTextureID = loadTexture("Textures/cement.jpg");
-	GLuint tiresTextureID = loadTexture("Textures/tires.jpg");
-	GLuint grassTextureID = loadTexture("Textures/grass512.jpg");
-	GLuint redTextureID = loadTexture("Textures/red.jpg");
-#else
-	GLuint brickTextureID = loadTexture("../Assets/Textures/brick.jpg");
-	GLuint cementTextureID = loadTexture("../Assets/Textures/cement.jpg");
-	GLuint tiresTextureID = loadTexture("../Assets/Textures/tires.jpg");
-	GLuint grassTextureID = loadTexture("../Assets/Textures/grass512.jpg");
-	GLuint redTextureID = loadTexture("../Assets/Textures/red.jpg");
-#endif
-	
-	textureMap["BRICK"] = brickTextureID;
-	textureMap["CEMENT"] = cementTextureID;
-	textureMap["TIRE"] = tiresTextureID;
-	textureMap["GRASS"] = grassTextureID;
-	textureMap["RED"] = redTextureID;
 }
 
 int Renderer::loadTexture(const char* imagepath) {

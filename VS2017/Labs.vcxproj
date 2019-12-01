@@ -23,24 +23,14 @@
     <ClInclude Include="..\Source\Model.h" />
     <ClInclude Include="..\Source\ModelBumperCar.h" />
     <ClInclude Include="..\Source\ModelCube.h" />
-    <ClInclude Include="..\Source\ModelEntrance.h" />
-    <ClInclude Include="..\Source\ModelExit.h" />
     <ClInclude Include="..\Source\ModelField.h" />
     <ClInclude Include="..\Source\ModelSmoke.h" />
     <ClInclude Include="..\Source\Movement.h" />
-    <ClInclude Include="..\Source\OBJloaderV2.h" />
     <ClInclude Include="..\Source\OBJ_Loader.h" />
     <ClInclude Include="..\Source\Renderer.h" />
     <ClInclude Include="..\Source\Scene.h" />
     <ClInclude Include="..\Source\Setup.h" />
     <ClInclude Include="..\Source\Shaders.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Assets\Textures\brick.jpg" />
-    <Image Include="..\Assets\Textures\cement.jpg" />
-    <Image Include="..\Assets\Textures\grass512.jpg" />
-    <Image Include="..\Assets\Textures\red.jpg" />
-    <Image Include="..\Assets\Textures\tires.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\sceneFrag.glsl" />
@@ -62,12 +52,9 @@
     <ClCompile Include="..\Source\Model.cpp" />
     <ClCompile Include="..\Source\ModelBumperCar.cpp" />
     <ClCompile Include="..\Source\ModelCube.cpp" />
-    <ClCompile Include="..\Source\ModelEntrance.cpp" />
-    <ClCompile Include="..\Source\ModelExit.cpp" />
     <ClCompile Include="..\Source\ModelField.cpp" />
     <ClCompile Include="..\Source\ModelSmoke.cpp" />
     <ClCompile Include="..\Source\Movement.cpp" />
-    <ClCompile Include="..\Source\OBJloaderV2.cpp" />
     <ClCompile Include="..\Source\Renderer.cpp" />
     <ClCompile Include="..\Source\Scene.cpp" />
     <ClCompile Include="..\Source\Setup.cpp" />

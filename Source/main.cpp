@@ -1,3 +1,9 @@
+/*
+Credits:
+- Initial setup from COMP 371 lab code
+- Tutorial code from https://learnopengl.com/ and https://www.opengl-tutorial.org/
+*/
+
 #define GLEW_STATIC 1
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

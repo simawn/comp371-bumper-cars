@@ -6,8 +6,6 @@
 #include "ModelCube.h"
 #include "ModelBumperCar.h"
 #include "ModelSmoke.h"
-#include "ModelEntrance.h"
-#include "ModelExit.h"
 #include "ModelField.h"
 #include "Movement.h"
 #include "Emitter.h"

@@ -56,7 +56,9 @@ void Scene::generateCars(int num) {
 		models[id] = car;
 		movement.addObject(car);
 		car->SetScaling(vec3(5.0f));
-		car->SetPosition(vec3(rand() % 20, 0, rand() % 20));
+		int quad1 = rand() % 2 == 0 ? -1 : 1;
+		int quad2 = rand() % 2 == 0 ? -1 : 1;
+		car->SetPosition(vec3(quad1 * rand() % 20, 0, quad2 * rand() % 20));
 		car->SetRotation(vec3(0.0f, 1.0f, 0.0f), rand() % 360);
 	}
 }

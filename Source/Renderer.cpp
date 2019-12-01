@@ -125,7 +125,7 @@ void Renderer::setTexture() {
 	textureMap["RED"] = redTextureID;
 }
 
-int Renderer::loadTexture(char* imagepath) {
+int Renderer::loadTexture(const char* imagepath) {
 	// Load image using the Free Image library
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(imagepath, 0);
 	FIBITMAP* image = FreeImage_Load(format, imagepath);
@@ -183,7 +183,7 @@ void Renderer::useTexture(GLuint textureID) {
 }
 
 void Renderer::setDiffuseColor(vec3 mainColor) {
-	GLint mainColorUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "diffuseColor");
+	GLint mainColorUniformLocation = glGetUniformLocation(Shaders::currentShaderProgram, "color");
 	glUniform3fv(mainColorUniformLocation, 1, &mainColor[0]);
 }
 

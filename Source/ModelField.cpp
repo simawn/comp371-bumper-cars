@@ -6,11 +6,20 @@ using namespace std;
 using namespace glm;
 
 ModelField::ModelField() {
-	if(obj.empty()) obj = loadObj("../Models/field2.obj");
+	if(obj.empty()) obj = loadObj("../Models/groundTile.obj");
 
 	for (objl::Mesh mesh : obj) {
 		meshes.push_back(make_tuple(mesh, setupMeshEBO(mesh), mesh.Vertices.size()));
 	}
+
+	// TODO: Load textures from .mtl file
+	// Note: Texture scaling was modified directly in .obj file (vt)
+#if defined(PLATFORM_OSX)
+	textureID = Renderer::loadTexture("../Assets/Textures/tile.jpg");
+#else
+	textureID = Renderer::loadTexture("../Assets/Textures/tile.jpg");
+#endif
+	
 }
 
 ModelField::~ModelField() {
@@ -35,6 +44,15 @@ void ModelField::Draw() {
 		Renderer::setSpecExp(meshMat.Ns);
 		Renderer::setAmbientColor(vec3(meshMat.Ka.X, meshMat.Ka.Y, meshMat.Ka.Z));
 
+		//Texture
+		//Set flag to use texture
+		GLuint textureFlag = glGetUniformLocation(Shaders::currentShaderProgram, "useTexture");
+		glUniform1i(textureFlag, 1);
+
+		Renderer::useTexture(textureID);
+
 		glDrawElements(GL_TRIANGLES, get<2>(mesh), GL_UNSIGNED_INT, 0);
+
+		glUniform1i(textureFlag, 0);
 	}
 }

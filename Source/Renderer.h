@@ -27,7 +27,7 @@ public:
 	static void setWorldMatrix(int shaderProgram, mat4 worldMatrix);
 
 	static void useTexture(GLuint textureID);
-
+	static int loadTexture(const char * imagepath);
 	static void setDiffuseColor(vec3 mainColor);
 	static void setSpecColor(vec3 specColor);
 	static void setSpecExp(int specExp);
@@ -43,6 +43,6 @@ private:
 	Renderer();
 	void createDepthMap();
 	void setTexture();
-	int loadTexture(char * imagepath);
+	
 	float lastFrameTime;
 };

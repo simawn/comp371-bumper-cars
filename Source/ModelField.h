@@ -28,6 +28,7 @@ private:
 		glm::vec3 color;
 	};
 
+	GLuint textureID;
 	unsigned int mVAO;
 	unsigned int mVBO;
 

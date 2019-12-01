@@ -5,6 +5,7 @@ Build/
 .vs/
 *.blend
 *.blend1
+*.psd
 
 # Prerequisites
 *.d

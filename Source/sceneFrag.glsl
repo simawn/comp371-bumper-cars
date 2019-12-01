@@ -1,5 +1,5 @@
 #version 330 core
-uniform vec3 diffuseColor; //overwrites other colors
+uniform vec3 color; //overwrites other colors
 uniform vec3 lightPoint;
 
 in vec2 vertexUV;
@@ -18,7 +18,12 @@ uniform vec3 specColor = vec3(0.3, 0.3, 0.3);
 uniform int specExp = 255;
 uniform vec3 ambientColor = vec3(1.0, 1.0, 1.0);
 
+//Flag to switch between texture and color
+uniform int useTexture = 0;
+
 out vec4 FragColor;
+
+vec3 diffuseColor;
 
 //All the light calculations from: https://learnopengl.com/Lighting/Multiple-lights
 //Point Light
@@ -194,6 +199,9 @@ float shadowCalc(float dotLightNormal){
 }
 
 void main() {
+	//Init color
+	diffuseColor = useTexture == 0 ? color : texture(textureSampler, vertexUV).rgb;
+
 	//
 	//Shadows
 	//

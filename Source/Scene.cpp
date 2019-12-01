@@ -21,20 +21,21 @@ Scene::Scene() {
 	//cube1->SetPosition(vec3(-1.05f, 1.15f, -3.3f)); //position left front light
 	//cube1->SetPosition(vec3(1.05f, 1.15f, -3.3f)); //position right front light
 
-	Model* ground = new ModelCube(vec3(50.0f, 0.1f, 50.0f));
-
+	//Model* ground = new ModelCube(vec3(50.0f, 0.1f, 50.0f));
+	Model* field = new ModelField();
+	field->SetScaling(vec3(2.5f, 1.0f, 2.5f));
 	generateCars(5); //Need to update frag shader with proper amount of lights
 
 	//Global light to generate shadows only, models are not affected by it
 	//!IMPORTANT: We need to set #DEFINE in the shader to the correct amount of light
 	Light* lightPoint1 = new LightPoint(vec3(5.0f, 25.0f, -9.0f), vec3(1.0f));
 
-	Light* spotLight1 = new LightSpot(vec3(25.0f, 5.0f, 25.0f), vec3(1.0f, 0.0f, 1.0f), vec3(-0.5f, -1.0f, -0.5f), 0.1, 0.1);
-	Light* spotLight2 = new LightSpot(vec3(-25.0f, 5.0f, 25.0f), vec3(0.0f, 1.0f, 1.0f), vec3(0.5f, -1.0f, -0.5f), 0.1, 0.1);
-	Light* spotLight3 = new LightSpot(vec3(0.0f, 5.0f, -25.0f), vec3(1.0f, 1.0f, 0.0f), vec3(0.0f, -1.0f, 0.5f), 0.1, 0.1);
+	Light* spotLight1 = new LightSpot(vec3(21.0f, 5.0f, 21.0f), vec3(1.0f, 0.0f, 1.0f), vec3(-0.5f, -1.0f, -0.5f), 0.1, 0.1);
+	Light* spotLight2 = new LightSpot(vec3(-21.0f, 5.0f, 21.0f), vec3(0.0f, 1.0f, 1.0f), vec3(0.5f, -1.0f, -0.5f), 0.1, 0.1);
+	Light* spotLight3 = new LightSpot(vec3(0.0f, 5.0f, -21.0f), vec3(1.0f, 1.0f, 0.0f), vec3(0.0f, -1.0f, 0.5f), 0.1, 0.1);
 	Light* spotLight4 = new LightSpot(vec3(0.0f, 5.0f, 0.0f), vec3(1.0f, 1.0f, 1.0f), vec3(0.0f, -1.0f, 0.0f), 0.1, 0.1);
 
-	models["ground"] = ground;
+	models["ground"] = field;
 }
 
 void Scene::update(float tick) {

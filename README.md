@@ -3,6 +3,10 @@ Final individual project for *COMP 371 - Computer Graphics (Fall 2019)* implemen
 
 This project simulates the behaviors of multiple bumper cars within an area.
 
+[Video demo](https://youtu.be/FRxqNq7UKvc)
+
+![Bumper Cars](img/bc1.gif)
+
 ### Main Features
 - Custom assets (car and smoke) modeled in Blender.
 - Smoke simulation from the exhaust.
@@ -23,6 +27,7 @@ This project simulates the behaviors of multiple bumper cars within an area.
  - **Mouse Hold + Drag Up**: Zoom in
  - **Mouse Hold + Drag Down**: Zoom out
  - **Mouse Move**: Look direction
+ - **Home**: Reset camera view
  - **C**: Change to first person camera
  - **H**: Stop car simulation
  - **L**: Toggle car lights
